@@ -1,0 +1,4 @@
+"Resource: /Users/anshgodha/Desktop/Spring 2020/CS 3110/final-project/json_formation_util.ml": "-\223\244+n\168I\231\007\249\014\162Sg\183|"
+"Rule: ocaml: cmo* -> byte (%=json_formation_util )": "\135$6v\189[d\224>\195:\202\199\017\248N"
+"Rule: ocaml: ml -> cmo & cmi (%=json_formation_util )": "#2\211Y\152B\235\170\022\254\128\134\173\191\235\228"
+"Rule: ocaml dependencies ml (%=json_formation_util )": "\214\186\r;\029\201K!I\164|/8\172\253s"
