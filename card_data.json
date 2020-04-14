@@ -1,14 +1,565 @@
-[
-  {
-    "value": 4,
-    "count": 5
-  },
-  {
-    "value": 5,
-    "count": 6
-  },
-  {
-    "value": 4,
-    "count": 6
-  }
-]
+{
+  "money cards": [
+    {
+      "value": 10,
+      "count": 1
+    },
+    {
+      "value": 5,
+      "count": 2
+    },
+    {
+      "value": 4,
+      "count": 3
+    },
+    {
+      "value": 3,
+      "count": 3
+    },
+    {
+      "value": 2,
+      "count": 5
+    },
+    {
+      "value": 1,
+      "count": 6
+    }
+  ],
+  "action cards": [
+    {
+      "name": "Deal Breaker",
+      "desc": "Steal a complete set of properties from every player (includes any buildings)",
+      "value": 5,
+      "count": 2
+    },
+    {
+      "name": "Debt Collector",
+      "desc": "Force any player to pay you $5M",
+      "value": 3,
+      "count": 3
+    },
+    {
+      "name": "Double The Rent!",
+      "desc": "Needs to be played with a rent card.",
+      "value": 1,
+      "count": 2
+    },
+    {
+      "name": "Forced Deal",
+      "desc": "Swap any property with another player (cannot be a part of a full set)",
+      "value": 3,
+      "count": 4
+    },
+    {
+      "name": "Hotel",
+      "desc": "Add onto any full set you own to add $4M to the rent value (except railroads and utilities)",
+      "value": 4,
+      "count": 3
+    },
+    {
+      "name": "House",
+      "desc": "Add onto any full set you own to add $3M to the rent value (except railroads and utilities)",
+      "value": 3,
+      "count": 3
+    },
+    {
+      "name": "It's My Birthday!",
+      "desc": "All players give you $2M as a 'gift'!",
+      "value": 2,
+      "count": 3
+    },
+    {
+      "name": "Just Say No!",
+      "desc": "Use any time when an action card is being played against you",
+      "value": 4,
+      "count": 3
+    },
+    {
+      "name": "Pass Go",
+      "desc": "Draw 2 extra cards",
+      "value": 1,
+      "count": 10
+    },
+    {
+      "name": "Sly Deal",
+      "desc": "Steal a property from the player of your choice (cannot be part of a full set)",
+      "value": 3,
+      "count": 3
+    }
+  ],
+  "property cards": [
+    {
+      "venue": "Baltic Avenue",
+      "value": 1,
+      "color": "brown",
+      "rents": [
+        1,
+        2
+      ]
+    },
+    {
+      "venue": "Mediterranean Avenue",
+      "value": 1,
+      "color": "brown",
+      "rents": [
+        1,
+        2
+      ]
+    },
+    {
+      "venue": "Boardwalk",
+      "value": 4,
+      "color": "blue",
+      "rents": [
+        3,
+        8
+      ]
+    },
+    {
+      "venue": "Park Place",
+      "value": 4,
+      "color": "blue",
+      "rents": [
+        3,
+        8
+      ]
+    },
+    {
+      "venue": "North Carolina Avenue",
+      "value": 4,
+      "color": "green",
+      "rents": [
+        2,
+        4,
+        7
+      ]
+    },
+    {
+      "venue": "Pacific Avenue",
+      "value": 4,
+      "color": "green",
+      "rents": [
+        2,
+        4,
+        7
+      ]
+    },
+    {
+      "venue": "Pennsylvania Avenue",
+      "value": 4,
+      "color": "green",
+      "rents": [
+        2,
+        4,
+        7
+      ]
+    },
+    {
+      "venue": "Connecticut Avenue",
+      "value": 1,
+      "color": "light blue",
+      "rents": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "venue": "Oriental Avenue",
+      "value": 1,
+      "color": "light blue",
+      "rents": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "venue": "Vermont Avenue",
+      "value": 1,
+      "color": "light blue",
+      "rents": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "venue": "Water Works",
+      "value": 2,
+      "color": "light green",
+      "rents": [
+        1,
+        2
+      ]
+    },
+    {
+      "venue": "Electric Company",
+      "value": 2,
+      "color": "light green",
+      "rents": [
+        1,
+        2
+      ]
+    },
+    {
+      "venue": "New York Avenue",
+      "value": 2,
+      "color": "orange",
+      "rents": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "venue": "St. James Place",
+      "value": 2,
+      "color": "orange",
+      "rents": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "venue": "Tennessee Avenue",
+      "value": 2,
+      "color": "orange",
+      "rents": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "venue": "St. Charles Place",
+      "value": 2,
+      "color": "pink",
+      "rents": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "venue": "Virginia Avenue",
+      "value": 2,
+      "color": "pink",
+      "rents": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "venue": "States Avenue",
+      "value": 2,
+      "color": "pink",
+      "rents": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "venue": "Short Line",
+      "value": 2,
+      "color": "black",
+      "rents": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "venue": "B. & O. Railroad",
+      "value": 2,
+      "color": "black",
+      "rents": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "venue": "Reading Railroad",
+      "value": 2,
+      "color": "black",
+      "rents": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "venue": "Pennsylvania Railroad",
+      "value": 2,
+      "color": "black",
+      "rents": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "venue": "Kentucky Avenue",
+      "value": 3,
+      "color": "red",
+      "rents": [
+        2,
+        3,
+        6
+      ]
+    },
+    {
+      "venue": "Indiana Avenue",
+      "value": 3,
+      "color": "red",
+      "rents": [
+        2,
+        3,
+        6
+      ]
+    },
+    {
+      "venue": "Illinios Avenue",
+      "value": 3,
+      "color": "red",
+      "rents": [
+        2,
+        3,
+        6
+      ]
+    },
+    {
+      "venue": "Ventnor Avenue",
+      "value": 3,
+      "color": "yellow",
+      "rents": [
+        2,
+        4,
+        6
+      ]
+    },
+    {
+      "venue": "Marvin Gardens",
+      "value": 3,
+      "color": "yellow",
+      "rents": [
+        2,
+        4,
+        6
+      ]
+    },
+    {
+      "venue": "Atlantic Avenue",
+      "value": 3,
+      "color": "yellow",
+      "rents": [
+        2,
+        4,
+        6
+      ]
+    }
+  ],
+  "wildcards": [
+    {
+      "colors": [
+        "blue",
+        "green"
+      ],
+      "rents": [
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          4,
+          7
+        ]
+      ],
+      "count": 1,
+      "value": 4
+    },
+    {
+      "colors": [
+        "light blue",
+        "brown"
+      ],
+      "rents": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "count": 1,
+      "value": 1
+    },
+    {
+      "colors": [
+        "orange",
+        "pink"
+      ],
+      "rents": [
+        [
+          1,
+          3,
+          5
+        ],
+        [
+          1,
+          2,
+          4
+        ]
+      ],
+      "count": 2,
+      "value": 2
+    },
+    {
+      "colors": [
+        "green",
+        "black"
+      ],
+      "rents": [
+        [
+          2,
+          4,
+          7
+        ],
+        [
+          1,
+          2,
+          3,
+          4
+        ]
+      ],
+      "count": 1,
+      "value": 4
+    },
+    {
+      "colors": [
+        "light blue",
+        "black"
+      ],
+      "rents": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          1,
+          2,
+          3,
+          4
+        ]
+      ],
+      "count": 1,
+      "value": 4
+    },
+    {
+      "colors": [
+        "light green",
+        "black"
+      ],
+      "rents": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          3,
+          4
+        ]
+      ],
+      "count": 1,
+      "value": 2
+    },
+    {
+      "colors": [
+        "yellow",
+        "red"
+      ],
+      "rents": [
+        [
+          2,
+          4,
+          6
+        ],
+        [
+          2,
+          3,
+          6
+        ]
+      ],
+      "count": 2,
+      "value": 3
+    },
+    {
+      "colors": [],
+      "rents": [],
+      "count": 2,
+      "value": 0
+    }
+  ],
+  "rent cards": [
+    {
+      "colors": [
+        "green",
+        "blue"
+      ],
+      "value": 1,
+      "count": 2
+    },
+    {
+      "colors": [
+        "brown",
+        "light blue"
+      ],
+      "value": 1,
+      "count": 2
+    },
+    {
+      "colors": [
+        "orange",
+        "pink"
+      ],
+      "value": 1,
+      "count": 2
+    },
+    {
+      "colors": [
+        "black",
+        "light green"
+      ],
+      "value": 1,
+      "count": 2
+    },
+    {
+      "colors": [
+        "red",
+        "yellow"
+      ],
+      "value": 1,
+      "count": 2
+    },
+    {
+      "colors": [],
+      "value": 3,
+      "count": 3
+    }
+  ]
+}

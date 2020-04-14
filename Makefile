@@ -14,5 +14,5 @@ default:
 build:
 	$(OCAMLBUILD) $(OBJECTS)
 
-edit_json:
+json:
 	$(OCAMLBUILD) $(JSONBUILD) && ./$(JSONBUILD)
