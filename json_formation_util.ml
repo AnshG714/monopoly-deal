@@ -37,9 +37,11 @@ let continue_check_helper (f: unit -> unit) =
 let rec money_card_input () =
   let _ = print_string "Enter the value of this money card\n" in
   let money_value = int_input_helper () in
+  print_string "\n";
 
   let _ = print_string "Enter the count of this money card\n" in
   let count_value = int_input_helper () in
+  print_string "\n";
 
   let json = "{\"value\": " ^ string_of_int money_value ^ ", \"count\": " 
              ^ string_of_int count_value ^ "}," in
@@ -57,15 +59,19 @@ let rec money_card_input () =
 let rec action_card_input () =
   print_string "Enter the name of this action card\n"; 
   let card_name = string_input_helper () in
+  print_string "\n";
 
   print_string "Enter the description of this action card\n";
   let card_description = string_input_helper () in
+  print_string "\n";
 
   print_string "Enter the value of this action card\n";
-  let card_value = int_input_helper () in 
+  let card_value = int_input_helper () in
+  print_string "\n"; 
 
   print_string "Enter the count of this action card\n";
-  let count_value = int_input_helper () in 
+  let count_value = int_input_helper () in
+  print_string "\n"; 
 
   let json = "{\"name\": " ^ card_name ^ ", \"desc\": " ^ card_description ^
              ", \"value\": " ^ string_of_int card_value ^ ", \"count\": " ^ 
@@ -83,12 +89,15 @@ let rec property_card_input () =
 
   print_string "Enter the color of this property card set\n";
   let property_color = string_input_helper () in
+  print_string "\n";
 
   print_string "Enter the number of cards in this set\n";
   let set_count = int_input_helper () in
+  print_string "\n";
 
   print_string "Enter the value per card of this property card set\n";
   let property_value = int_input_helper () in
+  print_string "\n";
 
   print_string "Enter the list of rents. IMPORTANT: The input should be in the form\n\t\t [x1, x2, ..., xn], 
   \nwhere the xi'th entry denotes the entry when i members of this color set are possesed by the player.\n
@@ -96,12 +105,14 @@ let rec property_card_input () =
   property card, this input when the venue is Connecticut Avenue will be [1,2,3]. Of course, this means that
   the length of the input list = number of property cards in the set. \n";
   let property_rents = list_input_helper () in
+  print_string "\n";
 
   let oc = open_out_gen [Open_append] 0o666 file in (* The octal specifies file permissions *)
 
   for x = 1 to set_count do
     print_string "Enter the name of a venue in this set\n";
     let venue = string_input_helper () in
+    print_string "\n";
 
     let json = "{\"venue\": " ^ venue ^ ", \"value\": " ^ 
                string_of_int property_value ^ ", \"color\": " ^ property_color ^ 
@@ -119,16 +130,20 @@ let rec property_card_input () =
 let rec wildcard_input () =
   print_string "Enter the list of colors represented by this wildcard\n";
   let color_list = list_input_helper () in
+  print_string "\n";
 
   print_string "Enter the 2D list representing the rents for each color, in the order
   that you entered the color list. Inner [] needed. \n";
-  let rent_list = list_input_helper () in 
+  let rent_list = list_input_helper () in
+  print_string "\n"; 
 
   print_string "Enter the count of such cards\n";
-  let wildcard_count = int_input_helper () in 
+  let wildcard_count = int_input_helper () in
+  print_string "\n"; 
 
   print_string "Enter the value of this type of wildcard\n";
   let wildcard_value = int_input_helper () in 
+  print_string "\n";
 
   let json = "{\"colors\": " ^ color_list ^ ", \"rents\": " ^ rent_list 
              ^ ", \"count\": " ^ string_of_int wildcard_count ^ ", \"value\": " 
@@ -144,12 +159,15 @@ let rec wildcard_input () =
 let rec rent_card_input () = 
   print_string "Enter the colors of this rent card as a list\n";
   let color_list = list_input_helper () in
+  print_string "\n";
 
   print_string "Enter the value of this rent card\n";
   let card_value = int_input_helper () in
+  print_string "\n";
 
   print_string "Enter the count of such cards\n";
   let card_count = int_input_helper () in
+  print_string "\n";
 
   let json = "{\"colors\": " ^ color_list ^ ", \"value\": " ^ 
              string_of_int card_value  ^ ", \"count\": " ^ 
