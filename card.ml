@@ -38,6 +38,13 @@ type rent_card = {
   count: int
 }
 
+type card = 
+  | Property of property_card
+  | Money of money_card
+  | Action of action_card
+  | Wildcard of wildcard
+  | Rent of rent_card
+
 let json_list_to_alpha_list conversion (j: Yojson.Basic.t list) = 
   List.map (fun x -> conversion x) j
 
@@ -83,3 +90,30 @@ let rent_from_json j : rent_card = {
   value = j |>  member "value" |> to_int;
   count = j |> member "count" |> to_int;
 }
+
+
+let get_card_from_file card_type card_method j: 'a list =
+  let json = Yojson.Basic.from_file "card_data.json" in
+  json |> member card_type |> to_list |> List.map (fun x -> card_method x)
+
+(* Make MLI *)
+
+(* Ansh *)
+let get_money j: money_card list =
+  get_card_from_file "money cards" money_from_json j
+
+(* Ansh *)
+let get_properties j: property_card list =
+  get_card_from_file "property cards" property_from_json j
+
+(* Apu *)
+let get_actions j: action_card list =
+  get_card_from_file "action cards" action_from_json j
+
+(* Pooja *)
+let get_wildcards j: wildcard list = 
+  get_card_from_file "wildcards" wildcard_from_json j
+
+(* Apu*)
+let get_rent j: rent_card list =
+  get_card_from_file "rent cards" rent_from_json j 
