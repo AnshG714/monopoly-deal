@@ -1,5 +1,6 @@
 open Yojson.Basic.Util
 
+(* Type Definitions *)
 type venue_name = string
 type card_value = int
 type color = string
@@ -57,6 +58,8 @@ let list_to_array lst=
   ;
   temp_arr 
 
+
+(* Conversions from json *)
 let money_from_json j: money_card = {
   value = j |> member "value" |> to_int;
   count = j |> member "count" |> to_int
@@ -98,11 +101,9 @@ let get_card_from_file card_type card_method j: 'a list =
 
 (* Make MLI *)
 
-(* Ansh *)
 let get_money j: money_card list =
   get_card_from_file "money cards" money_from_json j
 
-(* Ansh *)
 let get_properties j: property_card list =
   get_card_from_file "property cards" property_from_json j
 
@@ -117,3 +118,25 @@ let get_wildcards j: wildcard list =
 (* Apu*)
 let get_rent j: rent_card list =
   get_card_from_file "rent cards" rent_from_json j 
+
+(* Money Card getters *)
+let get_money_value (card: money_card): card_value =
+  card.value
+
+let get_money_count (card: money_card): int =
+  card.count
+
+(* Define all getters to interface with other models *)
+
+(* Property Card getters *)
+let get_property_name (card: property_card): venue_name =
+  card.venue
+
+let get_property_value (card: property_card): card_value =
+  card.value
+
+let get_property_color (card: property_card): color = 
+  card.color
+
+let get_property_rents (card: property_card): rent array = 
+  card.rents
