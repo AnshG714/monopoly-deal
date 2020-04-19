@@ -1,8 +1,16 @@
 ### Starting build.
-# Target: json_formation_util.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:json_formation_util.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules json_formation_util.ml > json_formation_util.ml.depends
-# Target: json_formation_util.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:json_formation_util.cmo, file:json_formation_util.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o json_formation_util.cmo json_formation_util.ml
-# Target: json_formation_util.byte, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, dont_link_with, extension:byte, file:json_formation_util.byte, link, ocaml, program, quiet, traverse }
-ocamlfind ocamlc -linkpkg -package oUnit -package yojson -package ANSITerminal json_formation_util.cmo -o json_formation_util.byte
-# Compilation successful.
+# Target: card.mli.depends, tags: { package(ANSITerminal), package(Yojson), package(oUnit), extension:mli, file:card.mli, ocaml, ocamldep, quiet, traverse }
+/Users/anshgodha/.opam/4.09.0/bin/ocamldep.opt -modules card.mli > card.mli.depends # cached
+# Target: card.cmi, tags: { package(ANSITerminal), package(Yojson), package(oUnit), byte, compile, extension:mli, file:card.mli, interf, ocaml, quiet, traverse }
+/Users/anshgodha/.opam/4.09.0/bin/ocamlc.opt -c -o card.cmi card.mli # cached
+# Target: card.ml.depends, tags: { package(ANSITerminal), package(Yojson), package(oUnit), extension:ml, file:card.ml, ocaml, ocamldep, quiet, traverse }
+/Users/anshgodha/.opam/4.09.0/bin/ocamldep.opt -modules card.ml > card.ml.depends # cached
+# Target: card.cmo, tags: { package(ANSITerminal), package(Yojson), package(oUnit), byte, compile, extension:cmo, extension:ml, file:card.cmo, file:card.ml, implem, ocaml, quiet, traverse }
+/Users/anshgodha/.opam/4.09.0/bin/ocamlc.opt -c -o card.cmo card.ml
++ /Users/anshgodha/.opam/4.09.0/bin/ocamlc.opt -c -o card.cmo card.ml
+File "card.ml", line 1, characters 5-22:
+1 | open Yojson.Basic.Util
+         ^^^^^^^^^^^^^^^^^
+Error: Unbound module Yojson
+Command exited with code 2.
+# Compilation unsuccessful.

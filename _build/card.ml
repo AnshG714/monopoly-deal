@@ -116,7 +116,7 @@ let get_wildcards (): wildcard list =
   get_card_from_file "wildcards" wildcard_from_json 
 
 (* Apu*)
-let get_rents (): rent_card list =
+let get_rent (): rent_card list =
   get_card_from_file "rent cards" rent_from_json
 
 (* Money Card getters *)

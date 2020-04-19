@@ -1,4 +1,4 @@
-modules=json_formation_util
+modules=json_formation_util card
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
