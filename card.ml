@@ -99,8 +99,6 @@ let get_card_from_file card_type card_method: 'a list =
   let json = Yojson.Basic.from_file "card_data.json" in
   json |> member card_type |> to_list |> List.map (fun x -> card_method x)
 
-(* Make MLI *)
-
 let get_money () : money_card list =
   get_card_from_file "money cards" money_from_json
 
@@ -119,14 +117,14 @@ let get_wildcards (): wildcard list =
 let get_rents (): rent_card list =
   get_card_from_file "rent cards" rent_from_json
 
+(* Define all getters to interface with other models *)
+
 (* Money Card getters *)
 let get_money_value (card: money_card): card_value =
   card.value
 
 let get_money_count (card: money_card): int =
   card.count
-
-(* Define all getters to interface with other models *)
 
 (* Property Card getters *)
 let get_property_name (card: property_card): venue_name =
@@ -140,3 +138,9 @@ let get_property_color (card: property_card): color =
 
 let get_property_rents (card: property_card): rent array = 
   card.rents
+
+(* action card getters *)
+
+(* wildcard getters *)
+
+(* rent card getters *)
