@@ -139,8 +139,20 @@ let get_property_color (card: property_card): color =
 let get_property_rents (card: property_card): rent array = 
   card.rents
 
+
 (* action card getters *)
 
 (* wildcard getters *)
+let get_wildcard_colors (card: wildcard): color list =
+  card.colors
+
+let get_wildcard_rents (card: wildcard): rent array array =
+  card.rents
+
+let get_wildcard_count (card: wildcard): int = 
+  card.count
+
+let get_wildcard_value (card: wildcard): card_value = 
+  card.value
 
 (* rent card getters *)
