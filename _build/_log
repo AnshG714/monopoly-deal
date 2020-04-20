@@ -1,16 +1,26 @@
 ### Starting build.
-# Target: card.mli.depends, tags: { package(ANSITerminal), package(Yojson), package(oUnit), extension:mli, file:card.mli, ocaml, ocamldep, quiet, traverse }
-/Users/anshgodha/.opam/4.09.0/bin/ocamldep.opt -modules card.mli > card.mli.depends # cached
-# Target: card.cmi, tags: { package(ANSITerminal), package(Yojson), package(oUnit), byte, compile, extension:mli, file:card.mli, interf, ocaml, quiet, traverse }
-/Users/anshgodha/.opam/4.09.0/bin/ocamlc.opt -c -o card.cmi card.mli # cached
-# Target: card.ml.depends, tags: { package(ANSITerminal), package(Yojson), package(oUnit), extension:ml, file:card.ml, ocaml, ocamldep, quiet, traverse }
-/Users/anshgodha/.opam/4.09.0/bin/ocamldep.opt -modules card.ml > card.ml.depends # cached
-# Target: card.cmo, tags: { package(ANSITerminal), package(Yojson), package(oUnit), byte, compile, extension:cmo, extension:ml, file:card.cmo, file:card.ml, implem, ocaml, quiet, traverse }
-/Users/anshgodha/.opam/4.09.0/bin/ocamlc.opt -c -o card.cmo card.ml
-+ /Users/anshgodha/.opam/4.09.0/bin/ocamlc.opt -c -o card.cmo card.ml
-File "card.ml", line 1, characters 5-22:
-1 | open Yojson.Basic.Util
-         ^^^^^^^^^^^^^^^^^
-Error: Unbound module Yojson
-Command exited with code 2.
-# Compilation unsuccessful.
+# Target: json_formation_util.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:json_formation_util.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules json_formation_util.mli > json_formation_util.mli.depends # cached
+# Target: json_formation_util.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:json_formation_util.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o json_formation_util.cmi json_formation_util.mli # cached
+# Target: json_formation_util.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:json_formation_util.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules json_formation_util.ml > json_formation_util.ml.depends # cached
+# Target: json_formation_util.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:json_formation_util.cmo, file:json_formation_util.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o json_formation_util.cmo json_formation_util.ml # cached
+# Target: card.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:card.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules card.mli > card.mli.depends
+# Target: card.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:card.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o card.cmi card.mli
+# Target: card.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:card.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules card.ml > card.ml.depends # cached
+# Target: card.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:card.cmo, file:card.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o card.cmo card.ml
+# Target: deck.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:deck.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules deck.mli > deck.mli.depends
+# Target: deck.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:deck.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o deck.cmi deck.mli
+# Target: deck.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:deck.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules deck.ml > deck.ml.depends
+# Target: deck.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:deck.cmo, file:deck.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o deck.cmo deck.ml
+# Compilation successful.

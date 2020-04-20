@@ -1,4 +1,4 @@
-modules=json_formation_util card
+MODULES=json_formation_util card deck
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

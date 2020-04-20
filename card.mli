@@ -61,5 +61,3 @@ val get_rent_colors: rent_card -> color list
 val get_rent_value: rent_card -> card_value
 
 val get_rent_count: rent_card -> int
-
-
