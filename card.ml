@@ -16,27 +16,27 @@ type property_card = {
 
 type money_card = {
   value: card_value;
-  count: int
+  mutable count: int
 }
 
 type action_card = {
   name: action_name;
   desc: string;
   value: card_value;
-  count: int;
+  mutable count: int;
 }
 
 type wildcard = {
   colors: color list;
   rents: rent array array;
-  count: int;
+  mutable count: int;
   value: card_value
 }
 
 type rent_card = {
   colors: color list;
   value: card_value;
-  count: int
+  mutable count: int
 }
 
 type card = 
@@ -105,15 +105,12 @@ let get_money () : money_card list =
 let get_properties (): property_card list =
   get_card_from_file "property cards" property_from_json
 
-(* Apu *)
 let get_actions (): action_card list =
   get_card_from_file "action cards" action_from_json 
 
-(* Pooja *)
 let get_wildcards (): wildcard list = 
   get_card_from_file "wildcards" wildcard_from_json 
 
-(* Apu*)
 let get_rents (): rent_card list =
   get_card_from_file "rent cards" rent_from_json
 
@@ -141,6 +138,17 @@ let get_property_rents (card: property_card): rent array =
 
 
 (* action card getters *)
+let get_action_name (card: action_card): action_name =
+  card.name
+
+let get_action_description (card: action_card): string = 
+  card.desc
+
+let get_action_value (card: action_card): card_value = 
+  card.value
+
+let get_action_count (card: action_card): int =
+  card.count
 
 (* wildcard getters *)
 let get_wildcard_colors (card: wildcard): color list =
@@ -156,3 +164,11 @@ let get_wildcard_value (card: wildcard): card_value =
   card.value
 
 (* rent card getters *)
+let get_rent_colors (card: rent_card): color list = 
+  card.colors
+
+let get_rent_value (card: rent_card): card_value = 
+  card.value
+
+let get_rent_count (card: rent_card): int =
+  card.count
