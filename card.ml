@@ -39,13 +39,6 @@ type rent_card = {
   mutable count: int
 }
 
-type card = 
-  | Property of property_card
-  | Money of money_card
-  | Action of action_card
-  | Wildcard of wildcard
-  | Rent of rent_card
-
 let json_list_to_alpha_list conversion (j: Yojson.Basic.t list) = 
   List.map (fun x -> conversion x) j
 
