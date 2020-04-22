@@ -16,27 +16,27 @@ type property_card = {
 
 type money_card = {
   value: card_value;
-  mutable count: int
+  count: int
 }
 
 type action_card = {
   name: action_name;
   desc: string;
   value: card_value;
-  mutable count: int;
+  count: int;
 }
 
 type wildcard = {
   colors: color list;
   rents: rent array array;
-  mutable count: int;
+  count: int;
   value: card_value
 }
 
 type rent_card = {
   colors: color list;
   value: card_value;
-  mutable count: int
+  count: int
 }
 
 let json_list_to_alpha_list conversion (j: Yojson.Basic.t list) = 

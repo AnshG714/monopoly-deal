@@ -16,11 +16,15 @@ ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules
 # Target: card.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:card.cmo, file:card.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o card.cmo card.ml
 # Target: deck.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:deck.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules deck.mli > deck.mli.depends
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules deck.mli > deck.mli.depends # cached
 # Target: deck.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:deck.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o deck.cmi deck.mli
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o deck.cmi deck.mli # cached
 # Target: deck.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:deck.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules deck.ml > deck.ml.depends
-# Target: deck.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:deck.cmo, file:deck.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o deck.cmo deck.ml
-# Compilation successful.
++ ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules deck.ml > deck.ml.depends
+File "deck.ml", line 46, characters 0-3:
+46 | let lngth (d:suite) : int = 
+     ^^^
+Error: Syntax error
+Command exited with code 2.
+# Compilation unsuccessful.
