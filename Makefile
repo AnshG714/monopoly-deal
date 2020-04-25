@@ -16,3 +16,5 @@ build:
 
 json:
 	$(OCAMLBUILD) $(JSONBUILD) && ./$(JSONBUILD)
+
+PKGS=unix,oUnit,yojson 

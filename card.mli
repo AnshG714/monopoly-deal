@@ -13,7 +13,7 @@ type action_card
 type wildcard
 
 (* the type representing all cards *)
-(* type card *)
+type card
 
 val get_card_from_file: string -> (Yojson.Basic.t -> 'a) -> 'a list
 

@@ -1,0 +1,7 @@
+#directory "_build";;
+#require "Yojson";;
+#load "card.cmo";;
+#load "deck.cmo";;
+open Yojson;;
+open Card;;
+open Deck;;
