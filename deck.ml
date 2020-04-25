@@ -1,12 +1,5 @@
 open Card
 
-type card = 
-  | Property of property_card
-  | Money of money_card
-  | Action of action_card 
-  | Wildcard of wildcard
-  | Rent of rent_card
-
 type suite =
   | PropertyList of property_card list
   | MoneyList of money_card list
@@ -14,17 +7,7 @@ type suite =
   | WildcardList of wildcard list
   | RentList of rent_card list
   | Empty 
-
-
-let initialize_deck (): suite list = 
-  let moneys = MoneyList (get_money()) in 
-  let properties = PropertyList (get_properties()) in 
-  let actions = ActionList (get_actions()) in 
-  let wilds = WildcardList (get_wildcards()) in 
-  let rents = RentList (get_rents()) in 
-  [moneys; properties; actions; wilds; rents]
-
-(** ----------- Ansh's additions ------------- *)
+  (** ----------- Ansh's additions ------------- *)
 type deck = card list
 
 let rec make_recurring_list (el: 'a) (count: int) = 
@@ -86,6 +69,15 @@ let remove_top_n_cards (deck: deck) (n: int): (card list * deck) =
     helper deck n [] deck 
 
 (** ----------- Ansh's additions ------------- *)
+(* 
+let initialize_deck (): suite list = 
+  let moneys = MoneyList (get_money()) in 
+  let properties = PropertyList (get_properties()) in 
+  let actions = ActionList (get_actions()) in 
+  let wilds = WildcardList (get_wildcards()) in 
+  let rents = RentList (get_rents()) in 
+  [moneys; properties; actions; wilds; rents] *)
+
 let nth (d:suite) i : card = 
   match d with 
   | PropertyList t -> Property (List.nth t i)

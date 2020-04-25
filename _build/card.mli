@@ -13,7 +13,12 @@ type action_card
 type wildcard
 
 (* the type representing all cards *)
-type card
+type card = 
+  | Property of property_card
+  | Money of money_card
+  | Rent of rent_card
+  | Wildcard of wildcard
+  | Action of action_card
 
 val get_card_from_file: string -> (Yojson.Basic.t -> 'a) -> 'a list
 
@@ -61,3 +66,5 @@ val get_rent_colors: rent_card -> color list
 val get_rent_value: rent_card -> card_value
 
 val get_rent_count: rent_card -> int
+
+val get_id: card -> int

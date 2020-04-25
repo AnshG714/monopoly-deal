@@ -1,11 +1,11 @@
 open Card
 
-type card = 
-  | Property of property_card
-  | Money of money_card
-  | Action of action_card 
-  | Wildcard of wildcard
-  | Rent of rent_card
+(* type card = 
+   | Property of property_card
+   | Money of money_card
+   | Action of action_card 
+   | Wildcard of wildcard
+   | Rent of rent_card *)
 
 type suite =
   | PropertyList of property_card list

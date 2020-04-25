@@ -49,9 +49,9 @@ type rent_card = {
 type card = 
   | Property of property_card
   | Money of money_card
-  | Action of action_card 
-  | Wildcard of wildcard
   | Rent of rent_card
+  | Wildcard of wildcard
+  | Action of action_card
 
 let json_list_to_alpha_list conversion (j: Yojson.Basic.t list) = 
   List.map (fun x -> conversion x) j
@@ -188,3 +188,11 @@ let get_rent_value (card: rent_card): card_value =
 
 let get_rent_count (card: rent_card): int =
   card.count
+
+let get_id (card: card) = 
+  match card with
+  | Property c -> c.id
+  | Wildcard c -> c.id
+  | Rent c -> c.id
+  | Action c -> c.id
+  | Money c -> c.id
