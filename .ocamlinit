@@ -2,6 +2,7 @@
 #require "Yojson";;
 #load "card.cmo";;
 #load "deck.cmo";;
+#load "player.cmo";;
 open Yojson;;
 open Card;;
 open Deck;;

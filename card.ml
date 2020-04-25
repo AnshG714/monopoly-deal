@@ -7,7 +7,10 @@ type color = string
 type rent = int
 type action_name = string
 
+let id_count = ref 0
+
 type property_card = {
+  id: int;
   venue: venue_name;
   value: card_value;
   color: color;
@@ -15,11 +18,13 @@ type property_card = {
 }
 
 type money_card = {
+  id: int;
   value: card_value;
   count: int
 }
 
 type action_card = {
+  id: int;
   name: action_name;
   desc: string;
   value: card_value;
@@ -27,6 +32,7 @@ type action_card = {
 }
 
 type wildcard = {
+  id: int;
   colors: color list;
   rents: rent array array;
   count: int;
@@ -34,6 +40,7 @@ type wildcard = {
 }
 
 type rent_card = {
+  id: int;
   colors: color list;
   value: card_value;
   count: int
@@ -59,13 +66,19 @@ let list_to_array lst=
   temp_arr 
 
 
+let assign_id (): int = 
+  id_count := !id_count + 1;
+  !id_count
+
 (* Conversions from json *)
 let money_from_json j: money_card = {
+  id = assign_id ();
   value = j |> member "value" |> to_int;
   count = j |> member "count" |> to_int
 }
 
 let property_from_json j: property_card = {
+  id = assign_id ();
   venue = j |> member "venue" |> to_string;
   value = j |> member "value" |> to_int;
   color = j |> member "color" |> to_string;
@@ -73,6 +86,7 @@ let property_from_json j: property_card = {
 }
 
 let action_from_json j: action_card = {
+  id = assign_id ();
   name = j |> member "name" |> to_string;
   desc = j |> member "desc" |> to_string;
   value = j |> member "value" |> to_int;
@@ -80,6 +94,7 @@ let action_from_json j: action_card = {
 }
 
 let wildcard_from_json j: wildcard = {
+  id = assign_id ();
   colors = j |> member "colors" |> to_list |> json_list_to_alpha_list to_string;
   rents = j |> member "rents" |> to_list |> 
           List.map (fun x-> x |> to_list |> json_list_to_alpha_list to_int) 
@@ -89,6 +104,7 @@ let wildcard_from_json j: wildcard = {
 }
 
 let rent_from_json j : rent_card = {
+  id = assign_id ();
   colors = j |> member "colors" |> to_list |> json_list_to_alpha_list to_string;
   value = j |>  member "value" |> to_int;
   count = j |> member "count" |> to_int;
