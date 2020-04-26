@@ -1,5 +1,6 @@
 #directory "_build";;
 #require "Yojson";;
+#require "ANSITerminal";;
 #load "card.cmo";;
 #load "deck.cmo";;
 #load "player.cmo";;

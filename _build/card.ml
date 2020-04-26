@@ -1,5 +1,5 @@
 open Yojson.Basic.Util
-
+open ANSITerminal
 (* Type Definitions *)
 type venue_name = string
 type card_value = int
@@ -196,3 +196,65 @@ let get_id (card: card) =
   | Rent c -> c.id
   | Action c -> c.id
   | Money c -> c.id
+
+let rec make_recurring_list (el: 'a) (count: int) = 
+  if (count = 0) then [] else el :: make_recurring_list el (count - 1)
+
+let rec print_contents (sl: string list) (color: ANSITerminal.style) = 
+  match sl with
+  | [] -> print_string [] "\n"
+  | h :: t -> print_string [color] h; print_string [] "    "; print_contents t color 
+
+
+let rec print_money_cards (cards: money_card list) =
+  let l = List.length cards in
+  let underline_list = make_recurring_list "-------------" l in
+  let money_header_list = make_recurring_list "|   Money   |" l in
+  let sidebar_list = make_recurring_list "|           |" l in
+  let money_val_list = List.map (fun card -> 
+      (let money_value = get_money_value card in 
+       if money_value = 10 then 
+         "|    $"  ^ string_of_int money_value ^   "    |"
+       else 
+         "|    $"  ^ string_of_int money_value ^   "     |")
+    ) cards in
+
+
+  print_contents underline_list magenta;
+  print_contents money_header_list magenta;
+  print_contents underline_list magenta;
+  print_contents sidebar_list magenta;
+  print_contents money_val_list magenta;
+  print_contents sidebar_list magenta;
+  print_contents underline_list magenta
+
+let print_money_card (card: money_card) = 
+  let money_value = card.value in
+  print_string [magenta] "-------------\n";
+  print_string [magenta] "|   Money   |\n";
+  print_string [magenta] "-------------\n";
+  print_string [magenta] "|           |\n";
+  if money_value = 10 then 
+    print_string [magenta] ("|    $"  ^ string_of_int money_value ^   "    |\n")
+  else 
+    print_string [magenta] ("|    $"  ^ string_of_int money_value ^   "     |\n");
+  print_string [magenta] "|           |\n";
+  print_string [magenta] "-------------\n";
+  ()
+
+
+let print_rent_card (card: rent_card) = 
+  let card_colors = card.colors in
+  let card_value = card.value in
+  ANSITerminal.(print_string [black; on_yellow; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
+  if (List.length card_colors = 0) then
+    let _ = ANSITerminal.(print_string [yellow; on_yellow] "kkkkkkkkkkkk") in
+    let _ = print_string [] "\n" in
+    let _ = ANSITerminal.(print_string [red; on_red] "kk") in
+    let _ = ANSITerminal.(print_string [black; on_red] "wildcard") in
+    let _ = ANSITerminal.(print_string [red; on_red] "kk") in
+    let _ = print_string [] "\n" in
+    ANSITerminal.(print_string [magenta; on_magenta] "kkkkkkkkkkkk");
+    print_string [] "\n";
+  else
+    ANSITerminal.(print_string [red] " ovnwoveo ne");
