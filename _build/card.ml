@@ -258,11 +258,12 @@ let rec print_action_cards (cards: action_card list) =
   print_contents action_type_list green;
   print_contents underline_list green
 
-
+(*
 let print_rent_card (card: rent_card) = 
   let card_colors = card.colors in
   let card_value = card.value in
   ANSITerminal.(print_string [black; on_yellow; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
+  ANSITerminal.(print_string [red; on_green; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
   if (List.length card_colors = 0) then
     let _ = ANSITerminal.(print_string [yellow; on_yellow] "kkkkkkkkkkkk") in
     let _ = print_string [] "\n" in
@@ -273,12 +274,23 @@ let print_rent_card (card: rent_card) =
     ANSITerminal.(print_string [magenta; on_magenta] "kkkkkkkkkkkk");
     print_string [] "\n";
   else
-    ANSITerminal.(print_string [red] " ovnwoveo ne");
+    ANSITerminal.(print_string [red] " ovnwoveo ne");*)
 
+let print_rent_card (card: rent_card) : unit = 
+  let card_colors = card.colors in
+  let card_value = card.value in
+  match card_colors with 
+  | ["green"; "blue"] -> ANSITerminal.(print_string [green; on_blue; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
+  | ["brown"; "light blue"] -> ANSITerminal.(print_string [magenta; on_white; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
+  | ["orange"; "pink"] -> ANSITerminal.(print_string [magenta; on_red; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
+  | ["black"; "light green"] -> ANSITerminal.(print_string [black; on_green; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
+  | ["red"; "yellow"] -> ANSITerminal.(print_string [red; on_yellow; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
+  | _ -> ();
+    print_string [] "\n"  
 
-  (* 
-let (c: action_card) = {id = 3; name = "Sly Deal"; desc = ""; value = 4; count = 3};;
-let (d: action_card) = {id = 3; name = "Deal Breaker"; desc = ""; value = 10; count = 3};;
-let l = [c;d];;
-print_action_cards l;;
-*)
+let splice_first_n_list lst n =
+  let rec helper lst n acc count = 
+    match lst with
+    | [] -> (acc, [])
+    | h :: t -> if count = n then (acc, h :: t) else helper t n (acc @ [h]) (count + 1) in
+  helper lst n [] 0

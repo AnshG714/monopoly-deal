@@ -1,3 +1,5 @@
+open ANSITerminal
+
 (* value types *)
 type venue_name
 type card_value
@@ -68,3 +70,15 @@ val get_rent_value: rent_card -> card_value
 val get_rent_count: rent_card -> int
 
 val get_id: card -> int
+
+val make_recurring_list: 'a -> rent -> 'a list
+
+val print_contents: action_name list -> style -> unit
+
+val print_money_cards: money_card list -> unit
+
+val print_action_cards: action_card list -> unit
+
+val print_rent_card: rent_card -> unit
+
+val splice_first_n_list: 'a list -> int -> 'a list * 'a list

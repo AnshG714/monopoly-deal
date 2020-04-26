@@ -17,4 +17,7 @@ build:
 json:
 	$(OCAMLBUILD) $(JSONBUILD) && ./$(JSONBUILD)
 
+zip:
+	zip ms1_src.zip *.ml* *.mli* _tags Makefile *.txt* *.json* 	
+
 PKGS=unix,oUnit,yojson 

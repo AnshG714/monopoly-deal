@@ -1,0 +1,31 @@
+Hi!
+
+Our system is primarily tested by observing the output on utop. To be able to run
+the system, the OCaml packages yojson and ANSITerminal need to be available, 
+which, if not already installed, can be done using the following commands through
+OPAM in the terminal (or WSL, if Windows is the core OS):
+
+(DO NOT prefix these commands with sudo)
+$ opam install -y utop yojson ansiterminal merlin ocp-indent user-setup bisect_ppx-ocamlbuild
+$ opam user-setup install
+
+The above commands, of course, assume that OPAM has been installed on the computer.
+
+Before attempting to use the code, it is necessary to run "make build" so that 
+the system can be used on utop. Following this, to use the "Card" module (which
+contains the primary user functionality for now), the following commands must be
+entered in utop:
+
+#require "yojson";;
+#use "card.ml";;
+print_money_cards(get_money());;
+
+The last command gives an ANSITerminal representation of the money cards available
+as part of the game. Action cards have also been made available, and as of this
+submission, individual rent cards are being configured.
+
+Finally, the json_formation_util.ml file was used to generate the card_data.json
+representation of the cards in the game. It is not really necessary to execute 
+this file, since the json has already been created, but it made our lives simpler!
+
+- Ansh Godha, Aparajito Saha, Pooja Gokhale
