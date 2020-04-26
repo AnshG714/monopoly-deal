@@ -219,7 +219,6 @@ let rec print_money_cards (cards: money_card list) =
          "|    $"  ^ string_of_int money_value ^   "     |")
     ) cards in
 
-
   print_contents underline_list magenta;
   print_contents money_header_list magenta;
   print_contents underline_list magenta;
@@ -227,6 +226,38 @@ let rec print_money_cards (cards: money_card list) =
   print_contents money_val_list magenta;
   print_contents sidebar_list magenta;
   print_contents underline_list magenta
+
+
+let rec print_action_cards (cards: action_card list) = 
+  let l = List.length cards in
+  let underline_list = make_recurring_list "--------------------" l in 
+  let action_header_list = make_recurring_list "|      Action      |" l in
+  let sidebar_list = make_recurring_list "|                  |" l in
+  let action_val_list = List.map (fun card -> 
+      (let action_value = get_action_value card in 
+       if action_value = 10 then 
+         "|       $"  ^ string_of_int action_value ^   "        |"
+       else 
+         "|        $"  ^ string_of_int action_value ^   "        |")
+    ) cards in
+
+  let action_type_list = List.map (fun card -> 
+      let action_name = get_action_name card in
+      let name_length = String.length action_name in
+      let space = 18 - name_length in
+      let padding_left = if (space mod 2 = 0) then space / 2 else (space / 2 - 1) in
+      let padding_right = space - padding_left in
+      "|" ^ (String.make (padding_left) ' ') ^ action_name ^ (String.make (padding_right) ' ') ^ "|"
+    ) cards in
+
+  print_contents underline_list green;
+  print_contents action_header_list green;
+  print_contents underline_list green;
+  print_contents sidebar_list green;
+  print_contents action_val_list green;
+  print_contents action_type_list green;
+  print_contents underline_list green
+
 
 let print_rent_card (card: rent_card) = 
   let card_colors = card.colors in
