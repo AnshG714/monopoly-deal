@@ -228,21 +228,6 @@ let rec print_money_cards (cards: money_card list) =
   print_contents sidebar_list magenta;
   print_contents underline_list magenta
 
-let print_money_card (card: money_card) = 
-  let money_value = card.value in
-  print_string [magenta] "-------------\n";
-  print_string [magenta] "|   Money   |\n";
-  print_string [magenta] "-------------\n";
-  print_string [magenta] "|           |\n";
-  if money_value = 10 then 
-    print_string [magenta] ("|    $"  ^ string_of_int money_value ^   "    |\n")
-  else 
-    print_string [magenta] ("|    $"  ^ string_of_int money_value ^   "     |\n");
-  print_string [magenta] "|           |\n";
-  print_string [magenta] "-------------\n";
-  ()
-
-
 let print_rent_card (card: rent_card) = 
   let card_colors = card.colors in
   let card_value = card.value in
