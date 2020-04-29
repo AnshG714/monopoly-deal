@@ -205,6 +205,18 @@ let rec print_contents (sl: string list) (color: ANSITerminal.style) =
   | [] -> print_string [] "\n"
   | h :: t -> print_string [color] h; print_string [] "    "; print_contents t color 
 
+let splice_first_n_list lst n =
+  let rec helper lst n acc count = 
+    match lst with
+    | [] -> (acc, [])
+    | h :: t -> if count = n then (acc, h :: t) else helper t n (acc @ [h]) (count + 1) in
+  helper lst n [] 0
+
+let rec batch_and_print (batch_size: int) (card_list: card list) (print_fun: card list -> unit) = 
+  match card_list with
+  | [] -> ()
+  | lst -> let b, rem = splice_first_n_list lst batch_size in
+    print_fun b; batch_and_print batch_size rem print_fun
 
 let rec print_money_cards (cards: money_card list) =
   let l = List.length cards in
@@ -288,9 +300,3 @@ let print_rent_card (card: rent_card) : unit =
   | _ -> ();
     print_string [] "\n"  
 
-let splice_first_n_list lst n =
-  let rec helper lst n acc count = 
-    match lst with
-    | [] -> (acc, [])
-    | h :: t -> if count = n then (acc, h :: t) else helper t n (acc @ [h]) (count + 1) in
-  helper lst n [] 0
