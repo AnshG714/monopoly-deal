@@ -275,24 +275,6 @@ let print_action_cards_helper (cards: action_card list) =
 let print_action_cards (cards: action_card list) =
   batch_and_print 5 cards print_action_cards_helper
 
-(*
-let print_rent_card (card: rent_card) = 
-  let card_colors = card.colors in
-  let card_value = card.value in
-  ANSITerminal.(print_string [black; on_yellow; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
-  ANSITerminal.(print_string [red; on_green; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
-  if (List.length card_colors = 0) then
-    let _ = ANSITerminal.(print_string [yellow; on_yellow] "kkkkkkkkkkkk") in
-    let _ = print_string [] "\n" in
-    let _ = ANSITerminal.(print_string [red; on_red] "kk") in
-    let _ = ANSITerminal.(print_string [black; on_red] "wildcard") in
-    let _ = ANSITerminal.(print_string [red; on_red] "kk") in
-    let _ = print_string [] "\n" in
-    ANSITerminal.(print_string [magenta; on_magenta] "kkkkkkkkkkkk");
-    print_string [] "\n";
-  else
-    ANSITerminal.(print_string [red] " ovnwoveo ne");*)
-
 let print_rent_card (card: rent_card) : unit = 
   let card_colors = card.colors in
   let card_value = card.value in

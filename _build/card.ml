@@ -240,7 +240,7 @@ let print_money_cards_helper (cards: money_card list) =
   print_contents underline_list magenta
 
 let print_money_cards (cards: money_card list) = 
-  batch_and_print 3 cards print_money_cards_helper
+  batch_and_print 5 cards print_money_cards_helper
 
 let print_action_cards_helper (cards: action_card list) = 
   let l = List.length cards in

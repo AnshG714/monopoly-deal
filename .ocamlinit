@@ -4,6 +4,8 @@
 #load "card.cmo";;
 #load "deck.cmo";;
 #load "player.cmo";;
+#load "board.cmo";;
+#load "command.cmo";;
 open Yojson;;
 open Card;;
 open Deck;;
