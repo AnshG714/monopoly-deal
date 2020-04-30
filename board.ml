@@ -20,7 +20,7 @@ let initialize_board (n: int): board =
     turn = 0;
   }
 
-(* This can be migrated to whatebver our controller will be. *)
+(* These two methods can be migrated to whatebver our controller will be. *)
 let increment_turn (board: board) = 
   board.turn <- board.turn + 1
 
