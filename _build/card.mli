@@ -71,8 +71,6 @@ val get_rent_count: rent_card -> int
 
 val get_id: card -> int
 
-val make_recurring_list: 'a -> rent -> 'a list
-
 val print_contents: action_name list -> style -> unit
 
 val print_money_cards: money_card list -> unit

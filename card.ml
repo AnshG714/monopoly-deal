@@ -1,5 +1,6 @@
 open Yojson.Basic.Util
 open ANSITerminal
+open Util
 (* Type Definitions *)
 type venue_name = string
 type card_value = int
@@ -196,9 +197,6 @@ let get_id (card: card) =
   | Rent c -> c.id
   | Action c -> c.id
   | Money c -> c.id
-
-let rec make_recurring_list (el: 'a) (count: int) = 
-  if (count = 0) then [] else el :: make_recurring_list el (count - 1)
 
 let rec print_contents (sl: string list) (color: ANSITerminal.style) = 
   match sl with

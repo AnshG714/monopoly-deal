@@ -1,12 +1,14 @@
 open Card
 
 type player = {
+  name: string;
   mutable cards_in_hand: card list;
   mutable played_personal_cards: card list
 }
 
-let initialize_player (): player =
+let initialize_player name: player =
   {
+    name = name;
     cards_in_hand = [];
     played_personal_cards = []
   }

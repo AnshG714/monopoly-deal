@@ -1,4 +1,5 @@
 open Card
+open Util
 
 type suite =
   | PropertyList of property_card list
@@ -9,9 +10,6 @@ type suite =
   | Empty 
   (** ----------- Ansh's additions ------------- *)
 type deck = card list
-
-let rec make_recurring_list (el: 'a) (count: int) = 
-  if (count = 0) then [] else el :: make_recurring_list el (count - 1)
 
 let get_dup_cards card_instance = 
   let count = match card_instance with
@@ -46,11 +44,6 @@ let get_action_cards () =
 let initialize_deck (): deck = 
   List.flatten [get_money_cards (); get_property_cards (); get_wildcards ();
                 get_action_cards (); get_rent_cards ()]
-
-let shuffle (deck: deck): deck = 
-  let temp = List.map (fun c -> (Random.bits (), c)) deck in
-  let sorted = List.sort compare temp in
-  List.map snd sorted
 
 let remove_top_card (deck: deck): card * deck =
   match deck with
