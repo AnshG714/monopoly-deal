@@ -212,17 +212,17 @@ let splice_first_n_list lst n =
     | h :: t -> if count = n then (acc, h :: t) else helper t n (acc @ [h]) (count + 1) in
   helper lst n [] 0
 
-let rec batch_and_print (batch_size: int) (card_list: card list) (print_fun: card list -> unit) = 
+let rec batch_and_print (batch_size: int) (card_list) (print_fun) = 
   match card_list with
   | [] -> ()
   | lst -> let b, rem = splice_first_n_list lst batch_size in
     print_fun b; batch_and_print batch_size rem print_fun
 
-let rec print_money_cards (cards: money_card list) =
+let print_money_cards_helper (cards: money_card list) =
   let l = List.length cards in
   let underline_list = make_recurring_list "\027[38;5;88m-------------" l in
-  let money_header_list = make_recurring_list "\027[38;5;127m|   Money   |" l in
-  let sidebar_list = make_recurring_list "\027[38;5;219m|           |" l in
+  let money_header_list = make_recurring_list "\027[38;5;88m|   Money   |" l in
+  let sidebar_list = make_recurring_list "\027[38;5;88m|           |" l in
   let money_val_list = List.map (fun card -> 
       (let money_value = get_money_value card in 
        if money_value = 10 then 
@@ -232,15 +232,17 @@ let rec print_money_cards (cards: money_card list) =
     ) cards in
 
   print_contents underline_list magenta;
-  print_contents money_header_list magenta;
+  print_contents money_header_list white;
   print_contents underline_list magenta;
   print_contents sidebar_list magenta;
   print_contents money_val_list magenta;
   print_contents sidebar_list magenta;
   print_contents underline_list magenta
 
+let print_money_cards (cards: money_card list) = 
+  batch_and_print 5 cards print_money_cards_helper
 
-let rec print_action_cards (cards: action_card list) = 
+let print_action_cards_helper (cards: action_card list) = 
   let l = List.length cards in
   let underline_list = make_recurring_list "\027[38;5;22m--------------------" l in 
   let action_header_list = make_recurring_list "\027[38;5;115m|      Action      |" l in
@@ -269,6 +271,9 @@ let rec print_action_cards (cards: action_card list) =
   print_contents action_val_list green;
   print_contents action_type_list green;
   print_contents underline_list green
+
+let print_action_cards (cards: action_card list) =
+  batch_and_print 5 cards print_action_cards_helper
 
 (*
 let print_rent_card (card: rent_card) = 
