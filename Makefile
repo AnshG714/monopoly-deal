@@ -18,6 +18,6 @@ json:
 	$(OCAMLBUILD) $(JSONBUILD) && ./$(JSONBUILD)
 
 zip:
-	zip ms1_src.zip *.ml* *.mli* _tags Makefile *.txt* *.json* 	
+	zip deal_ms1.zip *.ml* INSTALL.txt *.json _tags Makefile 	
 
 PKGS=unix,oUnit,yojson 

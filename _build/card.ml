@@ -200,17 +200,21 @@ let get_id (card: card) =
 let rec make_recurring_list (el: 'a) (count: int) = 
   if (count = 0) then [] else el :: make_recurring_list el (count - 1)
 
+let rec print_contents2 (sl: string list) (color: ANSITerminal.style) = 
+  match sl with
+  | [] -> print_string [] "\n"
+  | h :: t -> print_string [color] h; print_string [] "    "; print_contents2 t color 
+
 let rec print_contents (sl: string list) (color: ANSITerminal.style) = 
   match sl with
   | [] -> print_string [] "\n"
-  | h :: t -> print_string [color] h; print_string [] "    "; print_contents t color 
-
+  | h :: t -> print_string [color] h; print_string [] "    "; print_contents t color
 
 let rec print_money_cards (cards: money_card list) =
   let l = List.length cards in
-  let underline_list = make_recurring_list "-------------" l in
-  let money_header_list = make_recurring_list "|   Money   |" l in
-  let sidebar_list = make_recurring_list "|           |" l in
+  let underline_list = make_recurring_list "\027[38;5;88m-------------" l in
+  let money_header_list = make_recurring_list "\027[38;5;127m|   Money   |" l in
+  let sidebar_list = make_recurring_list "\027[38;5;219m|           |" l in
   let money_val_list = List.map (fun card -> 
       (let money_value = get_money_value card in 
        if money_value = 10 then 
@@ -230,9 +234,9 @@ let rec print_money_cards (cards: money_card list) =
 
 let rec print_action_cards (cards: action_card list) = 
   let l = List.length cards in
-  let underline_list = make_recurring_list "--------------------" l in 
-  let action_header_list = make_recurring_list "|      Action      |" l in
-  let sidebar_list = make_recurring_list "|                  |" l in
+  let underline_list = make_recurring_list "\027[38;5;22m--------------------" l in 
+  let action_header_list = make_recurring_list "\027[38;5;115m|      Action      |" l in
+  let sidebar_list = make_recurring_list "\027[38;5;47m|                  |" l in
   let action_val_list = List.map (fun card -> 
       (let action_value = get_action_value card in 
        if action_value = 10 then 
