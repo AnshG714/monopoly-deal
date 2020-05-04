@@ -22,6 +22,8 @@ let get_cards_in_hand player =
 let get_played_personal_cards player = 
   player.played_personal_cards
 
+let get_player_name player = 
+  player.name
 (* moves from hand to personal pile *)
 let play_cards_to_personal_pile (card_list: card list) (player: player) =
 

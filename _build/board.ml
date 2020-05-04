@@ -5,6 +5,8 @@ open Deck
 open Player
 open Util
 
+exception InvalidCard
+
 type board = 
   {
     players: player list;
@@ -30,8 +32,32 @@ let initialize_board (n: int) (player_names: string list): board =
 
 (* These two methods can be migrated to whatebver our controller will be. *)
 let increment_turn (board: board) = 
-  board.turn <- board.turn + 1
+  board.turn <- (board.turn + 1) mod (List.length board.players)
 
 let get_current_turn board = 
   board.turn
 
+let distribute_cards_to_players board = 
+  let players = board.players in
+  let deck = board.deck in 
+  let rec helper players deck = 
+    if players = [] then () else
+      let n, r = remove_top_n_cards deck 5 in
+      add_cards_to_hand n (List.hd players);
+      helper (List.tl players) r; in
+  helper players deck
+
+let check_card_in_hand player id = 
+  let cards = get_cards_in_hand player in
+  List.exists (fun card -> get_id card = id) cards
+
+let check_card_in_pile player id = 
+  let cards = get_played_personal_cards player in
+  List.exists (fun card -> get_id card = id) cards
+
+let get_players board =
+  board.players
+
+let get_current_player board = 
+  let p = List.nth board.players board.turn in
+  get_player_name p

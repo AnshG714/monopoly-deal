@@ -55,3 +55,9 @@ let check_card_in_pile player id =
   let cards = get_played_personal_cards player in
   List.exists (fun card -> get_id card = id) cards
 
+let get_players board =
+  board.players
+
+let get_current_player board = 
+  let p = List.nth board.players board.turn in
+  get_player_name p
