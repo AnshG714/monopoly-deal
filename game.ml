@@ -11,13 +11,13 @@ let rec make_board () =
   print_endline "Welcome! You're about to start a game of Monopoly Deal. To get started, enter the number of players playing (should be between 2 and 5).";
   match read_int_opt () with
   | Some i -> get_n_names i [] |> initialize_board i
-  | None -> print_endline "Please enter an integer between 2 and 5"; make_board ()
+  | None -> print_endline "Please enter an integer between 2 and 5"; make_board () 
 
 let rec play_helper (board: board) = 
   let current_player = get_current_player board in
   let command = read_line () in
   match (command |> parse) with
-  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); draw_at_start_of_turn board ;play_helper board
+  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); draw_two board; play_helper board
   | exception Malformed msg -> print_endline msg; play_helper board
   | _ -> failwith "other cases unimplemented."
 

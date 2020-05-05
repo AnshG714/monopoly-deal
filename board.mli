@@ -16,4 +16,4 @@ val increment_turn: board -> unit
 
 val distribute_cards_to_players : board -> unit
 
-val draw_at_start_of_turn : board -> unit
+val draw_two : board -> unit

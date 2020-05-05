@@ -47,7 +47,7 @@ let distribute_cards_to_players board =
       helper (List.tl players) r; in
   helper players deck
 
-let draw_at_start_of_turn (board: board) =
+let draw_two (board: board) =
   let player = List.nth board.players board.turn in 
   let cards = get_cards_in_hand player in
   if List.length cards >= 7 then ()

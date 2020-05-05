@@ -47,7 +47,7 @@ let distribute_cards_to_players board =
       helper (List.tl players) r; in
   helper players deck
 
-let draw_at_start_of_turn (board: board) =
+let draw_two (board: board) =
   let player = List.nth board.players board.turn in 
   let cards = get_cards_in_hand player in
   if List.length cards >= 7 then ()
@@ -56,7 +56,7 @@ let draw_at_start_of_turn (board: board) =
     add_cards_to_hand ([c]) player; board.deck <- d
   else 
     let c, d = remove_top_n_cards board.deck 2 in 
-    add_cards_to_hand (c) player; board.deck <- d
+    add_cards_to_hand c player; board.deck <- d
 
 
 let check_card_in_hand player id = 
