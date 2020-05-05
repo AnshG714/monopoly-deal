@@ -8,6 +8,12 @@ type color = string
 type rent = int
 type action_name = string
 
+let color_map = 
+  [("brown", "\027[38;5;94m"); ("blue", "\027[38;5;19m"); ("green", "\027[38;5;28m");
+   ("light blue", "\027[38;5;45m"); ("orange", "\027[38;5;208m"); ("pink", "\027[38;5;200m");
+   ("black", "\027[38;5;15m"); ("red", "\027[38;5;9m"); ("light green", "\027[38;5;194m");
+   ("yellow", "\027[38;5;226m")]
+
 let id_count = ref 0
 
 type property_card = {
@@ -272,6 +278,49 @@ let print_action_cards_helper (cards: action_card list) =
 
 let print_action_cards (cards: action_card list) =
   batch_and_print 5 cards print_action_cards_helper
+
+let print_property_cards_helper (cards: property_card list) = 
+  let rec make_dataless_helper cards acc st = 
+    match cards with
+    | [] -> acc
+    | h :: t -> make_dataless_helper t 
+                  (((List.assoc h.color color_map) ^ st) :: acc) st in
+
+
+  let rec make_property_name_helper (cards: property_card list) acc = 
+    match cards with
+    | [] -> acc
+    | h :: t -> let p_name = h.venue in
+      let p_size = String.length p_name in 
+      let space = 22 - p_size in
+      let padding_left = if (space mod 2 = 0) then space / 2 else ((space - 1)/ 2) in
+      let padding_right = space - padding_left in
+      let s = "|" ^ (String.make padding_left ' ') ^ p_name ^ (String.make padding_right ' ') ^ "|" in
+      make_property_name_helper t (((List.assoc h.color color_map) ^ s) :: acc) in
+
+  let rec make_rent_info_helper (cards: property_card list) rent_number acc = 
+    match cards with
+    | [] -> acc
+    | h :: t -> let rents = h.rents in
+      let num_in_set = Array.length rents in
+      let s = 
+        if rent_number >= num_in_set then "|                      |"
+        else let rent_info = (string_of_int rent_number) ^ "---$" ^ string_of_int(rents.(rent_number)) ^ "M" in
+          "|       " ^ rent_info ^ "        |" in
+      make_rent_info_helper t rent_number (((List.assoc h.color color_map ^ s) :: acc)) in
+
+  print_contents (make_dataless_helper cards [] (String.make 24 '-')) white;
+  print_contents (make_property_name_helper cards []) white;
+  print_contents (make_dataless_helper cards [] (String.make 24 '-')) white;
+  print_contents (make_dataless_helper cards [] ("|" ^ (String.make 22 ' ') ^ "|")) white;
+  for i = 0 to 3 do
+    print_contents (make_rent_info_helper cards i []) white;
+  done;
+  print_contents (make_dataless_helper cards [] (String.make 24 '-')) white;
+  ()
+
+let print_property_cards cards = 
+  batch_and_print 4 cards print_property_cards_helper
 
 let print_rent_card (card: rent_card) : unit = 
   let card_colors = card.colors in
