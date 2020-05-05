@@ -73,3 +73,33 @@ let get_players board =
 let get_current_player board = 
   let p = List.nth board.players board.turn in
   get_player_name p
+
+(* print wildcards *)
+let print_current_player_hand board = 
+  let p = List.nth board.players board.turn in 
+  let rec helper lst = 
+    match lst with 
+    | [] -> ()
+    | h::t -> 
+      (match h with 
+       | Money m -> print_money_cards [m]; helper t
+       | Action a -> print_action_cards [a]; helper t
+       | Rent r -> print_rent_card r; helper t
+       | Property p -> print_property_cards [p]; helper t
+       | _ -> ()) in 
+  helper (get_cards_in_hand p)
+
+(* print wildcards *)
+let print_current_player_pile board = 
+  let p = List.nth board.players board.turn in 
+  let rec helper lst = 
+    match lst with 
+    | [] -> ()
+    | h::t -> 
+      (match h with 
+       | Money m -> print_money_cards [m]; helper t
+       | Action a -> print_action_cards [a]; helper t
+       | Rent r -> print_rent_card r; helper t
+       | Property p -> print_property_cards [p]; helper t
+       | _ -> ()) in 
+  helper (get_played_personal_cards p)
