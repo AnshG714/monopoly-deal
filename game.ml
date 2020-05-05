@@ -23,6 +23,7 @@ let rec play_helper (board: board) =
 
 let rec play () = 
   let board = make_board () in
+  distribute_cards_to_players board;
   play_helper board
 
 let _ = play ()

@@ -1,10 +1,12 @@
 open Card
+open Deck
 
 type player = {
   name: string;
   mutable cards_in_hand: card list;
   mutable played_personal_cards: card list
 }
+
 
 let initialize_player name: player =
   {
@@ -47,3 +49,21 @@ let remove_cards_from_personal_pile (card_list: card list) (player) =
 
 let add_cards_to_personal_pile (card_list: card list) (player: player) = 
   player.played_personal_cards <- card_list @ player.played_personal_cards
+
+(* if the player has more than 7 cards in their hand, it discards cards such 
+   that there are only 7 cards*)
+let rec discard_until_seven player = 
+  if List.length player.cards_in_hand > 7 
+  then match player.cards_in_hand with
+    | [] -> failwith "impossible"
+    | h::t -> player.cards_in_hand <- t; discard_until_seven player
+  else player
+
+(* discards all the cards from [cards] in the hand of [player]*)
+let discard_cards player cards= 
+  let rec helper lst card acc = 
+    match lst with 
+    | [] -> acc
+    | h::t -> if List.mem h cards then helper t card acc else helper t card (h::acc) in 
+  player.cards_in_hand <- helper player.cards_in_hand cards []
+
