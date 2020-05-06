@@ -79,4 +79,6 @@ val print_action_cards: action_card list -> unit
 
 val print_rent_card: rent_card -> unit
 
+val print_property_cards: property_card list -> unit
+
 val splice_first_n_list: 'a list -> int -> 'a list * 'a list

@@ -10,7 +10,7 @@ exception InvalidCard
 type board = 
   {
     players: player list;
-    deck: deck;
+    mutable deck: deck;
     mutable turn: int;
     discarded: card list
   }
@@ -43,9 +43,24 @@ let distribute_cards_to_players board =
   let rec helper players deck = 
     if players = [] then () else
       let n, r = remove_top_n_cards deck 5 in
-      add_cards_to_hand n (List.hd players);
+      add_cards_to_hand n (List.hd players); board.deck <- r;
       helper (List.tl players) r; in
   helper players deck
+
+let draw_new_cards (board: board) =
+  let player = List.nth board.players board.turn in 
+  let cards = get_cards_in_hand player in
+  if List.length cards >= 7 then ()
+  else if List.length cards = 6 then 
+    let c, d= remove_top_card board.deck in 
+    add_cards_to_hand ([c]) player; board.deck <- d
+  else if List.length cards = 0 then 
+    let c, d = remove_top_n_cards board.deck 5 in 
+    add_cards_to_hand c player; board.deck <- d
+  else 
+    let c, d = remove_top_n_cards board.deck 2 in 
+    add_cards_to_hand c player; board.deck <- d
+
 
 let check_card_in_hand player id = 
   let cards = get_cards_in_hand player in
@@ -61,3 +76,33 @@ let get_players board =
 let get_current_player board = 
   let p = List.nth board.players board.turn in
   get_player_name p
+
+(* print wildcards *)
+let print_current_player_hand board = 
+  let p = List.nth board.players board.turn in 
+  let rec helper lst = 
+    match lst with 
+    | [] -> ()
+    | h::t -> 
+      (match h with 
+       | Money m -> print_money_cards [m]; helper t
+       | Action a -> print_action_cards [a]; helper t
+       | Rent r -> print_rent_card r; helper t
+       | Property p -> print_property_cards [p]; helper t
+       | _ -> ()) in 
+  helper (get_cards_in_hand p)
+
+(* print wildcards *)
+let print_current_player_pile board = 
+  let p = List.nth board.players board.turn in 
+  let rec helper lst = 
+    match lst with 
+    | [] -> ()
+    | h::t -> 
+      (match h with 
+       | Money m -> print_money_cards [m]; helper t
+       | Action a -> print_action_cards [a]; helper t
+       | Rent r -> print_rent_card r; helper t
+       | Property p -> print_property_cards [p]; helper t
+       | _ -> ()) in 
+  helper (get_played_personal_cards p)

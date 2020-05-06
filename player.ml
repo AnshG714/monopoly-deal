@@ -67,31 +67,5 @@ let discard_cards player cards=
     | h::t -> if List.mem h cards then helper t card acc else helper t card (h::acc) in 
   player.cards_in_hand <- helper player.cards_in_hand cards []
 
-(* Prints the cards in the player's hand
-   NOTE: no print functions for property and wildcard? *)
-let print_hand_cards player =
-  let rec helper lst = 
-    match lst with 
-    | [] -> ()
-    | h::t -> 
-      (match h with 
-       | Money m -> print_money_cards [m]; helper t
-       | Action a -> print_action_cards [a]; helper t
-       | Rent r -> print_rent_card r; helper t
-       | _ -> ()) in 
-  helper player.cards_in_hand
 
-(* Prints the cards in the player's pile
-   NOTE: no print functions for property and wildcard? *)
-let print_pile_cards player = 
-  let rec helper lst = 
-    match lst with 
-    | [] -> ()
-    | h::t -> 
-      (match h with 
-       | Money m -> print_money_cards [m]; helper t
-       | Action a -> print_action_cards [a]; helper t
-       | Rent r -> print_rent_card r; helper t
-       | _ -> ()) in 
-  helper player.played_personal_cards
 
