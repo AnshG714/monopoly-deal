@@ -117,11 +117,11 @@ let rent_from_json j : rent_card = {
   count = j |> member "count" |> to_int;
 }
 
-
 let get_card_from_file card_type card_method: 'a list =
   let json = Yojson.Basic.from_file "card_data.json" in
   json |> member card_type |> to_list |> List.map (fun x -> card_method x)
 
+(* Getters for lists of each type of card *)
 let get_money () : money_card list =
   get_card_from_file "money cards" money_from_json
 
@@ -160,7 +160,7 @@ let get_property_rents (card: property_card): rent array =
   card.rents
 
 
-(* action card getters *)
+(* Action card getters *)
 let get_action_name (card: action_card): action_name =
   card.name
 
@@ -173,7 +173,7 @@ let get_action_value (card: action_card): card_value =
 let get_action_count (card: action_card): int =
   card.count
 
-(* wildcard getters *)
+(* Wildcard getters *)
 let get_wildcard_colors (card: wildcard): color list =
   card.colors
 
@@ -186,7 +186,7 @@ let get_wildcard_count (card: wildcard): int =
 let get_wildcard_value (card: wildcard): card_value = 
   card.value
 
-(* rent card getters *)
+(* Rent card getters *)
 let get_rent_colors (card: rent_card): color list = 
   card.colors
 
@@ -196,6 +196,7 @@ let get_rent_value (card: rent_card): card_value =
 let get_rent_count (card: rent_card): int =
   card.count
 
+(* id getter *)
 let get_id (card: card) = 
   match card with
   | Property c -> c.id
@@ -204,6 +205,8 @@ let get_id (card: card) =
   | Action c -> c.id
   | Money c -> c.id
 
+
+(* General printing functions *)
 let rec print_contents (sl: string list) (color: ANSITerminal.style) = 
   match sl with
   | [] -> print_string [] "\n"
@@ -222,6 +225,7 @@ let rec batch_and_print (batch_size: int) (card_list) (print_fun) =
   | lst -> let b, rem = splice_first_n_list lst batch_size in
     print_fun b; batch_and_print batch_size rem print_fun
 
+(* money card printing *)
 let print_money_cards_helper (cards: money_card list) =
   let l = List.length cards in
   let underline_list = make_recurring_list "\027[38;5;88m-------------" l in
@@ -246,6 +250,8 @@ let print_money_cards_helper (cards: money_card list) =
 let print_money_cards (cards: money_card list) = 
   batch_and_print 5 cards print_money_cards_helper
 
+
+(* Action card printing*)
 let print_action_cards_helper (cards: action_card list) = 
   let l = List.length cards in
   let underline_list = make_recurring_list "\027[38;5;22m--------------------" l in 
@@ -279,6 +285,8 @@ let print_action_cards_helper (cards: action_card list) =
 let print_action_cards (cards: action_card list) =
   batch_and_print 5 cards print_action_cards_helper
 
+
+(* Property card printing *)
 let print_property_cards_helper (cards: property_card list) = 
   let rec make_dataless_helper cards acc st = 
     match cards with
@@ -322,6 +330,8 @@ let print_property_cards_helper (cards: property_card list) =
 let print_property_cards cards = 
   batch_and_print 4 cards print_property_cards_helper
 
+
+(* Wildcard printing *)
 let print_wildcard_helper (cards: wildcard list) = 
   let l = List.length cards in
   let underline = make_recurring_list "\027[38;5;140m------------------------" l in
@@ -365,6 +375,8 @@ let print_wildcard_helper (cards: wildcard list) =
 let print_wildcards (cards: wildcard list) = 
   batch_and_print 4 cards print_wildcard_helper
 
+
+(* Rent card printing *)
 let print_rent_card (card: rent_card) : unit = 
   let card_colors = card.colors in
   let card_value = card.value in
@@ -376,3 +388,26 @@ let print_rent_card (card: rent_card) : unit =
   | ["red"; "yellow"] -> ANSITerminal.(print_string [red; on_yellow; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
   | _ -> ();
     print_string [] "\n"  
+
+let print_rent_cards_helper (cards: rent_card list) =
+  let l = List.length cards in 
+  let underline_list = make_recurring_list "\027[38;5;360m--------------------" l in 
+  let action_header_list = make_recurring_list "\027[38;5;360m|       Rent       |" l in
+  let sidebar_list = make_recurring_list "\027[38;5;360m|                  |" l in
+  let rent_val_list = List.map (fun card ->
+      (let rent_value = get_rent_value card in 
+       if rent_value = 10 then 
+         "|       $"  ^ string_of_int rent_value ^   "        |"
+       else 
+         "|        $"  ^ string_of_int rent_value ^   "        |")
+    ) cards in 
+  print_contents underline_list white;
+  print_contents action_header_list white;
+  print_contents underline_list white;
+  print_contents sidebar_list white;
+  print_contents rent_val_list white;
+  print_contents sidebar_list white;
+  print_contents underline_list white
+
+let print_rent_cards (cards: rent_card list) =
+  batch_and_print 5 cards print_rent_cards_helper

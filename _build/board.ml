@@ -123,7 +123,13 @@ let print_card_list card_list =
       match card with
       | Property p -> p
       | _ -> failwith "impossible"
-    ) (Mapping.find "property" map))
+    ) (Mapping.find "property" map));
+
+  print_wildcards (List.map (fun card ->
+      match card with
+      | Wildcard w -> w
+      | _ -> failwith "impossible"
+    ) (Mapping.find "wildcard" map))
 
 
 let print_current_player_hand board = 
