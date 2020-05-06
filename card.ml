@@ -322,6 +322,49 @@ let print_property_cards_helper (cards: property_card list) =
 let print_property_cards cards = 
   batch_and_print 4 cards print_property_cards_helper
 
+let print_wildcard_helper (cards: wildcard list) = 
+  let l = List.length cards in
+  let underline = make_recurring_list "\027[38;5;140m------------------------" l in
+  let header = make_recurring_list "\027[38;5;140m|  Property Wildcard   |" l in
+
+  let universal_pink = "\027[38;5;200m|      Universal       |" in
+  let universal_orange = "\027[38;5;208m|      Universal       |" in
+  let universal_yellow = "\027[38;5;226m|      Universal       |" in
+  let universal_red = "\027[38;5;9m|      Universal       |" in
+  let ultra_card_list = [universal_pink;universal_orange;universal_yellow;universal_red] in
+
+  let rec wildcard_helper cards acc rent_number = 
+    match cards with
+    | [] -> acc
+    | h :: t -> let rents = h.rents in
+      if Array.length rents = 0 then wildcard_helper t ((List.nth ultra_card_list rent_number) :: acc) rent_number
+      else let l1 = Array.length rents.(0) in
+        let l2 = Array.length rents.(1) in
+        let s1 = 
+          if rent_number >= l1 then "     " 
+          else (List.assoc (List.hd (h.colors)) color_map) 
+               ^ string_of_int(rent_number) ^ "--$" ^ string_of_int(rents.(0).(rent_number)) in
+
+        let s2 = 
+          if rent_number >= l2 then "     "
+          else (List.assoc (h.colors |> List.tl |> List.hd) color_map) 
+               ^ string_of_int(rent_number) ^ "--$" ^ string_of_int(rents.(1).(rent_number)) in
+
+        let finalst = "\027[38;5;140m|    " ^ s1 ^ "    " ^ s2 ^ "    " ^ "\027[38;5;140m|" in
+        wildcard_helper t (finalst :: acc) rent_number in
+
+  print_contents underline white;
+  print_contents header white;
+  print_contents underline white;
+  for i = 0 to 3 do
+    print_contents (wildcard_helper cards [] i) white;
+  done;
+  print_contents underline white;
+  ()
+
+let print_wildcards (cards: wildcard list) = 
+  batch_and_print 4 cards print_wildcard_helper
+
 let print_rent_card (card: rent_card) : unit = 
   let card_colors = card.colors in
   let card_value = card.value in
