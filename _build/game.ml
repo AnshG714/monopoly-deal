@@ -17,9 +17,9 @@ let rec play_helper (board: board) =
   let current_player = get_current_player board in
   let command = read_line () in
   match (command |> parse) with
-  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); draw_two board; play_helper board
-  | ViewPile -> ()
-  | ViewHand -> ()
+  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); draw_new_cards board; play_helper board
+  | ViewPile -> print_current_player_pile board; play_helper board
+  | ViewHand -> print_current_player_hand board; play_helper board
   | exception Malformed msg -> print_endline msg; play_helper board
   | _ -> failwith "other cases unimplemented."
 

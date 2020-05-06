@@ -47,13 +47,16 @@ let distribute_cards_to_players board =
       helper (List.tl players) r; in
   helper players deck
 
-let draw_two (board: board) =
+let draw_new_cards (board: board) =
   let player = List.nth board.players board.turn in 
   let cards = get_cards_in_hand player in
   if List.length cards >= 7 then ()
   else if List.length cards = 6 then 
     let c, d= remove_top_card board.deck in 
     add_cards_to_hand ([c]) player; board.deck <- d
+  else if List.length cards = 0 then 
+    let c, d = remove_top_n_cards board.deck 5 in 
+    add_cards_to_hand c player; board.deck <- d
   else 
     let c, d = remove_top_n_cards board.deck 2 in 
     add_cards_to_hand c player; board.deck <- d
