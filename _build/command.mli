@@ -5,7 +5,7 @@ type command =
   | ViewHand
   | Discard of int
   | Pass
-
+  | Quit
 
 exception Malformed of string
 exception Empty

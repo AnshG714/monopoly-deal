@@ -4,6 +4,8 @@ open Player
 open Util
 open Map
 
+exception InvalidCard
+
 type board = 
   {
     players: player list;
@@ -145,5 +147,8 @@ let print_current_player_pile board =
   print_card_list pile
 
 let add_card_to_pile board id = 
-  let p = List.nth board.players board.turn in 
-  play_cards_to_personal_pile id p
+  try
+    let p = List.nth board.players board.turn in 
+    play_cards_to_personal_pile id p
+  with _ ->
+    raise InvalidCard

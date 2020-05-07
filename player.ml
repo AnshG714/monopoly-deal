@@ -1,8 +1,6 @@
 open Card
 open Deck
 
-exception InvalidCard
-
 type player = {
   name: string;
   mutable cards_in_hand: card list;
@@ -39,7 +37,7 @@ let play_cards_to_personal_pile (id: int) (player: player) =
   let removed_cards = List.filter (fun x -> 
       ((get_id x) = id)) (get_cards_in_hand player) in
 
-  if List.length removed_cards = 0 then raise InvalidCard
+  if List.length removed_cards = 0 then failwith "id error"
   else
     (* update fields - this essentially transfers cards from the hand to the board. *)
     (player.cards_in_hand <- List.tl removed_cards @ hand_cards_after_removal;

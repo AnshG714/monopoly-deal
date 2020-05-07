@@ -20,8 +20,14 @@ let rec main_helper (board: board) =
   | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); draw_new_cards board; main_helper board
   | ViewPile -> print_current_player_pile board; main_helper board
   | ViewHand -> print_current_player_hand board; main_helper board
-  | Play id -> add_card_to_pile board id; main_helper board
+  | Play id -> 
+    (try
+       add_card_to_pile board id;
+     with InvalidCard ->
+       print_endline "Enter a valid card ID.";); 
+    main_helper board
   | exception Malformed msg -> print_endline msg; main_helper board
+  | Quit -> print_endline "Hope you enjoyed playing :)"
   | _ -> failwith "other cases unimplemented."
 
 let rec main () = 

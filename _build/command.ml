@@ -5,6 +5,7 @@ type command =
   | ViewHand
   | Discard of int
   | Pass
+  | Quit
 
 exception Malformed of string
 exception Empty
@@ -31,6 +32,7 @@ let parse_helper strlist =
       )
     else if h = "discard" then id_validator t "discard"
     else if h = "pass" then if t = [] then Pass else raise (Malformed "pass does not have any keywords after it.")
+    else if h = "quit" then if t = [] then Quit else raise (Malformed "quit does not have any keywords after it.")
     else raise (Malformed "Unknown keyword")
 
 let parse str = 

@@ -2,6 +2,8 @@ open Card
 open Deck
 open Player
 
+exception InvalidCard
+
 type board
 
 val init_mult_players: int -> string list -> player list 
