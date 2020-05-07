@@ -1,11 +1,9 @@
-type objective_phrase = string list
-
 type command = 
   | Draw
-  | Play of objective_phrase
+  | Play of int
   | ViewPile
   | ViewHand
-  | Discard of objective_phrase
+  | Discard of int
   | Pass
 
 

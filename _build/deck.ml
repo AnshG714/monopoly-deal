@@ -42,6 +42,14 @@ let get_action_cards () =
   List.flatten (List.map (fun x -> get_dup_cards (Action x)) card_list)
 
 let initialize_deck (): deck = 
+  (*
+    ids:
+    Money: [0,5]
+    Properties: [6, 33]
+    Wildcards: [34, 41]
+    Action: [42, 51]
+    Rent: [52, 57]
+  *)
   List.flatten [get_money_cards (); get_property_cards (); get_wildcards ();
                 get_action_cards (); get_rent_cards ()]
 

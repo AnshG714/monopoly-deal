@@ -21,3 +21,5 @@ val draw_new_cards : board -> unit
 val print_current_player_hand : board -> unit
 
 val print_current_player_pile : board -> unit
+
+val add_card_to_pile : board -> int -> unit

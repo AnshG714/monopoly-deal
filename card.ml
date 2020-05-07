@@ -257,9 +257,10 @@ let print_action_cards_helper (cards: action_card list) =
   let underline_list = make_recurring_list "--------------------" l in 
   (* let action_header_list = make_recurring_list "\027[|      Action      |" l in *)
   let sidebar_list = make_recurring_list "|                  |" l in
-  let action_val_list = List.map (fun card -> 
-      (let action_value = get_action_value card in 
-       "|        $"  ^ string_of_int action_value ^   "        |")
+  let action_val_list = List.map (fun (card: action_card) -> 
+      if card.id >= 10 then
+        "|      id:"  ^ string_of_int (card.id) ^   "       |"
+      else "|       id:"  ^ string_of_int (card.id) ^   "       |"
     ) cards in
 
   let rec make_action_header (cards: action_card list) acc = 
@@ -286,7 +287,7 @@ let print_action_cards_helper (cards: action_card list) =
   print_contents underline_list green
 
 let print_action_cards (cards: action_card list) =
-  batch_and_print 4 cards print_action_cards_helper
+  batch_and_print 5 cards print_action_cards_helper
 
 
 (* Property card printing *)
