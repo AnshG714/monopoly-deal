@@ -77,8 +77,6 @@ val print_money_cards: money_card list -> unit
 
 val print_action_cards: action_card list -> unit
 
-val print_rent_card: rent_card -> unit
-
 val print_property_cards: property_card list -> unit
 
 val print_wildcards : wildcard list -> unit

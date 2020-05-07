@@ -14,7 +14,7 @@ let rec make_board () =
   | None -> print_endline "Please enter an integer between 2 and 5"; make_board () 
 
 let rec play_helper (board: board) = 
-  let current_player = get_current_player board in
+  (* let current_player = get_current_player board in *)
   let command = read_line () in
   match (command |> parse) with
   | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); draw_new_cards board; play_helper board

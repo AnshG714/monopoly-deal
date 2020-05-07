@@ -254,36 +254,39 @@ let print_money_cards (cards: money_card list) =
 (* Action card printing*)
 let print_action_cards_helper (cards: action_card list) = 
   let l = List.length cards in
-  let underline_list = make_recurring_list "\027[38;5;22m--------------------" l in 
-  let action_header_list = make_recurring_list "\027[38;5;115m|      Action      |" l in
-  let sidebar_list = make_recurring_list "\027[38;5;47m|                  |" l in
+  let underline_list = make_recurring_list "--------------------" l in 
+  (* let action_header_list = make_recurring_list "\027[|      Action      |" l in *)
+  let sidebar_list = make_recurring_list "|                  |" l in
   let action_val_list = List.map (fun card -> 
       (let action_value = get_action_value card in 
-       if action_value = 10 then 
-         "|       $"  ^ string_of_int action_value ^   "        |"
-       else 
-         "|        $"  ^ string_of_int action_value ^   "        |")
+       "|        $"  ^ string_of_int action_value ^   "        |")
     ) cards in
+
+  let rec make_action_header (cards: action_card list) acc = 
+    match cards with
+    | [] -> acc
+    | h :: t -> let s = "|  $" ^ (string_of_int (get_action_value h)) ^ "M      Action |" in
+      make_action_header t (s :: acc) in
 
   let action_type_list = List.map (fun card -> 
       let action_name = get_action_name card in
       let name_length = String.length action_name in
       let space = 18 - name_length in
-      let padding_left = if (space mod 2 = 0) then space / 2 else (space / 2 - 1) in
+      let padding_left = if (space mod 2 = 0) then space / 2 else ((space - 1) / 2) in
       let padding_right = space - padding_left in
       "|" ^ (String.make (padding_left) ' ') ^ action_name ^ (String.make (padding_right) ' ') ^ "|"
     ) cards in
 
   print_contents underline_list green;
-  print_contents action_header_list green;
+  print_contents (make_action_header cards []) green;
   print_contents underline_list green;
   print_contents sidebar_list green;
-  print_contents action_val_list green;
+  print_contents (List.rev action_val_list) green;
   print_contents action_type_list green;
   print_contents underline_list green
 
 let print_action_cards (cards: action_card list) =
-  batch_and_print 5 cards print_action_cards_helper
+  batch_and_print 4 cards print_action_cards_helper
 
 
 (* Property card printing *)
@@ -375,20 +378,6 @@ let print_wildcard_helper (cards: wildcard list) =
 let print_wildcards (cards: wildcard list) = 
   batch_and_print 4 cards print_wildcard_helper
 
-
-(* Rent card printing *)
-let print_rent_card (card: rent_card) : unit = 
-  let card_colors = card.colors in
-  let card_value = card.value in
-  match card_colors with 
-  | ["green"; "blue"] -> ANSITerminal.(print_string [green; on_blue; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
-  | ["brown"; "light blue"] -> ANSITerminal.(print_string [magenta; on_white; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
-  | ["orange"; "pink"] -> ANSITerminal.(print_string [magenta; on_red; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
-  | ["black"; "light green"] -> ANSITerminal.(print_string [black; on_green; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
-  | ["red"; "yellow"] -> ANSITerminal.(print_string [red; on_yellow; Underlined] ("\n$" ^ string_of_int card_value ^"M     " ^ "Rent\n"));
-  | _ -> ();
-    print_string [] "\n"  
-
 let print_rent_cards_helper (cards: rent_card list) =
   let l = List.length cards in 
   let underline_list = make_recurring_list "\027[38;5;360m--------------------" l in 
@@ -431,9 +420,6 @@ let print_rent_cards_helper (cards: rent_card list) =
   for i = 0 to 2 do
     print_contents (make_color_info cards i []) white;
   done;
-  (* print_contents sidebar_list white;
-     print_contents rent_val_list white;
-     print_contents sidebar_list white; *)
   print_contents underline_list white
 
 let print_rent_cards (cards: rent_card list) =
