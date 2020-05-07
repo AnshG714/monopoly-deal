@@ -121,34 +121,27 @@ let print_card_list card_list =
       match card with
       | Property p -> p
       | _ -> failwith "impossible"
-    ) (Mapping.find "property" map))
+    ) (Mapping.find "property" map));
 
-(* print wildcards *)
+  print_wildcards (List.map (fun card ->
+      match card with
+      | Wildcard w -> w
+      | _ -> failwith "impossible"
+    ) (Mapping.find "wildcard" map));
+
+  print_rent_cards (List.map (fun card ->
+      match card with
+      | Rent r -> r
+      | _ -> failwith "impossible"
+    ) (Mapping.find "rents" map))
+
+
 let print_current_player_hand board = 
   let p = List.nth board.players board.turn in 
-  let rec helper lst = 
-    match lst with 
-    | [] -> ()
-    | h::t -> 
-      (match h with 
-       | Money m -> print_money_cards [m]; helper t
-       | Action a -> print_action_cards [a]; helper t
-       | Rent r -> print_rent_card r; helper t
-       | Property p -> print_property_cards [p]; helper t
-       | _ -> ()) in 
-  helper (get_cards_in_hand p)
+  let hand = get_cards_in_hand p in 
+  print_card_list hand
 
-(* print wildcards *)
 let print_current_player_pile board = 
   let p = List.nth board.players board.turn in 
-  let rec helper lst = 
-    match lst with 
-    | [] -> ()
-    | h::t -> 
-      (match h with 
-       | Money m -> print_money_cards [m]; helper t
-       | Action a -> print_action_cards [a]; helper t
-       | Rent r -> print_rent_card r; helper t
-       | Property p -> print_property_cards [p]; helper t
-       | _ -> ()) in 
-  helper (get_played_personal_cards p)
+  let pile = get_played_personal_cards p in 
+  print_card_list pile
