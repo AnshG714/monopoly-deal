@@ -96,23 +96,13 @@ let lngth (d:suite) : int =
   | WildcardList t -> List.length t
   | RentList t ->List.length t
   | Empty -> 0 
+
 (* Use for removing property cards, for all other cards, decrease count till0
    then use this.*)
 let rec remove_index lst n = 
   match lst with 
   | [] -> []
   | h :: t -> if n = 0 then t else h :: remove_index t (n-1) 
-
-(*this garbage removes the card from the suite and updates it *)
-(* let rmv (d: suite) i = 
-   match d with
-   | PropertyList t -> PropertyList (remove_index t i)
-   | MoneyList t -> List.length t
-   | ActionList t -> List.length t
-   | WildcardList t -> List.length t
-   | RentList t ->List.length t
-   | Empty -> 0  *)
-
 
 let random_card (deck : suite list) : card = 
   let ste = List.nth deck (Random.int (List.length deck)) in 
