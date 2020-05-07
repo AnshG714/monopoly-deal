@@ -9,7 +9,7 @@ type rent = int
 type action_name = string
 
 let color_map = 
-  [("brown", "\027[38;5;94m"); ("blue", "\027[38;5;19m"); ("green", "\027[38;5;28m");
+  [("brown", "\027[38;5;94m"); ("blue", "\027[38;5;4m"); ("green", "\027[38;5;28m");
    ("light blue", "\027[38;5;45m"); ("orange", "\027[38;5;208m"); ("pink", "\027[38;5;200m");
    ("black", "\027[38;5;15m"); ("red", "\027[38;5;9m"); ("light green", "\027[38;5;194m");
    ("yellow", "\027[38;5;226m")]
@@ -392,21 +392,48 @@ let print_rent_card (card: rent_card) : unit =
 let print_rent_cards_helper (cards: rent_card list) =
   let l = List.length cards in 
   let underline_list = make_recurring_list "\027[38;5;360m--------------------" l in 
-  let action_header_list = make_recurring_list "\027[38;5;360m|       Rent       |" l in
-  let sidebar_list = make_recurring_list "\027[38;5;360m|                  |" l in
-  let rent_val_list = List.map (fun card ->
-      (let rent_value = get_rent_value card in 
-       if rent_value = 10 then 
-         "|       $"  ^ string_of_int rent_value ^   "        |"
-       else 
-         "|        $"  ^ string_of_int rent_value ^   "        |")
-    ) cards in 
+  let sidebar = "\027[38;5;360m|                  |" in
+
+  let universal_pink = "\027[38;5;200m|    Universal     |" in
+  let universal_orange = "\027[38;5;208m|    Universal     |" in
+  let universal_yellow = "\027[38;5;226m|    Universal     |" in
+  let ultra_card_list = [universal_pink;universal_orange;universal_yellow;] in
+
+  let rec make_rent_header cards acc = 
+    match cards with
+    | [] -> acc
+    | h :: t -> let s = "\027[38;5;360m" ^ "|  $" ^ (string_of_int h.value) ^ "M        Rent |" in
+      make_rent_header t (s::acc) in
+
+  let rec make_color_info cards color_number acc = 
+    match cards with
+    | [] -> acc
+    | h :: t -> let colors = h.colors in
+      if List.length colors = 0 
+      then (make_color_info t color_number ((List.nth ultra_card_list color_number) :: acc)) else 
+        let s = if color_number >= (List.length colors) then sidebar else
+            let required_color = List.nth colors color_number in
+            let len = String.length required_color in
+            let space = 18 - len in
+            let padding_left = if (space mod 2 = 0) then space / 2 else ((space - 1)/ 2) in
+            let padding_right = space - padding_left in
+            ((List.assoc required_color color_map) ^ "|" ^ 
+             (String.make padding_left ' ') ^ required_color ^ 
+             (String.make padding_right ' ') ^ "|") in
+
+        make_color_info t color_number 
+          (s :: acc) in
+
   print_contents underline_list white;
-  print_contents action_header_list white;
+  print_contents (make_rent_header cards []) white;
   print_contents underline_list white;
-  print_contents sidebar_list white;
-  print_contents rent_val_list white;
-  print_contents sidebar_list white;
+
+  for i = 0 to 2 do
+    print_contents (make_color_info cards i []) white;
+  done;
+  (* print_contents sidebar_list white;
+     print_contents rent_val_list white;
+     print_contents sidebar_list white; *)
   print_contents underline_list white
 
 let print_rent_cards (cards: rent_card list) =

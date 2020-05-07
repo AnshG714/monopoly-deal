@@ -1,5 +1,3 @@
-(* I'm going to try using board as a controller itself. *)
-
 open Card
 open Deck
 open Player
@@ -129,7 +127,13 @@ let print_card_list card_list =
       match card with
       | Wildcard w -> w
       | _ -> failwith "impossible"
-    ) (Mapping.find "wildcard" map))
+    ) (Mapping.find "wildcard" map));
+
+  print_rent_cards (List.map (fun card ->
+      match card with
+      | Rent r -> r
+      | _ -> failwith "impossible"
+    ) (Mapping.find "rents" map))
 
 
 let print_current_player_hand board = 
