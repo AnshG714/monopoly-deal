@@ -1,5 +1,3 @@
-(* I'm going to try using board as a controller itself. *)
-
 open Card
 open Deck
 open Player
@@ -124,6 +122,7 @@ let print_card_list card_list =
       | Property p -> p
       | _ -> failwith "impossible"
     ) (Mapping.find "property" map))
+
 (* print wildcards *)
 let print_current_player_hand board = 
   let p = List.nth board.players board.turn in 
