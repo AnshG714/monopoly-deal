@@ -3,9 +3,11 @@ open Util
 
 type deck = card list
 
+let id = ref 1
 (* [get_dup_cards] is a list of the correct count of the card [card_instance]. 
    This function produces a list of [m] instances of [card_instance] as a list, 
    where [m] is the count stored in the [count] field of [card_instance]. *)
+
 let get_dup_cards card_instance = 
   let count = match card_instance with
     | Property _ -> 1
@@ -48,15 +50,14 @@ let get_action_cards () =
 let initialize_deck (): deck = 
   (*
     ids:
-    Money: [0,5]
-    Properties: [6, 33]
-    Wildcards: [34, 41]
-    Action: [42, 51]
-    Rent: [52, 57]
+    Money: [53, 58]
+    Properties: [25, 52]
+    Wildcards: [17, 24]
+    Action: [7, 16]
+    Rent: [1, 6]
   *)
   List.flatten [get_money_cards (); get_property_cards (); get_wildcards ();
                 get_action_cards (); get_rent_cards ()] 
-
 
 let remove_top_card (deck: deck): card * deck =
   match deck with

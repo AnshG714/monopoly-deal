@@ -82,13 +82,13 @@ let list_to_array lst=
     the previous id number. *)
 let assign_id (): int = 
   id_count := !id_count + 1;
-  !id_count
+  !id_count 
 
 (* Conversions from json *)
 (** [money_from_json j] creates a money card with an id and parses the json [j] 
     to get the value and count of the card. *)
 let money_from_json j: money_card = {
-  id = assign_id ();
+  id = assign_id();
   value = j |> member "value" |> to_int;
   count = j |> member "count" |> to_int
 }
@@ -96,7 +96,7 @@ let money_from_json j: money_card = {
 (** [property_from_json j] creates a property card with an id and parses the 
     json [j] to get the venue, value, color, and rents of the card. *)
 let property_from_json j: property_card = {
-  id = assign_id ();
+  id = assign_id();
   venue = j |> member "venue" |> to_string;
   value = j |> member "value" |> to_int;
   color = j |> member "color" |> to_string;
@@ -106,7 +106,7 @@ let property_from_json j: property_card = {
 (** [action_from_json j] creates an action card with an id and parses the json
     [j] to get the name, description, value, and count of the card. *)
 let action_from_json j: action_card = {
-  id = assign_id ();
+  id = assign_id();
   name = j |> member "name" |> to_string;
   desc = j |> member "desc" |> to_string;
   value = j |> member "value" |> to_int;
@@ -116,7 +116,7 @@ let action_from_json j: action_card = {
 (** [wildcard_from_json j] creates a wildcard with an id and parses the json [j]
     to get the colors, rents, count, and value of the card.*)
 let wildcard_from_json j: wildcard = {
-  id = assign_id ();
+  id = assign_id();
   colors = j |> member "colors" |> to_list |> json_list_to_alpha_list to_string;
   rents = j |> member "rents" |> to_list |> 
           List.map (fun x-> x |> to_list |> json_list_to_alpha_list to_int) 
@@ -128,7 +128,7 @@ let wildcard_from_json j: wildcard = {
 (** [rent_from_json j] creates a rent card with an id and parses the json [j]
     to get the colors, value, and count of the card. *)
 let rent_from_json j : rent_card = {
-  id = assign_id ();
+  id = assign_id();
   colors = j |> member "colors" |> to_list |> json_list_to_alpha_list to_string;
   value = j |>  member "value" |> to_int;
   count = j |> member "count" |> to_int;
@@ -224,7 +224,6 @@ let get_id (card: card) =
   | Action c -> c.id
   | Money c -> c.id
 
-
 (* General printing functions *)
 (** [print_contents sl color] prints the elemts of the list of string [sl] 
     using the color [color]. *)
@@ -313,7 +312,7 @@ let print_action_cards_helper (cards: action_card list) =
   print_contents underline_list green;
   print_contents sidebar_list green;
   print_contents (List.rev action_val_list) green;
-  print_contents action_type_list green;
+  print_contents (List.rev action_type_list) green;
   print_contents underline_list green
 
 let print_action_cards (cards: action_card list) =

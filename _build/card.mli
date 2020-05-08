@@ -1,10 +1,10 @@
 open ANSITerminal
 
 (* value types *)
-type venue_name
-type card_value
-type color
-type rent
+type venue_name = string
+type card_value = int
+type color = string
+type rent = int
 
 (* card types *)
 type action_name

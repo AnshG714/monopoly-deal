@@ -31,10 +31,6 @@ let initialize_board (n: int) (player_names: string list): board =
     discarded = []
   }
 
-(* These two methods can be migrated to whatebver our controller will be. *)
-let increment_turn (board: board) = 
-  board.turn <- (board.turn + 1) mod (List.length board.players)
-
 let get_current_turn board = 
   board.turn
 
@@ -45,26 +41,31 @@ let distribute_cards_to_players board =
   let rec helper players deck = 
     match players with
     | [] -> ()
-    | h :: t -> let n, r = remove_top_n_cards deck 3 in
+    | h :: t -> let n, r = remove_top_n_cards deck 50 in
       add_cards_to_hand n h; board.deck <- r;
       helper t r; in
 
+  let n, r = remove_top_n_cards deck 2 in
+  add_cards_to_hand n (List.hd board.players); board.deck <- r;
   helper players deck
 
-let draw_new_cards (board: board) =
+let draw_new_cards (board: board) (mode: bool)=
   let player = List.nth board.players board.turn in 
   let cards = get_cards_in_hand player in
   if List.length cards >= 7 then ()
   else if List.length cards = 6 then 
     let c, d= remove_top_card board.deck in 
     add_cards_to_hand ([c]) player; board.deck <- d
-  else if List.length cards = 0 then 
+  else if List.length cards = 0 && mode then 
     let c, d = remove_top_n_cards board.deck 5 in 
-    add_cards_to_hand c player; board.deck <- d
+    add_cards_to_hand c player; board.deck <- d 
   else 
     let c, d = remove_top_n_cards board.deck 2 in 
     add_cards_to_hand c player; board.deck <- d
 
+let increment_turn (board: board) = 
+  board.turn <- (board.turn + 1) mod (List.length board.players);
+  draw_new_cards board true
 
 let check_card_in_hand player id = 
   let cards = get_cards_in_hand player in
@@ -120,11 +121,23 @@ let print_card_list card_list =
       | _ -> failwith "impossible"
     ) (Mapping.find "money" map));
 
+
+  let extract_color (card: card) = 
+    match card with
+    | Property v -> get_property_color v 
+    | _ -> failwith "precondition violated" in
+  let plist = Mapping.find "property" map in
+
+  let sorted = List.sort (fun card1 card2 -> 
+      if (extract_color card1 > extract_color card2) then 1 
+      else if (extract_color card1 < extract_color card2) then -1
+      else 0) plist in  
+
   print_property_cards (List.map (fun card ->
       match card with
       | Property p -> p
       | _ -> failwith "impossible"
-    ) (Mapping.find "property" map));
+    ) sorted );
 
   print_wildcards (List.map (fun card ->
       match card with
@@ -155,3 +168,17 @@ let add_card_to_pile board id =
     play_card_to_personal_pile id p
   with _ ->
     raise InvalidCard
+
+let get_card_value (id: int) (board: board): int = 
+  let l = List.filter (fun c -> (get_id c) = id) board.deck in
+  if List.length l = 0 then raise InvalidCard
+  else match List.hd l with
+    | Property p -> get_property_value p
+    | Wildcard w -> get_wildcard_value w
+    | Rent r -> get_rent_value r
+    | Money m -> get_money_value m
+    | Action a -> get_action_value a
+
+let transfer_card id player1 player2 = 
+  let c = remove_card_from_personal_pile id player1 in
+  add_card_to_personal_pile c player2

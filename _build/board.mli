@@ -18,10 +18,16 @@ val increment_turn: board -> unit
 
 val distribute_cards_to_players : board -> unit
 
-val draw_new_cards : board -> unit
+val draw_new_cards : board -> bool -> unit
 
 val print_current_player_hand : board -> unit
 
 val print_current_player_pile : board -> unit
 
 val add_card_to_pile : board -> int -> unit
+
+val get_current_turn : board -> int
+
+val get_card_value: int -> board -> int
+
+val transfer_card : int -> player -> player -> unit

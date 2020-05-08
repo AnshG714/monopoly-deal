@@ -24,6 +24,6 @@ val get_player_name: player -> string
    of [player] *)
 val play_card_to_personal_pile : int -> player -> unit
 
-val remove_cards_from_personal_pile : card list -> player -> unit
+val remove_card_from_personal_pile : int -> player -> card
 
-val add_cards_to_personal_pile : card list -> player -> unit
+val add_card_to_personal_pile : card -> player -> unit

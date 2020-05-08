@@ -44,15 +44,20 @@ let play_card_to_personal_pile (id: int) (player: player) =
      player.played_personal_cards <- List.hd removed_cards :: player.played_personal_cards;);
   ()
 
-let remove_cards_from_personal_pile (card_list: card list) (player) =
-  let card_ids_in_playing_list = List.map get_id card_list in
+let remove_card_from_personal_pile (id : int) (player) : card =
 
-  player.played_personal_cards <- 
-    List.filter (fun x -> not (List.mem (get_id x) card_ids_in_playing_list)) 
-      (get_played_personal_cards player)
+  let pile_after_removal = 
+    List.filter (fun x -> (get_id x) <> id) (get_played_personal_cards player) in 
 
-let add_cards_to_personal_pile (card_list: card list) (player: player) = 
-  player.played_personal_cards <- card_list @ player.played_personal_cards
+  let removed_cards =  List.filter (fun x -> (get_id x) = id) (get_played_personal_cards player) in 
+
+  if List.length removed_cards = 0 then failwith "id error"
+  else 
+    player.played_personal_cards <- List.tl removed_cards @ pile_after_removal;
+  List.hd removed_cards
+
+let add_card_to_personal_pile (card : card) (player: player) = 
+  player.played_personal_cards <- card :: player.played_personal_cards
 
 (* if the player has more than 7 cards in their hand, it discards cards such 
    that there are only 7 cards*)
@@ -62,14 +67,3 @@ let rec discard_until_seven player =
     | [] -> failwith "impossible"
     | h::t -> player.cards_in_hand <- t; discard_until_seven player
   else player
-
-(* discards all the cards from [cards] in the hand of [player]*)
-let discard_cards player cards= 
-  let rec helper lst card acc = 
-    match lst with 
-    | [] -> acc
-    | h::t -> if List.mem h cards then helper t card acc else helper t card (h::acc) in 
-  player.cards_in_hand <- helper player.cards_in_hand cards []
-
-
-
