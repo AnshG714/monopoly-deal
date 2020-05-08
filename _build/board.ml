@@ -26,7 +26,7 @@ let rec init_mult_players n names =
 let initialize_board (n: int) (player_names: string list): board = 
   {
     players = init_mult_players n player_names;
-    deck = shuffle (initialize_deck ());
+    deck = initialize_deck ();
     turn = 0;
     discarded = []
   }

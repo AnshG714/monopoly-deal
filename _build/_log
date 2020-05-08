@@ -40,7 +40,9 @@ ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules
 # Target: card.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:card.cmo, file:card.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o card.cmo card.ml # cached
 # Target: deck.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:deck.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules deck.ml > deck.ml.depends
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules deck.ml > deck.ml.depends # cached
+# Target: deck.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:deck.cmo, file:deck.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o deck.cmo deck.ml # cached
 # Target: player.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:player.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules player.ml > player.ml.depends # cached
 # Target: player.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:player.cmo, file:player.ml, implem, ocaml, quiet, traverse }
@@ -49,8 +51,6 @@ ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o play
 ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules util.ml > util.ml.depends # cached
 # Target: util.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:util.cmo, file:util.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o util.cmo util.ml # cached
-# Target: deck.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:deck.cmo, file:deck.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o deck.cmo deck.ml
 # Target: game.byte, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, dont_link_with, extension:byte, file:game.byte, link, ocaml, program, quiet, traverse }
 ocamlfind ocamlc -linkpkg -package oUnit -package yojson -package ANSITerminal util.cmo card.cmo deck.cmo player.cmo board.cmo command.cmo game.cmo -o game.byte # cached
 # Compilation successful.
