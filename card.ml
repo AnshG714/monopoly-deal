@@ -60,9 +60,12 @@ type card =
   | Wildcard of wildcard
   | Action of action_card
 
+(** [json_list_to_alpha_list conversion j] converts a json list [j] to a list 
+    of the type specified in [conversion].  *)
 let json_list_to_alpha_list conversion (j: Yojson.Basic.t list) = 
   List.map (fun x -> conversion x) j
 
+(** [list_to_array] converts a list [lst] to type array with the same elements. *)
 let list_to_array lst= 
   let num_entries = List.length lst in
   let temp_arr = Array.make num_entries (Array.make num_entries 0) in
@@ -73,17 +76,23 @@ let list_to_array lst=
   temp_arr 
 
 
+(** [assign id ()] is the next id number to assign to a card, one higher than 
+    the previous id number. *)
 let assign_id (): int = 
   id_count := !id_count + 1;
   !id_count
 
 (* Conversions from json *)
+(** [money_from_json j] creates a money card with an id and parses the json [j] 
+    to get the value and count of the card. *)
 let money_from_json j: money_card = {
   id = assign_id ();
   value = j |> member "value" |> to_int;
   count = j |> member "count" |> to_int
 }
 
+(** [property_from_json j] creates a property card with an id and parses the 
+    json [j] to get the venue, value, color, and rents of the card. *)
 let property_from_json j: property_card = {
   id = assign_id ();
   venue = j |> member "venue" |> to_string;
@@ -92,6 +101,8 @@ let property_from_json j: property_card = {
   rents = j |> member "rents" |> to_list |> json_list_to_alpha_list to_int |> Array.of_list
 }
 
+(** [action_from_json j] creates an action card with an id and parses the json
+    [j] to get the name, description, value, and count of the card. *)
 let action_from_json j: action_card = {
   id = assign_id ();
   name = j |> member "name" |> to_string;
@@ -100,6 +111,8 @@ let action_from_json j: action_card = {
   count = j |> member "count" |> to_int;
 }
 
+(** [wildcard_from_json j] creates a wildcard with an id and parses the json [j]
+    to get the colors, rents, count, and value of the card.*)
 let wildcard_from_json j: wildcard = {
   id = assign_id ();
   colors = j |> member "colors" |> to_list |> json_list_to_alpha_list to_string;
@@ -110,6 +123,8 @@ let wildcard_from_json j: wildcard = {
   value = j |> member "value" |> to_int;
 }
 
+(** [rent_from_json j] creates a rent card with an id and parses the json [j]
+    to get the colors, value, and count of the card. *)
 let rent_from_json j : rent_card = {
   id = assign_id ();
   colors = j |> member "colors" |> to_list |> json_list_to_alpha_list to_string;
@@ -117,6 +132,8 @@ let rent_from_json j : rent_card = {
   count = j |> member "count" |> to_int;
 }
 
+(** [get_card_from_file card_type card_method] gets a list of all the types of
+    [card_type] in card_data.json and applies method [card_method] to parse it. *)
 let get_card_from_file card_type card_method: 'a list =
   let json = Yojson.Basic.from_file "card_data.json" in
   json |> member card_type |> to_list |> List.map (fun x -> card_method x)
@@ -207,11 +224,15 @@ let get_id (card: card) =
 
 
 (* General printing functions *)
+(** [print_contents sl color] prints the elemts of the list of string [sl] 
+    using the color [color]. *)
 let rec print_contents (sl: string list) (color: ANSITerminal.style) = 
   match sl with
   | [] -> print_string [] "\n"
   | h :: t -> print_string [color] h; print_string [] "    "; print_contents t color
 
+(** [splice_first_n_list lst n] is a tuple of the first [n] elements of [lst]
+    followed by the remaining elements of [lst].*)
 let splice_first_n_list lst n =
   let rec helper lst n acc count = 
     match lst with
@@ -219,6 +240,9 @@ let splice_first_n_list lst n =
     | h :: t -> if count = n then (acc, h :: t) else helper t n (acc @ [h]) (count + 1) in
   helper lst n [] 0
 
+(** [batch_and_print batch_size card_list print_fun] prints the elements in 
+    [card_list] as specified using [print_fun] with [batch_size] elements per 
+    row. *)
 let rec batch_and_print (batch_size: int) (card_list) (print_fun) = 
   match card_list with
   | [] -> ()
@@ -226,6 +250,8 @@ let rec batch_and_print (batch_size: int) (card_list) (print_fun) =
     print_fun b; batch_and_print batch_size rem print_fun
 
 (* money card printing *)
+(** [print_money_cards_helper cards] formats how to print out all the money cards
+    in [cards].  *)
 let print_money_cards_helper (cards: money_card list) =
   let l = List.length cards in
   let underline_list = make_recurring_list "\027[38;5;88m-------------" l in
@@ -252,6 +278,8 @@ let print_money_cards (cards: money_card list) =
 
 
 (* Action card printing*)
+(** [print_action_cards_helper cards] formats how to print out all the action 
+    cards in [cards].  *)
 let print_action_cards_helper (cards: action_card list) = 
   let l = List.length cards in
   let underline_list = make_recurring_list "--------------------" l in 
@@ -291,6 +319,8 @@ let print_action_cards (cards: action_card list) =
 
 
 (* Property card printing *)
+(** [print_property_cards_helper cards] formats how to print out all the 
+    property cards in [cards].  *)
 let print_property_cards_helper (cards: property_card list) = 
   let rec make_dataless_helper cards acc st = 
     match cards with
@@ -336,6 +366,8 @@ let print_property_cards cards =
 
 
 (* Wildcard printing *)
+(** [print_wildcard_helper cards] formats how to print out all the wildcards
+    in [cards].  *)
 let print_wildcard_helper (cards: wildcard list) = 
   let l = List.length cards in
   let underline = make_recurring_list "\027[38;5;140m------------------------" l in
@@ -379,6 +411,9 @@ let print_wildcard_helper (cards: wildcard list) =
 let print_wildcards (cards: wildcard list) = 
   batch_and_print 4 cards print_wildcard_helper
 
+(* Rent card printing*)
+(** [print_rent_cards_helper cards] formats how to print out all the rent cards
+    in [cards].  *)
 let print_rent_cards_helper (cards: rent_card list) =
   let l = List.length cards in 
   let underline_list = make_recurring_list "\027[38;5;360m--------------------" l in 
