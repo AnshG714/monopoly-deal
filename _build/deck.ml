@@ -50,12 +50,9 @@ let initialize_deck (): deck =
     Action: [42, 51]
     Rent: [52, 57]
   *)
-  let d = List.flatten [get_money_cards (); get_property_cards (); get_wildcards ();
-                        get_action_cards (); get_rent_cards ()] in 
-  Random.self_init ();
-  let nd = List.map (fun c -> (Random.bits (), c)) d in
-  let sond = List.sort compare nd in
-  List.map snd sond
+  List.flatten [get_money_cards (); get_property_cards (); get_wildcards ();
+                get_action_cards (); get_rent_cards ()] 
+
 
 let remove_top_card (deck: deck): card * deck =
   match deck with
