@@ -51,27 +51,26 @@ let its_my_bday (board: board) =
   let others = List.filter
       (fun p -> get_player_name p <> get_current_player board) player_list in
 
-  let rec ask_for_money from_player total_value acc_value card_list =
+  let rec ask_for_money from_player total_value acc_value =
 
     (* ask which id they want to play *)
     print_endline "Please enter a valid card id to play";
     match read_int_opt () with
-    | None -> print_endline "Please enter a valid card id to play"; ask_for_money from_player total_value acc_value card_list
+    | None -> print_endline "Please enter a valid card id to play"; ask_for_money from_player total_value acc_value
     | Some id -> (match get_card_value id board with
-        | i -> transfer_card i from_player currpl 
+        | i -> transfer_card id from_player currpl; if (acc_value + i) < total_value then ask_for_money from_player total_value (acc_value + i) 
         | exception InvalidCard -> print_endline "You do not possess this card. Please enter the id of a card that you have.";
-          ask_for_money from_player total_value acc_value card_list
+          ask_for_money from_player total_value acc_value
       ) in
-  ()
 
+  let rec helper total_value plist =
+    match plist with
+    | [] -> ()
+    | h :: t -> let pile = get_played_personal_cards h in
+      if List.length pile = 0 then ()
+      else ask_for_money h total_value 0; helper total_value plist in
 
-
-let rec helper total_value plist =
-  match plist with
-  | [] -> ()
-  | h :: t -> let pile = get_played_personal_cards h in
-    if List.length pile = 0 then ()
-    else ()
+  helper 2 others
 
 let action_card_helper board id =
   if id = 15 then pass_go board

@@ -11,10 +11,10 @@ val initialize_deck : unit -> deck
 (* [remove_top_card] removes the first card from deck [deck], and returns that card
    along with the remaining deck, as the tuple (c, r), where [c] is the card 
    that was removed and [r] is the rest of the deck. *)
-val remove_top_card : deck -> card * deck 
+val remove_top_card : deck -> card list -> card * deck * card list
 
 (* [remove_top_n_cards] removes the first [n] cards from deck [deck], and returns
    the list of cards that were removed with the remaining deck, as the tuple (cl, r) 
    where [cl] is the list of all cards, and [r] is the remaining deck after the 
    removal. *)
-val remove_top_n_cards : deck -> int -> card list * deck 
+val remove_top_n_cards : deck -> int -> card list -> card list * deck * card list
