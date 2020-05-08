@@ -28,7 +28,7 @@ let get_player_name player =
   player.name
 
 (* moves from hand to personal pile *)
-let play_cards_to_personal_pile (id: int) (player: player) =
+let play_card_to_personal_pile (id: int) (player: player) =
 
   (* get remaining cards in hand after playing *)
   let hand_cards_after_removal = List.filter (fun x -> 

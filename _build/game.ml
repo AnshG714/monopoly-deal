@@ -15,9 +15,10 @@ let rec make_board () =
 
 let rec main_helper (board: board) = 
   (* let current_player = get_current_player board in *)
+  draw_new_cards board;
   let command = read_line () in
   match (command |> parse) with
-  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); draw_new_cards board; main_helper board
+  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); main_helper board
   | ViewPile -> print_current_player_pile board; main_helper board
   | ViewHand -> print_current_player_hand board; main_helper board
   | Play id -> 

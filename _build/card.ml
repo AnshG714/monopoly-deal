@@ -8,12 +8,14 @@ type color = string
 type rent = int
 type action_name = string
 
+(* list of printing colors *)
 let color_map = 
   [("brown", "\027[38;5;94m"); ("blue", "\027[38;5;4m"); ("green", "\027[38;5;28m");
    ("light blue", "\027[38;5;45m"); ("orange", "\027[38;5;208m"); ("pink", "\027[38;5;200m");
    ("black", "\027[38;5;15m"); ("red", "\027[38;5;9m"); ("light green", "\027[38;5;194m");
    ("yellow", "\027[38;5;226m")]
 
+(* keeps track of which id number has just been assigned *)
 let id_count = ref 0
 
 type property_card = {

@@ -41,11 +41,14 @@ let get_current_turn board =
 let distribute_cards_to_players board = 
   let players = board.players in
   let deck = board.deck in 
+
   let rec helper players deck = 
-    if players = [] then () else
-      let n, r = remove_top_n_cards deck 5 in
-      add_cards_to_hand n (List.hd players); board.deck <- r;
-      helper (List.tl players) r; in
+    match players with
+    | [] -> ()
+    | h :: t -> let n, r = remove_top_n_cards deck 3 in
+      add_cards_to_hand n h; board.deck <- r;
+      helper t r; in
+
   helper players deck
 
 let draw_new_cards (board: board) =
@@ -149,6 +152,6 @@ let print_current_player_pile board =
 let add_card_to_pile board id = 
   try
     let p = List.nth board.players board.turn in 
-    play_cards_to_personal_pile id p
+    play_card_to_personal_pile id p
   with _ ->
     raise InvalidCard

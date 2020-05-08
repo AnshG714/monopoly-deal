@@ -66,10 +66,10 @@ let remove_top_card (deck: deck): card * deck =
 let remove_top_n_cards (deck: deck) (n: int): (card list * deck) = 
   if (List.length deck) < n then failwith "not enough cards" 
   else
-    let rec helper deck n acc deck_acc = 
-      if n = 0 then (acc, deck_acc) else
+    let rec helper deck n acc = 
+      if n = 0 then (acc, deck) else
         match deck with
         | [] -> failwith "impossible"
-        | h :: t -> helper t (n-1) (h :: acc) t in
+        | h :: t -> helper t (n-1) (h :: acc) in
 
-    helper deck n [] deck 
+    helper deck n [] 
