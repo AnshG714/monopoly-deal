@@ -1,17 +1,21 @@
 open Board
 open Command
+open Unix
 
-let rec get_n_names n acc = 
-  if n = 0 then acc
-  else match read_line () with
-    | name when String.length name > 0 -> get_n_names (n-1) (name::acc)
-    | _ -> print_endline "Invalid entry, a name has to have at least one char"; get_n_names n acc
+let rec get_n_names n count acc = 
+  if count = n then acc
+  else  (print_string ("> Name " ^ string_of_int (count + 1) ^ ": ");
+         match read_line () with
+         | name when String.length name > 0 -> get_n_names n (count + 1) (name::acc)
+         | _ -> print_endline "Invalid entry, a name has to have at least one char"; get_n_names n count acc)
 
 let rec make_board () = 
-  print_endline "Welcome! You're about to start a game of Monopoly Deal. To get started, enter the number of players playing (should be between 2 and 5).";
+  print_endline "\027[38;5;47mPlease enter an integer between 2 and 5 \027[0m"; 
+  print_string "> ";
   match read_int_opt () with
-  | Some i -> get_n_names i [] |> initialize_board i
-  | None -> print_endline "Please enter an integer between 2 and 5"; make_board () 
+  | Some i -> print_endline "\027[38;5;47mGreat! Now, please enter the names of the players that will be playing. \027[0m"; 
+    get_n_names i 0 [] |> initialize_board i
+  | None -> print_endline "\027[38;5;9mIncorrect entry. Please enter an integer between 2 and 5 \027[0m"; make_board () 
 
 let rec main_helper (board: board) = 
   (* let current_player = get_current_player board in *)
@@ -32,6 +36,8 @@ let rec main_helper (board: board) =
   | _ -> failwith "other cases unimplemented."
 
 let rec main () = 
+  print_endline "\027[38;5;11mWelcome! You are about to start a game of Monopoly Deal. To get started, enter the number of players, followed by their names. \027[0m";
+  Unix.sleep 1;
   let board = make_board () in
   distribute_cards_to_players board;
   main_helper board
