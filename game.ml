@@ -106,6 +106,23 @@ let debt_collector board =
      ask_for_money board (List.nth (get_players board) (get_current_turn board)) player 5 0;
      true)
 
+let forced_deal board =
+  print_endline "\027[38;5;190mYou have chosen to play a forced deal card. To do this, enter enter the name of the person you want to swap properties with. The players are: \027[0m";
+  let name = get_player_name_input board in
+  if name = "cancel" then false else
+    let player = List.find (fun x -> get_player_name x = name) (get_players board) in
+    print_endline "Enter the id of the card you want to swap out";
+    let id = match read_int_opt () with
+      | Some i ->
+      | None -> 
+        print_pile_of_player board name;
+        print_endline ("Here is " ^ name ^ "'s pile:");
+        print_endline "Enter the id of the card you want to swap in";
+
+        try
+          remove_card_from_personal_pile id 
+
+
 let action_card_helper board id =
   if id = 8 then debt_collector board
   else if id = 13 then its_my_bday board
