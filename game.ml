@@ -29,6 +29,20 @@ let rec get_player_name_input board =
            "Invalid entry. A name must have more than one character and should be in the list of names.";
     get_player_name_input board
 
+let rec ask_for_money board current_player from_player total_value acc_value =
+
+  print_endline "Please enter a valid card id to play";
+  match read_int_opt () with
+  | None -> print_endline "Please enter a valid card id to play";
+    ask_for_money board current_player from_player total_value acc_value
+  | Some id -> (match get_card_value id board with
+      | i -> transfer_card id from_player current_player; 
+        if (acc_value + i) < total_value 
+        then ask_for_money board current_player from_player total_value (acc_value + i) 
+      | exception InvalidCard -> print_endline "You do not possess this card. Please enter the id of a card that you have.";
+        ask_for_money board current_player from_player total_value acc_value
+    )
+
 let pass_go (board: board) = 
   draw_new_cards board false
 
@@ -38,23 +52,12 @@ let its_my_bday (board: board) =
   let others = List.filter
       (fun p -> get_player_name p <> get_current_player board) player_list in
 
-  let rec ask_for_money from_player total_value acc_value =
-
-    print_endline "Please enter a valid card id to play";
-    match read_int_opt () with
-    | None -> print_endline "Please enter a valid card id to play"; ask_for_money from_player total_value acc_value
-    | Some id -> (match get_card_value id board with
-        | i -> transfer_card id from_player currpl; if (acc_value + i) < total_value then ask_for_money from_player total_value (acc_value + i) 
-        | exception InvalidCard -> print_endline "You do not possess this card. Please enter the id of a card that you have.";
-          ask_for_money from_player total_value acc_value
-      ) in
-
   let rec helper total_value plist =
     match plist with
     | [] -> ()
     | h :: t -> let pile = get_played_personal_cards h in
       if List.length pile = 0 then ()
-      else ask_for_money h total_value 0; helper total_value plist in
+      else ask_for_money board currpl h total_value 0; helper total_value plist in
 
   helper 2 others
 
@@ -84,9 +87,16 @@ let rec sly_deal (board: board) =
 
   loop ()
 
+let debt_collector board = 
+  print_endline "\027[38;5;190mYou have chosen to play a debt collector card. To do this, enter enter the name of the person you want to collect debt from. The players are: \027[0m";
+  let name = get_player_name_input board in
+  let player = List.find (fun x -> get_player_name x = name) (get_players board) in
+  ask_for_money board (List.nth (get_players board) (get_current_turn board)) player 5 0
 
 let action_card_helper board id =
-  if id = 15 then pass_go board
+  if id = 8 then debt_collector board
+  else if id = 13 then its_my_bday board
+  else if id = 15 then pass_go board
   else if id = 16 then sly_deal board
   else ()
 

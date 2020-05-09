@@ -272,7 +272,7 @@ let print_money_cards_helper (cards: money_card list) =
     ) cards in
 
   print_contents underline_list magenta;
-  print_contents money_header_list white;
+  print_contents money_header_list magenta;
   print_contents underline_list magenta;
   print_contents sidebar_list magenta;
   print_contents (List.rev money_id_list) magenta;

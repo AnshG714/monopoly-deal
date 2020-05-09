@@ -1,2 +1,6 @@
-------- board.ml ------
+------- board.ml -------
 - Migrate get_card_value from board.ml -> card.ml
+
+------- game.ml --------
+- add functionality for letting players decide whether they want to play action
+card to discard pile or their money pile.
