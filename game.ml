@@ -88,7 +88,7 @@ let rec sly_deal (board: board) =
 let action_card_helper board id =
   if id = 15 then pass_go board
   else if id = 16 then sly_deal board
-  else failwith "unimplemented"
+  else ()
 
 let rec main_helper (board: board) (num: int) = 
   print_endline ("It is now " ^ (get_current_player board) ^ "'s turn\n\n\n");

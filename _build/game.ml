@@ -88,7 +88,7 @@ let rec sly_deal (board: board) =
 let action_card_helper board id =
   if id = 15 then pass_go board
   else if id = 16 then sly_deal board
-  else failwith "unimplemented"
+  else ()
 
 let rec main_helper (board: board) (num: int) = 
   print_endline ("It is now " ^ (get_current_player board) ^ "'s turn\n\n\n");
@@ -96,8 +96,11 @@ let rec main_helper (board: board) (num: int) =
   match (command |> parse) with
   | Pass -> increment_turn board; 
     print_endline ("it is now turn " ^ (get_current_player board)); main_helper board 0
+
   | ViewPile -> print_current_player_pile board; main_helper board num
+
   | ViewHand -> print_current_player_hand board; main_helper board num
+
   | Play id -> if num >= 3 then (print_endline "You cannot play more than 3 cards per turn"; 
                                  main_helper board num) 
     else (try
@@ -106,8 +109,11 @@ let rec main_helper (board: board) (num: int) =
           with InvalidCard ->
             print_endline "Enter a valid card ID.";
             main_helper board (num));
-  | exception Malformed msg -> print_endline msg; main_helper board num
+
   | Quit -> print_endline "Hope you enjoyed playing :)"
+
+  | exception Malformed msg -> print_endline msg; main_helper board num
+
   | _ -> failwith "other cases unimplemented."
 
 let rec main () = 
