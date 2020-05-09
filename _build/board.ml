@@ -39,16 +39,21 @@ let distribute_cards_to_players board =
   let deck = board.deck in 
   let discard = board.discarded in
 
-  let rec helper players deck = 
+  let n, r, d = remove_top_n_cards deck 2 discard in
+  add_cards_to_hand n (List.hd board.players); board.deck <- r; board.discarded <- d;
+
+  let deck2 = board.deck in 
+  let discard2 = board.discarded in
+
+  let rec helper players deck discard = 
     match players with
     | [] -> ()
     | h :: t -> let n, r, d = remove_top_n_cards deck 5 discard in
       add_cards_to_hand n h; board.deck <- r; board.discarded <- d;
-      helper t r; in
+      helper t r d; in
 
-  let n, r, d = remove_top_n_cards deck 2 discard in
-  add_cards_to_hand n (List.hd board.players); board.deck <- r; board.discarded <- d;
-  helper players deck
+  helper players deck2 discard2
+
 
 let draw_new_cards (board: board) (mode: bool)=
   let player = List.nth board.players board.turn in 
