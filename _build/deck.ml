@@ -59,18 +59,18 @@ let initialize_deck (): deck =
   List.flatten [get_money_cards (); get_property_cards (); get_wildcards ();
                 get_action_cards (); get_rent_cards ()] 
 
-let remove_top_card (deck: deck): card * deck =
+let remove_top_card (deck: deck) (discard : card list): card * deck * card list =
   match deck with
-  | [] -> failwith "Deck is empty."
-  | h :: t -> (h, t)
+  | [] -> let d = shuffle(discard) in (List.hd d, List.tl d, [])
+  | h :: t -> (h, t, discard)
 
-let remove_top_n_cards (deck: deck) (n: int): (card list * deck) = 
+let remove_top_n_cards (deck: deck) (n: int) (discard: card list): (card list * deck * card list) = 
   if (List.length deck) < n then failwith "not enough cards" 
   else
-    let rec helper deck n acc = 
-      if n = 0 then (acc, deck) else
+    let rec helper deck n acc discard = 
+      if n = 0 then (acc, deck, discard) else
         match deck with
-        | [] -> failwith "impossible"
-        | h :: t -> helper t (n-1) (h :: acc) in
+        | [] -> helper (shuffle(discard)) n acc []
+        | h :: t -> helper t (n-1) (h :: acc) discard in
 
-    helper deck n [] 
+    helper deck n [] discard

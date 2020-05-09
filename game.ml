@@ -18,19 +18,19 @@ let rec make_board () =
     get_n_names i 0 [] |> List.rev |> initialize_board i
   | None -> print_endline "\027[38;5;9mIncorrect entry. Please enter an integer between 2 and 5 \027[0m"; make_board () 
 
-let rec main_helper (board: board) = 
+let rec main_helper (board: board) (num: int) = 
   let command = read_line () in
   match (command |> parse) with
-  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); main_helper board
-  | ViewPile -> print_current_player_pile board; main_helper board
-  | ViewHand -> print_current_player_hand board; main_helper board
-  | Play id -> 
-    (try
-       add_card_to_pile board id;
-     with InvalidCard ->
-       print_endline "Enter a valid card ID.";); 
-    main_helper board
-  | exception Malformed msg -> print_endline msg; main_helper board
+  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); main_helper board 0
+  | ViewPile -> print_current_player_pile board; main_helper board num
+  | ViewHand -> print_current_player_hand board; main_helper board num
+  | Play id -> if num >= 3 then let _ = print_endline "You cannot play more than 3 cards per turn" in main_helper board num 
+    else (try
+            add_card_to_pile board id; main_helper board (num+1)
+          with InvalidCard ->
+            print_endline "Enter a valid card ID.";
+            main_helper board (num));
+  | exception Malformed msg -> print_endline msg; main_helper board num
   | Quit -> print_endline "Hope you enjoyed playing :)"
   | _ -> failwith "other cases unimplemented."
 
@@ -39,7 +39,7 @@ let rec main () =
   Unix.sleep 1;
   let board = make_board () in
   distribute_cards_to_players board;
-  main_helper board
+  main_helper board 0
 
 (* Action card helpers *)
 let pass_go (board: board) = 

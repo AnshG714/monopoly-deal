@@ -11,7 +11,7 @@ type board =
     players: player list;
     mutable deck: deck;
     mutable turn: int;
-    discarded: card list
+    mutable discarded: card list
   }
 
 module Mapping = Make(String)
@@ -37,31 +37,38 @@ let get_current_turn board =
 let distribute_cards_to_players board = 
   let players = board.players in
   let deck = board.deck in 
+  let discard = board.discarded in
 
-  let rec helper players deck = 
+  let n, r, d = remove_top_n_cards deck 2 discard in
+  add_cards_to_hand n (List.hd board.players); board.deck <- r; board.discarded <- d;
+
+  let deck2 = board.deck in 
+  let discard2 = board.discarded in
+
+  let rec helper players deck discard = 
     match players with
     | [] -> ()
-    | h :: t -> let n, r = remove_top_n_cards deck 50 in
-      add_cards_to_hand n h; board.deck <- r;
-      helper t r; in
+    | h :: t -> let n, r, d = remove_top_n_cards deck 5 discard in
+      add_cards_to_hand n h; board.deck <- r; board.discarded <- d;
+      helper t r d; in
 
-  let n, r = remove_top_n_cards deck 2 in
-  add_cards_to_hand n (List.hd board.players); board.deck <- r;
-  helper players deck
+  helper players deck2 discard2
+
 
 let draw_new_cards (board: board) (mode: bool)=
   let player = List.nth board.players board.turn in 
   let cards = get_cards_in_hand player in
+  let discard = board.discarded in
   if List.length cards >= 7 then ()
   else if List.length cards = 6 then 
-    let c, d= remove_top_card board.deck in 
-    add_cards_to_hand ([c]) player; board.deck <- d
+    let n, r, d = remove_top_card board.deck discard in 
+    add_cards_to_hand ([n]) player; board.deck <- r; board.discarded <- d
   else if List.length cards = 0 && mode then 
-    let c, d = remove_top_n_cards board.deck 5 in 
-    add_cards_to_hand c player; board.deck <- d 
+    let n, r, d = remove_top_n_cards board.deck 5 discard in 
+    add_cards_to_hand n player; board.deck <- r; board.discarded <- d
   else 
-    let c, d = remove_top_n_cards board.deck 2 in 
-    add_cards_to_hand c player; board.deck <- d
+    let n, r, d = remove_top_n_cards board.deck 2 discard in 
+    add_cards_to_hand n player; board.deck <- r; board.discarded <- d
 
 let increment_turn (board: board) = 
   board.turn <- (board.turn + 1) mod (List.length board.players);

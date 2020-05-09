@@ -18,19 +18,19 @@ let rec make_board () =
     get_n_names i 0 [] |> List.rev |> initialize_board i
   | None -> print_endline "\027[38;5;9mIncorrect entry. Please enter an integer between 2 and 5 \027[0m"; make_board () 
 
-let rec main_helper (board: board) = 
+let rec main_helper (board: board) (num: int) = 
   let command = read_line () in
   match (command |> parse) with
-  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); main_helper board
-  | ViewPile -> print_current_player_pile board; main_helper board
-  | ViewHand -> print_current_player_hand board; main_helper board
-  | Play id -> 
-    (try
-       add_card_to_pile board id;
-     with InvalidCard ->
-       print_endline "Enter a valid card ID.";); 
-    main_helper board
-  | exception Malformed msg -> print_endline msg; main_helper board
+  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); main_helper board 0
+  | ViewPile -> print_current_player_pile board; main_helper board num
+  | ViewHand -> print_current_player_hand board; main_helper board num
+  | Play id -> if num >= 3 then let _ = print_endline "You cannot play more than 3 cards per turn" in main_helper board num 
+    else (try
+            add_card_to_pile board id; main_helper board (num+1)
+          with InvalidCard ->
+            print_endline "Enter a valid card ID.";
+            main_helper board (num));
+  | exception Malformed msg -> print_endline msg; main_helper board num
   | Quit -> print_endline "Hope you enjoyed playing :)"
   | _ -> failwith "other cases unimplemented."
 
@@ -39,7 +39,7 @@ let rec main () =
   Unix.sleep 1;
   let board = make_board () in
   distribute_cards_to_players board;
-  main_helper board
+  main_helper board 0
 
 (* Action card helper *)
 let pass_go (board: board) = 
@@ -51,27 +51,26 @@ let its_my_bday (board: board) =
   let others = List.filter
       (fun p -> get_player_name p <> get_current_player board) player_list in
 
-  let rec ask_for_money from_player total_value acc_value card_list =
+  let rec ask_for_money from_player total_value acc_value =
 
     (* ask which id they want to play *)
     print_endline "Please enter a valid card id to play";
     match read_int_opt () with
-    | None -> print_endline "Please enter a valid card id to play"; ask_for_money from_player total_value acc_value card_list
+    | None -> print_endline "Please enter a valid card id to play"; ask_for_money from_player total_value acc_value
     | Some id -> (match get_card_value id board with
-        | i -> transfer_card i from_player currpl 
+        | i -> transfer_card id from_player currpl; if (acc_value + i) < total_value then ask_for_money from_player total_value (acc_value + i) 
         | exception InvalidCard -> print_endline "You do not possess this card. Please enter the id of a card that you have.";
-          ask_for_money from_player total_value acc_value card_list
+          ask_for_money from_player total_value acc_value
       ) in
-  ()
 
+  let rec helper total_value plist =
+    match plist with
+    | [] -> ()
+    | h :: t -> let pile = get_played_personal_cards h in
+      if List.length pile = 0 then ()
+      else ask_for_money h total_value 0; helper total_value plist in
 
-
-let rec helper total_value plist =
-  match plist with
-  | [] -> ()
-  | h :: t -> let pile = get_played_personal_cards h in
-    if List.length pile = 0 then ()
-    else ()
+  helper 2 others
 
 let action_card_helper board id =
   if id = 15 then pass_go board

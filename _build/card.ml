@@ -258,6 +258,11 @@ let print_money_cards_helper (cards: money_card list) =
   let underline_list = make_recurring_list "\027[38;5;88m-------------" l in
   let money_header_list = make_recurring_list "\027[38;5;88m|   Money   |" l in
   let sidebar_list = make_recurring_list "\027[38;5;88m|           |" l in
+  let money_id_list = List.map (fun (card: money_card) -> 
+      if card.id >= 10 then
+        "|   id:"  ^ string_of_int (card.id) ^   "   |"
+      else "|    id:"  ^ string_of_int (card.id) ^   "    |"
+    ) cards in
   let money_val_list = List.map (fun card -> 
       (let money_value = get_money_value card in 
        if money_value = 10 then 
@@ -270,6 +275,7 @@ let print_money_cards_helper (cards: money_card list) =
   print_contents money_header_list white;
   print_contents underline_list magenta;
   print_contents sidebar_list magenta;
+  print_contents (List.rev money_id_list) magenta;
   print_contents money_val_list magenta;
   print_contents sidebar_list magenta;
   print_contents underline_list magenta
@@ -328,6 +334,11 @@ let print_property_cards_helper (cards: property_card list) =
     | [] -> acc
     | h :: t -> make_dataless_helper t 
                   (((List.assoc h.color color_map) ^ st) :: acc) st in
+  let property_id_list = List.map (fun (card: property_card) -> 
+      if card.id >= 10 then
+        "|        id:"  ^ string_of_int (card.id) ^   "         |"
+      else "|         id:"  ^ string_of_int (card.id) ^   "         |"
+    ) cards in
 
 
   let rec make_property_name_helper (cards: property_card list) acc = 
@@ -356,6 +367,7 @@ let print_property_cards_helper (cards: property_card list) =
   print_contents (make_property_name_helper cards []) white;
   print_contents (make_dataless_helper cards [] (String.make 24 '-')) white;
   print_contents (make_dataless_helper cards [] ("|" ^ (String.make 22 ' ') ^ "|")) white;
+  print_contents (List.rev property_id_list) white;
   for i = 0 to 3 do
     print_contents (make_rent_info_helper cards i []) white;
   done;
@@ -399,10 +411,17 @@ let print_wildcard_helper (cards: wildcard list) =
 
         let finalst = "\027[38;5;140m|    " ^ s1 ^ "    " ^ s2 ^ "    " ^ "\027[38;5;140m|" in
         wildcard_helper t (finalst :: acc) rent_number in
+  let wildcard_id_list = List.map (fun (card: wildcard) -> 
+      if card.id >= 10 then
+        "|        id:"  ^ string_of_int (card.id) ^   "         |"
+      else "|         id:"  ^ string_of_int (card.id) ^   "         |"
+    ) cards in
+
 
   print_contents underline white;
   print_contents header white;
   print_contents underline white;
+  print_contents (List.rev wildcard_id_list) white;
   for i = 0 to 3 do
     print_contents (wildcard_helper cards [] i) white;
   done;
@@ -424,6 +443,12 @@ let print_rent_cards_helper (cards: rent_card list) =
   let universal_orange = "\027[38;5;208m|    Universal     |" in
   let universal_yellow = "\027[38;5;226m|    Universal     |" in
   let ultra_card_list = [universal_pink;universal_orange;universal_yellow;] in
+
+  let rent_id_list = List.map (fun (card: rent_card) -> 
+      if card.id >= 10 then
+        "|        id:"  ^ string_of_int (card.id) ^   "         |"
+      else "|       id:"  ^ string_of_int (card.id) ^   "       |"
+    ) cards in
 
   let rec make_rent_header cards acc = 
     match cards with
@@ -453,6 +478,7 @@ let print_rent_cards_helper (cards: rent_card list) =
   print_contents underline_list white;
   print_contents (make_rent_header cards []) white;
   print_contents underline_list white;
+  print_contents (List.rev rent_id_list) white;
 
   for i = 0 to 2 do
     print_contents (make_color_info cards i []) white;
