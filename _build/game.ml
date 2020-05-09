@@ -58,7 +58,9 @@ let its_my_bday (board: board) =
     | [] -> ()
     | h :: t -> let pile = get_played_personal_cards h in
       if List.length pile = 0 then ()
-      else ask_for_money board currpl h total_value 0; helper total_value plist in
+      else print_endline ((get_player_name h) ^ "pile"); 
+      print_pile_of_player board (get_player_name h); 
+      ask_for_money board currpl h total_value 0; helper total_value t in
 
   helper 2 others;
   true
@@ -98,10 +100,11 @@ let rec sly_deal (board: board) =
 let debt_collector board = 
   print_endline "\027[38;5;190mYou have chosen to play a debt collector card. To do this, enter enter the name of the person you want to collect debt from. The players are: \027[0m";
   let name = get_player_name_input board in
-  let player = List.find (fun x -> get_player_name x = name) (get_players board) in
-  print_pile_of_player board name;
-  ask_for_money board (List.nth (get_players board) (get_current_turn board)) player 5 0;
-  true
+  if name = "cancel" then false else
+    (let player = List.find (fun x -> get_player_name x = name) (get_players board) in
+     print_pile_of_player board name;
+     ask_for_money board (List.nth (get_players board) (get_current_turn board)) player 5 0;
+     true)
 
 let action_card_helper board id =
   if id = 8 then debt_collector board

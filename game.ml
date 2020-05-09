@@ -58,7 +58,9 @@ let its_my_bday (board: board) =
     | [] -> ()
     | h :: t -> let pile = get_played_personal_cards h in
       if List.length pile = 0 then ()
-      else ask_for_money board currpl h total_value 0; helper total_value plist in
+      else print_endline ((get_player_name h) ^ "'s pile"); 
+      print_pile_of_player board (get_player_name h); 
+      ask_for_money board currpl h total_value 0; helper total_value t in
 
   helper 2 others;
   true
