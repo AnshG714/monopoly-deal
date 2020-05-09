@@ -41,7 +41,7 @@ let rec main () =
   distribute_cards_to_players board;
   main_helper board
 
-(* Action card helper *)
+(* Action card helpers *)
 let pass_go (board: board) = 
   draw_new_cards board false
 
