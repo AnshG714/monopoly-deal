@@ -24,7 +24,7 @@ let rec main_helper (board: board) (num: int) =
   | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); main_helper board 0
   | ViewPile -> print_current_player_pile board; main_helper board num
   | ViewHand -> print_current_player_hand board; main_helper board num
-  | Play id -> if num >= 3 then let _ = print_endline "You cannot play more than 3 cards per turn" in main_helper board num 
+  | Play id -> if num >= 3 then (print_endline "You cannot play more than 3 cards per turn"; main_helper board num) 
     else (try
             add_card_to_pile board id; main_helper board (num+1)
           with InvalidCard ->
@@ -41,7 +41,7 @@ let rec main () =
   distribute_cards_to_players board;
   main_helper board 0
 
-(* Action card helpers *)
+(*  -------------------------- Action card helpers ---------------------------*)
 let pass_go (board: board) = 
   draw_new_cards board false
 
@@ -53,7 +53,6 @@ let its_my_bday (board: board) =
 
   let rec ask_for_money from_player total_value acc_value =
 
-    (* ask which id they want to play *)
     print_endline "Please enter a valid card id to play";
     match read_int_opt () with
     | None -> print_endline "Please enter a valid card id to play"; ask_for_money from_player total_value acc_value

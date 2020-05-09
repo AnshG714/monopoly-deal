@@ -255,9 +255,9 @@ let rec batch_and_print (batch_size: int) (card_list) (print_fun) =
     in [cards].  *)
 let print_money_cards_helper (cards: money_card list) =
   let l = List.length cards in
-  let underline_list = make_recurring_list "\027[38;5;88m-------------" l in
-  let money_header_list = make_recurring_list "\027[38;5;88m|   Money   |" l in
-  let sidebar_list = make_recurring_list "\027[38;5;88m|           |" l in
+  let underline_list = make_recurring_list "-------------" l in
+  let money_header_list = make_recurring_list "|   Money   |" l in
+  let sidebar_list = make_recurring_list "|           |" l in
   let money_id_list = List.map (fun (card: money_card) -> 
       if card.id >= 10 then
         "|   id:"  ^ string_of_int (card.id) ^   "   |"
@@ -332,12 +332,15 @@ let print_property_cards_helper (cards: property_card list) =
   let rec make_dataless_helper cards acc st = 
     match cards with
     | [] -> acc
-    | h :: t -> make_dataless_helper t 
-                  (((List.assoc h.color color_map) ^ st) :: acc) st in
+    | h :: t -> let color = List.assoc h.color color_map in
+      make_dataless_helper t 
+        ((color ^ st) :: acc) st in
+
   let property_id_list = List.map (fun (card: property_card) -> 
+      let color = List.assoc card.color color_map in
       if card.id >= 10 then
-        "|        id:"  ^ string_of_int (card.id) ^   "         |"
-      else "|         id:"  ^ string_of_int (card.id) ^   "         |"
+        color ^ "|        id:"  ^ string_of_int (card.id) ^   "         |"
+      else color ^ "|         id:"  ^ string_of_int (card.id) ^   "         |"
     ) cards in
 
 
@@ -413,8 +416,8 @@ let print_wildcard_helper (cards: wildcard list) =
         wildcard_helper t (finalst :: acc) rent_number in
   let wildcard_id_list = List.map (fun (card: wildcard) -> 
       if card.id >= 10 then
-        "|        id:"  ^ string_of_int (card.id) ^   "         |"
-      else "|         id:"  ^ string_of_int (card.id) ^   "         |"
+        "\027[38;5;140m|        id:"  ^ string_of_int (card.id) ^   "         |"
+      else "\027[38;5;140m|         id:"  ^ string_of_int (card.id) ^   "         |"
     ) cards in
 
 
@@ -446,8 +449,8 @@ let print_rent_cards_helper (cards: rent_card list) =
 
   let rent_id_list = List.map (fun (card: rent_card) -> 
       if card.id >= 10 then
-        "|        id:"  ^ string_of_int (card.id) ^   "         |"
-      else "|       id:"  ^ string_of_int (card.id) ^   "       |"
+        "\027[38;5;360m|        id:"  ^ string_of_int (card.id) ^   "         |"
+      else "\027[38;5;360m|       id:"  ^ string_of_int (card.id) ^   "       |"
     ) cards in
 
   let rec make_rent_header cards acc = 
