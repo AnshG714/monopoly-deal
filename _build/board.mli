@@ -26,7 +26,11 @@ val print_current_player_hand : board -> unit
 
 val print_current_player_pile : board -> unit
 
+val print_pile_of_player : board -> string -> unit
+
 val add_card_to_pile : board -> int -> unit
+
+val discard_card_from_hand : board -> int -> unit
 
 val get_current_turn : board -> int
 

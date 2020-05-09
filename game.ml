@@ -18,28 +18,6 @@ let rec make_board () =
     get_n_names i 0 [] |> List.rev |> initialize_board i
   | None -> print_endline "\027[38;5;9mIncorrect entry. Please enter an integer between 2 and 5 \027[0m"; make_board () 
 
-let rec main_helper (board: board) (num: int) = 
-  let command = read_line () in
-  match (command |> parse) with
-  | Pass -> increment_turn board; print_endline ("it is now turn " ^ (get_current_player board)); main_helper board 0
-  | ViewPile -> print_current_player_pile board; main_helper board num
-  | ViewHand -> print_current_player_hand board; main_helper board num
-  | Play id -> if num >= 3 then (print_endline "You cannot play more than 3 cards per turn"; main_helper board num) 
-    else (try
-            add_card_to_pile board id; main_helper board (num+1)
-          with InvalidCard ->
-            print_endline "Enter a valid card ID.";
-            main_helper board (num));
-  | exception Malformed msg -> print_endline msg; main_helper board num
-  | Quit -> print_endline "Hope you enjoyed playing :)"
-  | _ -> failwith "other cases unimplemented."
-
-let rec main () = 
-  print_endline "\027[38;5;11mWelcome! You are about to start a game of Monopoly Deal. To get started, enter the number of players, followed by their names. \027[0m";
-  Unix.sleep 1;
-  let board = make_board () in
-  distribute_cards_to_players board;
-  main_helper board 0
 
 (*  -------------------------- Action card helpers ---------------------------*)
 let rec get_player_name_input board =
@@ -80,13 +58,69 @@ let its_my_bday (board: board) =
 
   helper 2 others
 
-let sly_deal (board: board) = 
-  print_endline "\027[38;5;190mYou have chosen to play a sly deal card. To do this, first enter enter the name of the person you want to perform the sly deal with. The players are:";
+let rec sly_deal (board: board) = 
+  print_endline "\027[38;5;190mYou have chosen to play a sly deal card. To do this, first enter enter the name of the person you want to perform the sly deal with. The players are: \027[0m";
   let name = get_player_name_input board in
-  ()
+  print_endline ("Here is " ^ name ^ "'s pile:");
+  print_pile_of_player board name;
+  print_endline "Either enter an id, or enter 'back' if you want to choose another player. ";
+
+  let rec loop () = 
+    match read_line () with
+    | entry -> (match int_of_string_opt entry with
+        | Some i -> (if i < 25 || i > 52 then (print_endline "this isn't a property card!"; loop ())
+                     else match 
+                         transfer_card i 
+                           (List.find (fun x -> get_player_name x = name) 
+                              (get_players board))
+                           (List.nth (get_players board) 
+                              (get_current_turn board)) 
+                       with
+                       | exception InvalidCard -> print_endline "wrong"; loop ()
+                       | _ -> ())
+        | None -> if entry = "back" then sly_deal board 
+          else print_endline "You need to either enter a valid id for the property card you want to take, or type 'back'."; 
+          loop ()) in
+
+  loop ()
+
 
 let action_card_helper board id =
   if id = 15 then pass_go board
+  else if id = 16 then sly_deal board
   else failwith "unimplemented"
+
+let rec main_helper (board: board) (num: int) = 
+  print_endline ("It is now " ^ (get_current_player board) ^ "'s turn\n\n\n");
+  let command = read_line () in
+  match (command |> parse) with
+  | Pass -> increment_turn board; 
+    print_endline ("it is now turn " ^ (get_current_player board)); main_helper board 0
+
+  | ViewPile -> print_current_player_pile board; main_helper board num
+
+  | ViewHand -> print_current_player_hand board; main_helper board num
+
+  | Play id -> if num >= 3 then (print_endline "You cannot play more than 3 cards per turn"; 
+                                 main_helper board num) 
+    else (try
+            if id >= 7 && id <= 16 then (action_card_helper board id; discard_card_from_hand board id)
+            else add_card_to_pile board id; main_helper board (num+1)
+          with InvalidCard ->
+            print_endline "Enter a valid card ID.";
+            main_helper board (num));
+
+  | Quit -> print_endline "Hope you enjoyed playing :)"
+
+  | exception Malformed msg -> print_endline msg; main_helper board num
+
+  | _ -> failwith "other cases unimplemented."
+
+let rec main () = 
+  print_endline "\027[38;5;11mWelcome! You are about to start a game of Monopoly Deal. To get started, enter the number of players, followed by their names. \027[0m";
+  Unix.sleep 1;
+  let board = make_board () in
+  distribute_cards_to_players board;
+  main_helper board 0
 
 let _ = main ()

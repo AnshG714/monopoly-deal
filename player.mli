@@ -26,6 +26,8 @@ val play_card_to_personal_pile : int -> player -> unit
 
 val remove_card_from_personal_pile : int -> player -> card
 
+val remove_card_from_hand : int -> player -> card
+
 val add_card_to_personal_pile : card -> player -> unit
 
 val check_if_set_made: player -> color -> bool

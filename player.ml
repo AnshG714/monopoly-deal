@@ -44,17 +44,28 @@ let play_card_to_personal_pile (id: int) (player: player) =
      player.played_personal_cards <- List.hd removed_cards :: player.played_personal_cards;);
   ()
 
-let remove_card_from_personal_pile (id : int) (player) : card =
 
+let remove_card_helper (id: int) (player: player) (removal_from_pile: bool) : card = 
   let pile_after_removal = 
-    List.filter (fun x -> (get_id x) <> id) (get_played_personal_cards player) in 
+    List.filter (fun x -> (get_id x) <> id) 
+      (if removal_from_pile then get_played_personal_cards player else get_cards_in_hand player) in 
 
-  let removed_cards =  List.filter (fun x -> (get_id x) = id) (get_played_personal_cards player) in 
+  let removed_cards =  List.filter (fun x -> (get_id x) = id)
+      (if removal_from_pile then get_played_personal_cards player else get_cards_in_hand player) in 
 
   if List.length removed_cards = 0 then failwith "id error"
-  else 
-    player.played_personal_cards <- List.tl removed_cards @ pile_after_removal;
+  else
+  if removal_from_pile then 
+    player.played_personal_cards <- List.tl removed_cards @ pile_after_removal
+  else
+    player.cards_in_hand <- List.tl removed_cards @ pile_after_removal;
   List.hd removed_cards
+
+let remove_card_from_personal_pile (id : int) (player) : card =
+  remove_card_helper id player true
+
+let remove_card_from_hand (id: int) (player: player) : card = 
+  remove_card_helper id player false
 
 let add_card_to_personal_pile (card : card) (player: player) = 
   player.played_personal_cards <- card :: player.played_personal_cards

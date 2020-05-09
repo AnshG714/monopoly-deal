@@ -47,7 +47,7 @@ let distribute_cards_to_players board =
   let rec helper players deck discard = 
     match players with
     | [] -> ()
-    | h :: t -> let n, r, d = remove_top_n_cards deck 5 discard in
+    | h :: t -> let n, r, d = remove_top_n_cards deck 50 discard in
       add_cards_to_hand n h; board.deck <- r; board.discarded <- d;
       helper t r d; in
 
@@ -115,11 +115,19 @@ let add_card_to_pile board id =
   with _ ->
     raise InvalidCard
 
-let transfer_card id player1 player2 = 
-  let c = remove_card_from_personal_pile id player1 in
-  add_card_to_personal_pile c player2
+let discard_card_from_hand (board : board) (id : int): unit = 
+  let p = List.nth board.players board.turn in 
+  let card = remove_card_from_hand id p in
+  board.discarded <- card :: board.discarded
 
-(* ----------------- printing functions -----------------*)
+let transfer_card id player1 player2 = 
+  try
+    let c = remove_card_from_personal_pile id player1 in
+    add_card_to_personal_pile c player2
+  with _ -> 
+    raise InvalidCard
+
+(* ------------------------- printing functions -----------------------------*)
 
 let collect_cards card_list = 
   let l = Mapping.empty in
@@ -200,3 +208,8 @@ let print_current_player_pile board =
   let p = List.nth board.players board.turn in 
   let pile = get_played_personal_cards p in 
   print_card_list pile
+
+let print_pile_of_player (board: board) (player_name: string) = 
+  (* Precondition: player_name is a valid name. *)
+  let player = List.find (fun player -> get_player_name player = player_name) (board.players) in
+  print_card_list (get_played_personal_cards player)
