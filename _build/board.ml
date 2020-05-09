@@ -16,8 +16,10 @@ type board =
 
 module Mapping = Make(String)
 
+(* ------------------- Functions to initialize a board --------------------- *)
+
 (* [init_mult_players] is a list of n players, with names given in [names].
-    Precondition: n = List.length names
+    Requires: n = List.length names
 *)
 let rec init_mult_players n names = 
   if (n = 0) then []
@@ -30,9 +32,6 @@ let initialize_board (n: int) (player_names: string list): board =
     turn = 0;
     discarded = []
   }
-
-let get_current_turn board = 
-  board.turn
 
 let distribute_cards_to_players board = 
   let players = board.players in
@@ -54,6 +53,33 @@ let distribute_cards_to_players board =
 
   helper players deck2 discard2
 
+(* --------------------- getters for a board instance ---------------------- *)
+
+let get_current_turn board = 
+  board.turn
+
+let get_players board =
+  board.players
+
+let get_current_player board = 
+  let p = List.nth board.players board.turn in
+  get_player_name p
+
+let get_player_names board = 
+  List.map (fun player -> get_player_name player) board.players
+
+let get_card_value (id: int) (board: board): int = 
+  let l = List.filter (fun c -> (get_id c) = id) board.deck in
+  if List.length l = 0 then raise InvalidCard
+  else match List.hd l with
+    | Property p -> get_property_value p
+    | Wildcard w -> get_wildcard_value w
+    | Rent r -> get_rent_value r
+    | Money m -> get_money_value m
+    | Action a -> get_action_value a
+
+
+(* ------------------------ Functions for Gameplay ------------------------- *)
 
 let draw_new_cards (board: board) (mode: bool)=
   let player = List.nth board.players board.turn in 
@@ -82,12 +108,18 @@ let check_card_in_pile player id =
   let cards = get_played_personal_cards player in
   List.exists (fun card -> get_id card = id) cards
 
-let get_players board =
-  board.players
+let add_card_to_pile board id = 
+  try
+    let p = List.nth board.players board.turn in 
+    play_card_to_personal_pile id p
+  with _ ->
+    raise InvalidCard
 
-let get_current_player board = 
-  let p = List.nth board.players board.turn in
-  get_player_name p
+let transfer_card id player1 player2 = 
+  let c = remove_card_from_personal_pile id player1 in
+  add_card_to_personal_pile c player2
+
+(* ----------------- printing functions -----------------*)
 
 let collect_cards card_list = 
   let l = Mapping.empty in
@@ -168,24 +200,3 @@ let print_current_player_pile board =
   let p = List.nth board.players board.turn in 
   let pile = get_played_personal_cards p in 
   print_card_list pile
-
-let add_card_to_pile board id = 
-  try
-    let p = List.nth board.players board.turn in 
-    play_card_to_personal_pile id p
-  with _ ->
-    raise InvalidCard
-
-let get_card_value (id: int) (board: board): int = 
-  let l = List.filter (fun c -> (get_id c) = id) board.deck in
-  if List.length l = 0 then raise InvalidCard
-  else match List.hd l with
-    | Property p -> get_property_value p
-    | Wildcard w -> get_wildcard_value w
-    | Rent r -> get_rent_value r
-    | Money m -> get_money_value m
-    | Action a -> get_action_value a
-
-let transfer_card id player1 player2 = 
-  let c = remove_card_from_personal_pile id player1 in
-  add_card_to_personal_pile c player2

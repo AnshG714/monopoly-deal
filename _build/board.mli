@@ -14,6 +14,8 @@ val get_players: board -> player list
 
 val get_current_player: board -> string
 
+val get_player_names: board -> string list
+
 val increment_turn: board -> unit
 
 val distribute_cards_to_players : board -> unit

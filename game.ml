@@ -42,6 +42,15 @@ let rec main () =
   main_helper board 0
 
 (*  -------------------------- Action card helpers ---------------------------*)
+let rec get_player_name_input board =
+  let names = get_player_names board in
+  print_string (List.fold_left (fun acc name -> acc ^ name ^ "\n") "" names);
+  match read_line () with
+  | name when String.length name > 0 && List.mem name names -> name 
+  | _ -> print_endline 
+           "Invalid entry. A name must have more than one character and should be in the list of names.";
+    get_player_name_input board
+
 let pass_go (board: board) = 
   draw_new_cards board false
 
@@ -70,6 +79,11 @@ let its_my_bday (board: board) =
       else ask_for_money h total_value 0; helper total_value plist in
 
   helper 2 others
+
+let sly_deal (board: board) = 
+  print_endline "\027[38;5;190mYou have chosen to play a sly deal card. To do this, first enter enter the name of the person you want to perform the sly deal with. The players are:";
+  let name = get_player_name_input board in
+  ()
 
 let action_card_helper board id =
   if id = 15 then pass_go board

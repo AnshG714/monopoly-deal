@@ -70,7 +70,7 @@ let rec discard_until_seven player =
 
 (* [check_if_set_made] is true if the player [player] owns all the cards in the
    set with color [color], false otherwise. *)
-let check_if_set_made (player: player) (color: color) =
+let check_if_set_made (player: player) (color: color): bool =
 
   (* get cards from pile *)
   let l = get_played_personal_cards player in

@@ -65,6 +65,9 @@ let get_current_player board =
   let p = List.nth board.players board.turn in
   get_player_name p
 
+let get_player_names board = 
+  List.map (fun player -> get_player_name player) board.players
+
 let get_card_value (id: int) (board: board): int = 
   let l = List.filter (fun c -> (get_id c) = id) board.deck in
   if List.length l = 0 then raise InvalidCard
