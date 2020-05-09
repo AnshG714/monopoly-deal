@@ -24,7 +24,7 @@ let rec get_player_name_input board =
   let names = get_player_names board in
   print_string (List.fold_left (fun acc name -> acc ^ name ^ "\n") "" names);
   match read_line () with
-  | name when String.length name > 0 && List.mem name names -> name 
+  | name when String.length name > 0 && (List.mem name names || name = "cancel") -> name 
   | _ -> print_endline 
            "Invalid entry. A name must have more than one character and should be in the list of names.";
     get_player_name_input board
@@ -35,7 +35,7 @@ let rec ask_for_money board current_player from_player total_value acc_value =
   match read_int_opt () with
   | None -> print_endline "Please enter a valid card id to play";
     ask_for_money board current_player from_player total_value acc_value
-  | Some id -> (match get_card_value id board with
+  | Some id -> (match get_card_value id (get_played_personal_cards from_player) with
       | i -> transfer_card id from_player current_player; 
         if (acc_value + i) < total_value 
         then ask_for_money board current_player from_player total_value (acc_value + i) 
@@ -44,7 +44,8 @@ let rec ask_for_money board current_player from_player total_value acc_value =
     )
 
 let pass_go (board: board) = 
-  draw_new_cards board false
+  draw_new_cards board false;
+  true
 
 let its_my_bday (board: board) = 
   let currpl = List.nth (get_players board) (get_current_turn board) in
@@ -59,46 +60,56 @@ let its_my_bday (board: board) =
       if List.length pile = 0 then ()
       else ask_for_money board currpl h total_value 0; helper total_value plist in
 
-  helper 2 others
+  helper 2 others;
+  true
 
 let rec sly_deal (board: board) = 
-  print_endline "\027[38;5;190mYou have chosen to play a sly deal card. To do this, first enter enter the name of the person you want to perform the sly deal with. The players are: \027[0m";
+  print_endline "\027[38;5;190mYou have chosen to play a sly deal card. To do this, first enter enter the name of the person you want to perform the sly deal with. If you want to cancel, type 'cancel'. The players are: \027[0m";
   let name = get_player_name_input board in
-  print_endline ("Here is " ^ name ^ "'s pile:");
-  print_pile_of_player board name;
-  print_endline "Either enter an id, or enter 'back' if you want to choose another player. ";
+  if name = "cancel" then false 
+  else
+    (print_endline ("Here is " ^ name ^ "'s pile:");
+     print_pile_of_player board name;
+     print_endline "Either enter an id, or enter 'back' if you want to choose another player. ";
 
-  let rec loop () = 
-    match read_line () with
-    | entry -> (match int_of_string_opt entry with
-        | Some i -> (if i < 25 || i > 52 then (print_endline "this isn't a property card!"; loop ())
-                     else match 
-                         transfer_card i 
-                           (List.find (fun x -> get_player_name x = name) 
-                              (get_players board))
-                           (List.nth (get_players board) 
-                              (get_current_turn board)) 
-                       with
-                       | exception InvalidCard -> print_endline "wrong"; loop ()
-                       | _ -> ())
-        | None -> if entry = "back" then sly_deal board 
-          else print_endline "You need to either enter a valid id for the property card you want to take, or type 'back'."; 
-          loop ()) in
+     let rec transfer_helper i = 
+       match 
+         transfer_card i 
+           (List.find (fun x -> get_player_name x = name) 
+              (get_players board))
+           (List.nth (get_players board) 
+              (get_current_turn board)) 
+       with
+       | exception InvalidCard -> print_endline "wrong"; loop ()
+       | _ -> true
 
-  loop ()
+     and loop () = 
+       match read_line () with
+       | entry -> (match int_of_string_opt entry with
+           | Some i -> (if i < 25 || i > 52 then (print_endline "this isn't a property card!"; loop ())
+                        else transfer_helper i)
+           | None -> if entry = "back" then sly_deal board
+             else (print_endline "You need to either enter a valid id for the property card you want to take, or type 'back'."; 
+                   loop ())) 
+       | exception Failure _ -> false in
+
+     loop ())
 
 let debt_collector board = 
   print_endline "\027[38;5;190mYou have chosen to play a debt collector card. To do this, enter enter the name of the person you want to collect debt from. The players are: \027[0m";
   let name = get_player_name_input board in
-  let player = List.find (fun x -> get_player_name x = name) (get_players board) in
-  ask_for_money board (List.nth (get_players board) (get_current_turn board)) player 5 0
+  if name = "cancel" then false else
+    (let player = List.find (fun x -> get_player_name x = name) (get_players board) in
+     print_pile_of_player board name;
+     ask_for_money board (List.nth (get_players board) (get_current_turn board)) player 5 0;
+     true)
 
 let action_card_helper board id =
   if id = 8 then debt_collector board
   else if id = 13 then its_my_bday board
   else if id = 15 then pass_go board
   else if id = 16 then sly_deal board
-  else ()
+  else false
 
 let rec main_helper (board: board) (num: int) = 
   print_endline ("It is now " ^ (get_current_player board) ^ "'s turn\n\n\n");
@@ -114,7 +125,8 @@ let rec main_helper (board: board) (num: int) =
   | Play id -> if num >= 3 then (print_endline "You cannot play more than 3 cards per turn"; 
                                  main_helper board num) 
     else (try
-            if id >= 7 && id <= 16 then (action_card_helper board id; discard_card_from_hand board id)
+            if id >= 7 && id <= 16 then 
+              (if (action_card_helper board id) then discard_card_from_hand board id else ())
             else add_card_to_pile board id; main_helper board (num+1)
           with InvalidCard ->
             print_endline "Enter a valid card ID.";

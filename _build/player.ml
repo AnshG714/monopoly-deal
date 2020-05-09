@@ -7,7 +7,6 @@ type player = {
   mutable played_personal_cards: card list
 }
 
-
 let initialize_player name: player =
   {
     name = name;

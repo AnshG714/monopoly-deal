@@ -34,6 +34,6 @@ val discard_card_from_hand : board -> int -> unit
 
 val get_current_turn : board -> int
 
-val get_card_value: int -> board -> int
+val get_card_value: int -> card list -> int
 
 val transfer_card : int -> player -> player -> unit

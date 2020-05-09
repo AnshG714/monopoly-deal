@@ -1,6 +1,6 @@
 ### Starting build.
 # Target: game.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:game.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules game.ml > game.ml.depends
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules game.ml > game.ml.depends # cached
 # Target: board.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:board.mli, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules board.mli > board.mli.depends # cached
 # Target: card.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:card.mli, ocaml, ocamldep, quiet, traverse }
@@ -22,7 +22,7 @@ ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules
 # Target: command.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:command.mli, interf, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o command.cmi command.mli # cached
 # Target: game.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:game.cmo, file:game.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o game.cmo game.ml
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o game.cmo game.ml # cached
 # Target: board.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:board.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules board.ml > board.ml.depends # cached
 # Target: util.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:util.mli, ocaml, ocamldep, quiet, traverse }

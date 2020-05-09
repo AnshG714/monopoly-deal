@@ -47,7 +47,7 @@ let distribute_cards_to_players board =
   let rec helper players deck discard = 
     match players with
     | [] -> ()
-    | h :: t -> let n, r, d = remove_top_n_cards deck 5 discard in
+    | h :: t -> let n, r, d = remove_top_n_cards deck 50 discard in
       add_cards_to_hand n h; board.deck <- r; board.discarded <- d;
       helper t r d; in
 
@@ -68,8 +68,8 @@ let get_current_player board =
 let get_player_names board = 
   List.map (fun player -> get_player_name player) board.players
 
-let get_card_value (id: int) (board: board): int = 
-  let l = List.filter (fun c -> (get_id c) = id) board.deck in
+let get_card_value (id: int) (card_list: card list): int = 
+  let l = List.filter (fun c -> (get_id c) = id) card_list in
   if List.length l = 0 then raise InvalidCard
   else match List.hd l with
     | Property p -> get_property_value p
@@ -77,7 +77,6 @@ let get_card_value (id: int) (board: board): int =
     | Rent r -> get_rent_value r
     | Money m -> get_money_value m
     | Action a -> get_action_value a
-
 
 (* ------------------------ Functions for Gameplay ------------------------- *)
 
