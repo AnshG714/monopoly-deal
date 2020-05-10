@@ -136,6 +136,19 @@ let transfer_set board color from_player to_player =
   remove_cards_from_personal_pile transfer from_player;
   add_cards_to_personal_pile transfer to_player
 
+let check_win board =
+  let p = List.nth board.players board.turn in 
+
+  let rec helper color_list acc = 
+    match color_list with 
+    | [] -> acc
+    | h::t -> if check_if_set_made p h then helper t (acc+1) else helper t acc in
+
+  let num_sets = helper ["brown"; "blue"; "green"; "light blue"; "light green"; 
+                         "orange"; "pink"; "black"; "red"; "yellow"] 0 in 
+  if num_sets >= 3 then true else false
+
+
 (* ------------------------- printing functions -----------------------------*)
 
 (** [collect_cards card_list] is a mapping of the cards in card_list to

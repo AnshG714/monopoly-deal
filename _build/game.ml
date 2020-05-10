@@ -247,8 +247,9 @@ let rec deal_breaker board =
       | _ -> print_endline "You didn't enter a valid color!\n\n"; get_color () in
 
     let color = get_color () in
-
-    if (check_if_set_made player color) then true else false
+    let currpl = List.nth (get_players board) (get_current_turn board) in
+    if (check_if_set_made player color) then (transfer_set board color player currpl; true)
+    else (print_endline "This isn't a valid set!"; deal_breaker board)
 
 
 
@@ -282,9 +283,13 @@ let rec main_helper (board: board) (num: int) =
     else (try
             if id >= 7 && id <= 16 then 
               (if (action_card_helper board id) then 
-                 (discard_card_from_hand board id; main_helper board (num + 1)) 
+                 (discard_card_from_hand board id;) 
                else main_helper board (num))
-            else (add_card_to_pile board id; main_helper board (num+1))
+            else (add_card_to_pile board id);
+            if check_win board 
+            then (print_endline "You have 3 complete sets! You win!"; 
+                  print_current_player_pile board;)
+            else main_helper board (num + 1);
           with InvalidCard ->
             print_endline "Enter a valid card ID.";
             main_helper board (num));

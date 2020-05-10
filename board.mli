@@ -79,3 +79,7 @@ val transfer_card : int -> player -> player -> unit
     Requires: [from_player] owns the set of [color]
 *)
 val transfer_set: board -> color -> player -> player -> unit
+
+(** [check_win board] is true if the current player has at least 3 complete
+    sets and has won the game, and is false otherwise. *)
+val check_win : board -> bool
