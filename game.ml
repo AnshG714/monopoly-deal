@@ -9,16 +9,19 @@ let rec get_n_names n count acc =
   else  (print_string ("> Name " ^ string_of_int (count + 1) ^ ": ");
          match read_line () with
          | name when String.length name > 0 -> get_n_names n (count + 1) (name::acc)
-         | _ -> print_endline "Invalid entry, a name has to have at least one char"; get_n_names n count acc)
+         | _ -> print_endline "Invalid entry, a name has to have at least one char"; 
+           get_n_names n count acc)
 
 (** [make_board] initializes a board for the game with a list of player names. *)
 let rec make_board () = 
   print_endline "\027[38;5;47mPlease enter an integer between 2 and 5 \027[0m"; 
   print_string "> ";
   match read_int_opt () with
-  | Some i -> print_endline "\027[38;5;47m\nGreat! Now, please enter the names of the players that will be playing. \027[0m"; 
+  | Some i -> print_endline "\027[38;5;47m\nGreat! Now, please enter the names \
+                             of the players that will be playing. \027[0m"; 
     get_n_names i 0 [] |> List.rev |> initialize_board i
-  | None -> print_endline "\027[38;5;9mIncorrect entry. Please enter an integer between 2 and 5 \027[0m"; make_board () 
+  | None -> print_endline "\027[38;5;9mIncorrect entry. Please enter an integer\
+                           between 2 and 5 \027[0m"; make_board () 
 
 
 (*  -------------------------- Action card helpers ---------------------------*)
@@ -29,7 +32,8 @@ let rec get_player_name_input board =
   match read_line () with
   | name when String.length name > 0 && (List.mem name names || name = "cancel") -> name 
   | _ -> print_endline 
-           "Invalid entry. A name must have more than one character and should be in the list of names.";
+           "Invalid entry. A name must have more than one character and should \
+            be in the list of names.";
     get_player_name_input board
 
 (** [ask_for_money] asks [from_player] which money cards they want to give to
@@ -45,7 +49,9 @@ let rec ask_for_money board current_player from_player total_value acc_value =
       | i -> transfer_card id from_player current_player; 
         if (acc_value + i) < total_value 
         then ask_for_money board current_player from_player total_value (acc_value + i) 
-      | exception InvalidCard -> print_endline "You do not possess this card. Please enter the id of a card that you have.";
+      | exception InvalidCard -> print_endline "You do not possess this card. \
+                                                Please enter the id of a card \
+                                                that you have.";
         ask_for_money board current_player from_player total_value acc_value
     )
 
@@ -91,10 +97,14 @@ let rec move_property board f name =
   and loop () = 
     match read_line () with
     | entry -> (match int_of_string_opt entry with
-        | Some i -> (if i < 17 || i > 52 then (print_endline "this isn't a property card!"; loop ())
+        | Some i -> (if i < 17 || i > 52 then (print_endline "this isn't a \
+                                                              property card!"; 
+                                               loop ())
                      else transfer_helper i)
-        | None -> if entry = "back" then (if f = sly_deal then sly_deal board else forced_deal board)
-          else (print_endline "You need to either enter a valid id for the property card you want to take, or type 'back'."; 
+        | None -> if entry = "back" then (if f = sly_deal then sly_deal board 
+                                          else forced_deal board)
+          else (print_endline "You need to either enter a valid id for the \
+                               property card you want to take, or type 'back'."; 
                 loop ())) 
     | exception Failure _ -> false in
 
@@ -104,13 +114,17 @@ let rec move_property board f name =
 (** [sly_deal board] allows the current player to steal any property of their 
     choice from any other player of their choice. *)
 and  sly_deal (board: board) = 
-  print_endline "\027[38;5;190mYou have chosen to play a sly deal card. To do this, first enter enter the name of the person you want to perform the sly deal with. If you want to cancel, type 'cancel'. The players are: \027[0m";
+  print_endline "\027[38;5;190mYou have chosen to play a sly deal card. To do \
+                 this, first enter enter the name of the person you want to \
+                 perform the sly deal with. If you want to cancel, type \
+                 'cancel'. The players are: \027[0m";
   let name = get_player_name_input board in
   if name = "cancel" then false 
   else
     (print_endline ("Here is " ^ name ^ "'s pile:");
      print_pile_of_player board name;
-     print_endline "Either enter an id, or enter 'back' if you want to choose another player. ";
+     print_endline "Either enter an id, or enter 'back' if you want to choose \
+                    another player. ";
 
      move_property board sly_deal name;)
 
@@ -120,31 +134,41 @@ and  forced_deal board =
   let currpl = List.nth (get_players board) (get_current_turn board) in
   print_endline "\027[38;5;190mYou have chosen to play a forced deal card.";
   print_current_player_pile board;
-  print_endline "Enter the id of the card you want to swap out or enter 'cancel' to cancel";
+  print_endline "Enter the id of the card you want to swap out or enter \
+                 'cancel' to cancel";
   let id = read_line () in
   if id = "cancel" then false 
   else
     let rec swap_out p id = 
       (match int_of_string_opt id with
-       | Some i -> if i >= 17 && i <= 52 then (try remove_card_from_personal_pile i p with _ -> print_endline "please enter a valid id"; let id = read_line () in swap_out p id)
-         else (print_endline "this is not a property card! "; let id = read_line () in swap_out p id);
-       | None -> print_endline "please enter a valid id"; let id = read_line () in swap_out p id;) in
+       | Some i -> if i >= 17 && i <= 52 then 
+           (try remove_card_from_personal_pile i p with _ -> 
+              print_endline "please enter a valid id"; let id = read_line () in 
+              swap_out p id)
+         else (print_endline "this is not a property card! "; 
+               let id = read_line () in swap_out p id);
+       | None -> print_endline "please enter a valid id"; 
+         let id = read_line () in swap_out p id;) in
 
     let card_out = swap_out currpl id in 
 
-    print_endline "Enter enter the name of the person you want to swap properties with. The players are: \027[0m";
+    print_endline "Enter enter the name of the person you want to swap \
+                   properties with. The players are: \027[0m";
     let name = get_player_name_input board in
     let player = List.find (fun x -> get_player_name x = name) (get_players board) in
     print_endline ("Here is " ^ name ^ "'s pile:");
     print_pile_of_player board name;
     print_endline "Enter the id of the card you want to swap in";
 
-    if move_property board forced_deal name then add_card_to_personal_pile card_out player; true
+    if move_property board forced_deal name 
+    then add_card_to_personal_pile card_out player; true
 
 (** [debt_collector board] allows the current player to request $5M from any 
     other player of their choice. *)
 let debt_collector board = 
-  print_endline "\027[38;5;190mYou have chosen to play a debt collector card. To do this, enter enter the name of the person you want to collect debt from. The players are: \027[0m";
+  print_endline "\027[38;5;190mYou have chosen to play a debt collector card. \
+                 To do this, enter enter the name of the person you want to \
+                 collect debt from. The players are: \027[0m";
   let name = get_player_name_input board in
   if name = "cancel" then false else
     (let player = List.find (fun x -> get_player_name x = name) (get_players board) in
@@ -165,8 +189,7 @@ let action_card_helper board id =
 (** [main_player board num] represents a pass of each command input. A player
     can only play 3 cards per turn. *)
 let rec main_helper (board: board) (num: int) = 
-  let currpl = List.nth (get_players board) (get_current_turn board) in
-  if (check_if_set_made currpl "yellow" || check_if_set_made currpl "red") then print_endline "Yellow/Red made!";
+  (* let currpl = List.nth (get_players board) (get_current_turn board) in *)
   print_endline ("It is now " ^ (get_current_player board) ^ "'s turn\n\n\n");
   let command = read_line () in
   match (command |> parse) with
@@ -199,7 +222,9 @@ let rec main_helper (board: board) (num: int) =
 
 (** [main] starts the game. *)
 let rec main () = 
-  print_endline "\027[38;5;11mWelcome! You are about to start a game of Monopoly Deal. To get started, enter the number of players, followed by their names. \027[0m";
+  print_endline "\027[38;5;11mWelcome! You are about to start a game of \
+                 Monopoly Deal. To get started, enter the number of players, \
+                 followed by their names. \027[0m";
   Unix.sleep 1;
   let board = make_board () in
   distribute_cards_to_players board;
