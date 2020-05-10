@@ -26,6 +26,16 @@ let get_played_personal_cards player =
 let get_player_name player = 
   player.name
 
+let get_sorted_properties_of_color player color = 
+  let l = List.filter (fun (card: card) -> 
+      match card with
+      | Property p -> (get_property_color p) = color
+      | Wildcard w -> List.mem color (get_wildcard_colors w)
+      | _ -> false
+    ) (get_played_personal_cards player) in
+
+  List.sort (fun card1 card2 -> (get_id card2) - (get_id card1)) l
+
 (* moves from hand to personal pile *)
 let play_card_to_personal_pile (id: int) (player: player) =
 
@@ -69,18 +79,17 @@ let remove_card_from_personal_pile (id : int) (player) : card =
 let remove_card_from_hand (id: int) (player: player) : card = 
   remove_card_helper id player false
 
+let remove_cards_from_personal_pile (cards: card list) (player: player) = 
+  let removal_ids = List.map (fun card -> get_id card) cards in
+  let l = List.filter (fun c -> not (List.mem (get_id c) removal_ids))
+      player.played_personal_cards in
+  player.played_personal_cards <- l
+
 let add_card_to_personal_pile (card : card) (player: player) = 
   player.played_personal_cards <- card :: player.played_personal_cards
 
-(* if the player has more than 7 cards in their hand, it discards cards such 
-   that there are only 7 cards
-   let rec discard_until_seven player = 
-   if List.length player.cards_in_hand > 7 
-   then match player.cards_in_hand with
-    | [] -> failwith "impossible"
-    | h::t -> player.cards_in_hand <- t; discard_until_seven player
-   else player *)
-
+let add_cards_to_personal_pile (cards: card list) (player: player) = 
+  player.played_personal_cards <- cards @ player.played_personal_cards
 
 let check_if_set_made (player: player) (color: color): bool =
 

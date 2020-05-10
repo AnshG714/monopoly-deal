@@ -221,10 +221,36 @@ let debt_collector board =
                  collect debt from. The players are: \027[0m";
   let name = get_player_name_input board in
   if name = "cancel" then false else
-    (let player = List.find (fun x -> get_player_name x = name) (get_players board) in
+    (let player = get_player_from_name board name in
      print_pile_of_player board name;
      ask_for_money board (List.nth (get_players board) (get_current_turn board)) player 5 0;
      true)
+
+let rec deal_breaker board = 
+  print_endline "\027[38;5;190You have chosen to play the deal breaker card. To\
+                 use this card, enter the name of the person whose set you want to take. The \
+                 players are: \027[0m";
+  let name = get_player_name_input board in
+  if name = "cancel" then false 
+  else
+    let player = get_player_from_name board name in
+    print_endline
+      ("\027[38;5;190mHere is " ^ name ^ "'s pile. Select the color of the set \
+                                          you want to steal. The set of colors is:");
+    print_endline 
+      "brown\tpink\nblue\tblack\ngreen\tred\nlight blue\tlight green\norange\tyellow";
+
+    let rec get_color () = 
+      match read_line () with
+      | s when String.length s > 0 && s <: ["red"; "blue"; "orange"; "pink";
+                                            "black"; "yellow"; "green"; "light green"; "light blue"; "brown"] -> s
+      | _ -> print_endline "You didn't enter a valid color!\n\n"; get_color () in
+
+    let color = get_color () in
+
+    if (check_if_set_made player color) then true else false
+
+
 
 (** [action_card_helper] performs the corresponding functionality of the action
     card with id [id]. *)

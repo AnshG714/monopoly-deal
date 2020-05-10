@@ -119,6 +119,23 @@ let transfer_card id player1 player2 =
   with _ -> 
     raise InvalidCard
 
+let transfer_set board color from_player to_player = 
+  let props = get_sorted_properties_of_color from_player color in
+  let h = List.hd props in
+  let rents = match h with
+    | Property p -> get_property_rents p
+    | _ -> failwith "impossible, there has to be at least one property card in a set." in
+  let num_cards = Array.length rents in
+
+  let rec get_first_n_of_list n lst acc count = 
+    match lst with
+    | [] -> acc
+    | h :: t -> if count = n then acc else get_first_n_of_list n t (h :: acc) (count + 1) in
+
+  let transfer = get_first_n_of_list num_cards props [] 0 in
+  remove_cards_from_personal_pile transfer from_player;
+  add_cards_to_personal_pile transfer to_player
+
 (* ------------------------- printing functions -----------------------------*)
 
 (** [collect_cards card_list] is a mapping of the cards in card_list to

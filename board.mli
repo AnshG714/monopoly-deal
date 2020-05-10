@@ -68,7 +68,14 @@ val get_current_turn : board -> int
     [card_list]. *)
 val get_card_value: int -> card list -> int
 
-(** [transfer_card id player1 player1] transfers card with id [id] 
+(** [transfer_card] transfers card with id [id] 
     from [player1] pile to [player2] pile. Raises InvalidCard if [player1] does
     not have that card in their pile. *)
 val transfer_card : int -> player -> player -> unit
+
+(** [transfer_set] transfers the set of [color] from [from_player] and puts it
+    in the pile of [to_player], for the [board] in this game. Property cards are 
+    prioritized over wildcards. 
+    Requires: [from_player] owns the set of [color]
+*)
+val transfer_set: board -> color -> player -> player -> unit
