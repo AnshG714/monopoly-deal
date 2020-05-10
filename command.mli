@@ -4,6 +4,7 @@ type command =
   | Play of int
   | ViewPile
   | ViewHand
+  | Pile of string
   | Discard of int
   | Pass
   | Quit

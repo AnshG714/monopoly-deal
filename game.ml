@@ -184,6 +184,10 @@ let rec main_helper (board: board) (num: int) =
             print_endline "Enter a valid card ID.";
             main_helper board (num));
 
+  | Pile p -> let names = get_player_names board in 
+    if List.mem p names then print_pile_of_player board p 
+    else print_endline "Enter a valid player name"; main_helper board (num);
+
   | Quit -> print_endline "Hope you enjoyed playing :)"
 
   | exception Malformed msg -> print_endline msg; main_helper board num

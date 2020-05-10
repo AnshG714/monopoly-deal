@@ -3,6 +3,7 @@ type command =
   | Play of int
   | ViewPile
   | ViewHand
+  | Pile of string
   | Discard of int
   | Pass
   | Quit
@@ -19,6 +20,8 @@ let id_validator (sl: string list) (keyword: string) =
     | None -> raise (Malformed "the id should be an integer.")
     | Some v ->  if keyword = "play" then Play v else Discard v
 
+
+
 (** [parse_helper strlist] parses [strlist] into a command h where h is the 
     first element of [strlist]. *)
 let parse_helper strlist = 
@@ -34,6 +37,7 @@ let parse_helper strlist =
           else raise (Malformed "Incorrect view command. You can either call view pile or view hand")
         | _ -> raise (Malformed "Incorrect command. Did you mean to call view hand or view pile?")
       )
+    else if h = "pile" then let s = String.concat " " t in Pile s
     else if h = "discard" then id_validator t "discard"
     else if h = "pass" then if t = [] then Pass else raise (Malformed "pass does not have any keywords after it.")
     else if h = "quit" then if t = [] then Quit else raise (Malformed "quit does not have any keywords after it.")
