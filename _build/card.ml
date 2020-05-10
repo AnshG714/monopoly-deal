@@ -359,10 +359,13 @@ let print_property_cards_helper (cards: property_card list) =
     match cards with
     | [] -> acc
     | h :: t -> let rents = h.rents in
+
       let num_in_set = Array.length rents in
       let s = 
         if rent_number >= num_in_set then "|                      |"
-        else let rent_info = (string_of_int rent_number) ^ "---$" ^ string_of_int(rents.(rent_number)) ^ "M" in
+        else let rent_info = (string_of_int rent_number) ^ "---$" ^ 
+                             string_of_int(rents.(rent_number)) ^ "M" in
+
           "|       " ^ rent_info ^ "        |" in
       make_rent_info_helper t rent_number (((List.assoc h.color color_map ^ s) :: acc)) in
 
@@ -399,7 +402,8 @@ let print_wildcard_helper (cards: wildcard list) =
     match cards with
     | [] -> acc
     | h :: t -> let rents = h.rents in
-      if Array.length rents = 0 then wildcard_helper t ((List.nth ultra_card_list rent_number) :: acc) rent_number
+      if Array.length rents = 0 then 
+        wildcard_helper t ((List.nth ultra_card_list rent_number) :: acc) rent_number
       else let l1 = Array.length rents.(0) in
         let l2 = Array.length rents.(1) in
         let s1 = 

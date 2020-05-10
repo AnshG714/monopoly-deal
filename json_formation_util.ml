@@ -99,11 +99,14 @@ let rec property_card_input () =
   let property_value = int_input_helper () in
   print_string "\n";
 
-  print_string "Enter the list of rents. IMPORTANT: The input should be in the form\n\t\t [x1, x2, ..., xn], 
-  \nwhere the xi'th entry denotes the entry when i members of this color set are possesed by the player.\n
-  For example, since the light blue color set has 3 properties, and Connecticut Avenue is a light blue
-  property card, this input when the venue is Connecticut Avenue will be [1,2,3]. Of course, this means that
-  the length of the input list = number of property cards in the set. \n";
+  print_string 
+    "Enter the list of rents. IMPORTANT: The input should be in the \
+     form\n\t\t [x1, x2, ..., xn], \nwhere the xi'th entry denotes the entry when \
+     i members of this color set are possesed by the player.\n
+  For example, since the light blue color set has 3 properties, and Connecticut \
+     Avenue is a light blue property card, this input when the venue is \
+     Connecticut Avenue will be [1,2,3]. Of course, this means that the length \
+     of the input list = number of property cards in the set. \n";
   let property_rents = list_input_helper () in
   print_string "\n";
 

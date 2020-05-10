@@ -67,7 +67,7 @@ let get_player_names board =
 
 let get_card_value (id: int) (card_list: card list): int = 
   let l = List.filter (fun c -> (get_id c) = id) card_list in
-  if List.length l = 0 then raise InvalidCard
+  if l = [] then raise InvalidCard
   else match List.hd l with
     | Property p -> get_property_value p
     | Wildcard w -> get_wildcard_value w

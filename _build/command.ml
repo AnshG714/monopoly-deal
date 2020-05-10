@@ -29,13 +29,16 @@ let parse_helper strlist =
   match spaceless with
   | [] -> raise Empty
   | h :: t -> 
-    if h = "draw" then if t = [] then Draw else raise (Malformed "draw does not have any keywords after it.")
+    if h = "draw" then if t = [] then Draw 
+      else raise (Malformed "draw does not have any keywords after it.")
     else if h = "play" then id_validator t "play"
     else if h = "view" then (match t with
         | h :: [] -> if h = "pile" then ViewPile 
           else if h = "hand" then ViewHand 
-          else raise (Malformed "Incorrect view command. You can either call view pile or view hand")
-        | _ -> raise (Malformed "Incorrect command. Did you mean to call view hand or view pile?")
+          else raise (Malformed "Incorrect view command. You can either call \
+                                 view pile or view hand")
+        | _ -> raise (Malformed "Incorrect command. Did you mean to call view \
+                                 hand or view pile?")
       )
     else if h = "pile" then let s = String.concat " " t in Pile s
     else if h = "discard" then id_validator t "discard"
