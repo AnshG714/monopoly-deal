@@ -23,6 +23,10 @@ val get_current_player: board -> string
 (** [get_player_names board] is a list of all the names of the players in [board]. *)
 val get_player_names: board -> string list
 
+(** [get_player_from_name] is the player corresponding to the name [name] for 
+    board [board] *)
+val get_player_from_name: board -> string -> player
+
 (** [increment_turn board] switches the turn to the next person in [board]. *)
 val increment_turn: board -> unit
 

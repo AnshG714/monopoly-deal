@@ -44,7 +44,7 @@ let distribute_cards_to_players board =
   let rec helper players deck discard = 
     match players with
     | [] -> ()
-    | h :: t -> let n, r, d = remove_top_n_cards deck 50 discard in
+    | h :: t -> let n, r, d = remove_top_n_cards deck 53 discard in
       add_cards_to_hand n h; board.deck <- r; board.discarded <- d;
       helper t r d; in
 
@@ -64,6 +64,10 @@ let get_current_player board =
 
 let get_player_names board = 
   List.map (fun player -> get_player_name player) board.players
+
+let get_player_from_name board name = 
+  List.find (fun x -> get_player_name x = name) 
+    (get_players board)
 
 let get_card_value (id: int) (card_list: card list): int = 
   let l = List.filter (fun c -> (get_id c) = id) card_list in
@@ -95,15 +99,6 @@ let draw_new_cards (board: board) (mode: bool)=
 let increment_turn (board: board) = 
   board.turn <- (board.turn + 1) mod (List.length board.players);
   draw_new_cards board true
-
-(* Are we using these? 
-   let check_card_in_hand player id = 
-   let cards = get_cards_in_hand player in
-   List.exists (fun card -> get_id card = id) cards
-
-   let check_card_in_pile player id = 
-   let cards = get_played_personal_cards player in
-   List.exists (fun card -> get_id card = id) cards *)
 
 let add_card_to_pile board id = 
   try

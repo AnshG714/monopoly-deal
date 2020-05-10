@@ -3,6 +3,51 @@ open Command
 open Player
 open Unix
 
+(*
+  Properties:
+  Brown: 25, 26
+  Blue: 27, 28
+  Green: 29, 30, 31
+  Light Blue: 32, 33, 34
+  Light Green: 35, 36
+  Orange: 37, 38, 39
+  Pink: 40, 41, 42
+  Black: 43, 44, 45, 46
+  Red: 47, 48, 49
+  Yellow: 50, 51, 52
+
+  Wildcards:
+  Brown: 18, 24
+  Blue: 17, 24
+  Green: 17, 20, 24
+  Light Blue: 21, 18, 24
+  Light green: 22, 24
+  Orange: 19, 24
+  Pink: 19, 24
+  Black: 20, 21, 22, 24
+  Red: 23, 24
+  Yellow: 23, 24
+*)
+
+
+(* ( <: ) is an infix binary operator equivalent to List.mem *)
+let ( <: ) el lst = List.mem el lst  
+
+(* [get_color_from_id] is the color of the card whose id is [id]. 
+   Requires: the [id] is that of either a wildcard or a property card. *)
+let get_color_from_id id = 
+  if id <: [18; 24; 25; 26] then "brown"
+  else if id <: [17; 24; 27; 28] then "blue"
+  else if id <: [17; 20; 24; 29; 30; 31] then "green"
+  else if id <: [18; 21; 24; 32; 33; 34] then "light blue"
+  else if id <: [22; 24; 35; 36] then "light green"
+  else if id <: [19; 24; 37; 38; 39] then "orange"
+  else if id <: [19; 24; 40; 41; 42] then "pink"
+  else if id <: [20; 21; 22; 24; 43; 44; 45; 46] then "black"
+  else if id <: [23; 24; 47; 48; 49] then "red"
+  else if id <: [23; 24; 50; 51; 52] then "yellow" 
+  else failwith "precondition violated"
+
 (** [get_n_names n count acc] gets a list of [n] names *)
 let rec get_n_names n count acc = 
   if count = n then acc
@@ -82,12 +127,12 @@ let its_my_bday (board: board) =
 
 (** [move_property] moves a property from player with name [name] to the current
     player's pile. *)
-let rec move_property board f name = 
+let rec move_property board is_sly name = 
+  let pl = get_player_from_name board name in
   let rec transfer_helper i = 
     match 
       transfer_card i 
-        (List.find (fun x -> get_player_name x = name) 
-           (get_players board))
+        pl
         (List.nth (get_players board) 
            (get_current_turn board)) 
     with
@@ -97,12 +142,16 @@ let rec move_property board f name =
   and loop () = 
     match read_line () with
     | entry -> (match int_of_string_opt entry with
-        | Some i -> (if i < 17 || i > 52 then (print_endline "this isn't a \
-                                                              property card!"; 
-                                               loop ())
+        | Some i -> (if i < 17 || i > 52
+                     then (print_endline "this isn't a property card!"; loop ())
+                     else if (check_if_set_made pl (get_color_from_id i))
+                     then (print_endline "this property is a part of a set. \
+                                          Can't take this!"; loop ())
                      else transfer_helper i)
-        | None -> if entry = "back" then (if f = sly_deal then sly_deal board 
+
+        | None -> if entry = "back" then (if is_sly then sly_deal board 
                                           else forced_deal board)
+
           else (print_endline "You need to either enter a valid id for the \
                                property card you want to take, or type 'back'."; 
                 loop ())) 
@@ -126,7 +175,7 @@ and  sly_deal (board: board) =
      print_endline "Either enter an id, or enter 'back' if you want to choose \
                     another player. ";
 
-     move_property board sly_deal name;)
+     move_property board true name;)
 
 (** [forced_deal board] allows the current player to switch any of their properties
     with any other player's property of their choice. *)
@@ -141,7 +190,8 @@ and  forced_deal board =
   else
     let rec swap_out p id = 
       (match int_of_string_opt id with
-       | Some i -> if i >= 17 && i <= 52 then 
+       | Some i -> if i >= 17 && i <= 52 then
+
            (try remove_card_from_personal_pile i p with _ -> 
               print_endline "please enter a valid id"; let id = read_line () in 
               swap_out p id)
@@ -160,7 +210,7 @@ and  forced_deal board =
     print_pile_of_player board name;
     print_endline "Enter the id of the card you want to swap in";
 
-    if move_property board forced_deal name 
+    if move_property board false name 
     then add_card_to_personal_pile card_out player; true
 
 (** [debt_collector board] allows the current player to request $5M from any 

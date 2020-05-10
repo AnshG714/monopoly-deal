@@ -1,3 +1,5 @@
+NOT A TODO: Whenever you want all cards, just start game w one player with 106 cards.
+
 ------- board.ml -------
 - Migrate get_card_value from board.ml -> card.ml
 
