@@ -16,7 +16,7 @@ exception Empty
 let id_validator (sl: string list) (keyword: string) = 
   if List.length sl <> 1 
   then raise (Malformed 
-                ("please enter the " ^ keyword ^ " keyword followed by the id of\
+                ("please enter the " ^ keyword ^ " keyword followed by the id of \
                                                   the card you want to play."))
   else let el = List.nth sl 0 in
     match int_of_string_opt el with
