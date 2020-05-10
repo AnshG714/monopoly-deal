@@ -47,7 +47,7 @@ let distribute_cards_to_players board =
   let rec helper players deck discard = 
     match players with
     | [] -> ()
-    | h :: t -> let n, r, d = remove_top_n_cards deck 10 discard in
+    | h :: t -> let n, r, d = remove_top_n_cards deck 5 discard in
       add_cards_to_hand n h; board.deck <- r; board.discarded <- d;
       helper t r d; in
 

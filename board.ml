@@ -18,9 +18,6 @@ module Mapping = Make(String)
 
 (* ------------------- Functions to initialize a board --------------------- *)
 
-(* [init_mult_players] is a list of n players, with names given in [names].
-    Requires: n = List.length names
-*)
 let rec init_mult_players n names = 
   if (n = 0) then []
   else initialize_player(List.hd names) :: (init_mult_players (n-1) (List.tl names))
@@ -47,7 +44,7 @@ let distribute_cards_to_players board =
   let rec helper players deck discard = 
     match players with
     | [] -> ()
-    | h :: t -> let n, r, d = remove_top_n_cards deck 10 discard in
+    | h :: t -> let n, r, d = remove_top_n_cards deck 5 discard in
       add_cards_to_hand n h; board.deck <- r; board.discarded <- d;
       helper t r d; in
 
@@ -99,13 +96,14 @@ let increment_turn (board: board) =
   board.turn <- (board.turn + 1) mod (List.length board.players);
   draw_new_cards board true
 
-let check_card_in_hand player id = 
-  let cards = get_cards_in_hand player in
-  List.exists (fun card -> get_id card = id) cards
+(* Are we using these? 
+   let check_card_in_hand player id = 
+   let cards = get_cards_in_hand player in
+   List.exists (fun card -> get_id card = id) cards
 
-let check_card_in_pile player id = 
-  let cards = get_played_personal_cards player in
-  List.exists (fun card -> get_id card = id) cards
+   let check_card_in_pile player id = 
+   let cards = get_played_personal_cards player in
+   List.exists (fun card -> get_id card = id) cards *)
 
 let add_card_to_pile board id = 
   try
@@ -128,6 +126,8 @@ let transfer_card id player1 player2 =
 
 (* ------------------------- printing functions -----------------------------*)
 
+(** [collect_cards card_list] is a mapping of the cards in card_list to
+    their card type. *)
 let collect_cards card_list = 
   let l = Mapping.empty in
   let money = Mapping.add "money" [] l in
@@ -153,6 +153,7 @@ let collect_cards card_list =
 
   helper card_list final
 
+(** [print_card_list card_list] prints the sorted [card_list]. *)
 let print_card_list card_list = 
   let map = collect_cards card_list in
   print_action_cards (List.map (fun card ->
@@ -166,7 +167,6 @@ let print_card_list card_list =
       | Money m -> m
       | _ -> failwith "impossible"
     ) (Mapping.find "money" map));
-
 
   let extract_color (card: card) = 
     match card with

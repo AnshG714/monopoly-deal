@@ -3,6 +3,7 @@ open Command
 open Player
 open Unix
 
+(** [get_n_names n count acc] gets a list of [n] names *)
 let rec get_n_names n count acc = 
   if count = n then acc
   else  (print_string ("> Name " ^ string_of_int (count + 1) ^ ": ");
@@ -10,6 +11,7 @@ let rec get_n_names n count acc =
          | name when String.length name > 0 -> get_n_names n (count + 1) (name::acc)
          | _ -> print_endline "Invalid entry, a name has to have at least one char"; get_n_names n count acc)
 
+(** [make_board] initializes a board for the game with a list of player names. *)
 let rec make_board () = 
   print_endline "\027[38;5;47mPlease enter an integer between 2 and 5 \027[0m"; 
   print_string "> ";
@@ -20,6 +22,7 @@ let rec make_board () =
 
 
 (*  -------------------------- Action card helpers ---------------------------*)
+(** [get_player_name_input board] is the name inputted. *)
 let rec get_player_name_input board =
   let names = get_player_names board in
   print_string (List.fold_left (fun acc name -> acc ^ name ^ "\n") "" names);
@@ -29,6 +32,9 @@ let rec get_player_name_input board =
            "Invalid entry. A name must have more than one character and should be in the list of names.";
     get_player_name_input board
 
+(** [ask_for_money] asks [from_player] which money cards they want to give to
+    [current_player] such that the total value is at least [total_value] or they
+    are out of cards, and transfers it from their piles. *)
 let rec ask_for_money board current_player from_player total_value acc_value =
 
   print_endline "Please enter a valid card id to play";
@@ -43,10 +49,13 @@ let rec ask_for_money board current_player from_player total_value acc_value =
         ask_for_money board current_player from_player total_value acc_value
     )
 
+(** [pass_go board] distributes up to 2 cards to the current player. *)
 let pass_go (board: board) = 
   draw_new_cards board false;
   true
 
+(** [its_my_bday board] gets $2M from every other player and transfers it to
+    the current player's pile. *)
 let its_my_bday (board: board) = 
   let currpl = List.nth (get_players board) (get_current_turn board) in
   let player_list = get_players board in
@@ -65,6 +74,8 @@ let its_my_bday (board: board) =
   helper 2 others;
   true
 
+(** [move_property] moves a property from player with name [name] to the current
+    player's pile. *)
 let rec move_property board f name = 
   let rec transfer_helper i = 
     match 
@@ -90,6 +101,8 @@ let rec move_property board f name =
   loop ()
 
 
+(** [sly_deal board] allows the current player to steal any property of their 
+    choice from any other player of their choice. *)
 and  sly_deal (board: board) = 
   print_endline "\027[38;5;190mYou have chosen to play a sly deal card. To do this, first enter enter the name of the person you want to perform the sly deal with. If you want to cancel, type 'cancel'. The players are: \027[0m";
   let name = get_player_name_input board in
@@ -101,6 +114,8 @@ and  sly_deal (board: board) =
 
      move_property board sly_deal name;)
 
+(** [forced_deal board] allows the current player to switch any of their properties
+    with any other player's property of their choice. *)
 and  forced_deal board =
   let currpl = List.nth (get_players board) (get_current_turn board) in
   print_endline "\027[38;5;190mYou have chosen to play a forced deal card.";
@@ -125,6 +140,8 @@ and  forced_deal board =
 
     if move_property board forced_deal name then add_card_to_personal_pile card_out player; true
 
+(** [debt_collector board] allows the current player to request $5M from any 
+    other player of their choice. *)
 let debt_collector board = 
   print_endline "\027[38;5;190mYou have chosen to play a debt collector card. To do this, enter enter the name of the person you want to collect debt from. The players are: \027[0m";
   let name = get_player_name_input board in
@@ -134,11 +151,8 @@ let debt_collector board =
      ask_for_money board (List.nth (get_players board) (get_current_turn board)) player 5 0;
      true)
 
-
-
-
-
-
+(** [action_card_helper] performs the corresponding functionality of the action
+    card with id [id]. *)
 let action_card_helper board id =
   if id = 8 then debt_collector board
   else if id = 13 then its_my_bday board
@@ -147,6 +161,8 @@ let action_card_helper board id =
   else if id = 10 then forced_deal board
   else false
 
+(** [main_player board num] represents a pass of each command input. A player
+    can only play 3 cards per turn. *)
 let rec main_helper (board: board) (num: int) = 
   print_endline ("It is now " ^ (get_current_player board) ^ "'s turn\n\n\n");
   let command = read_line () in
@@ -174,6 +190,7 @@ let rec main_helper (board: board) (num: int) =
 
   | _ -> failwith "other cases unimplemented."
 
+(** [main] starts the game. *)
 let rec main () = 
   print_endline "\027[38;5;11mWelcome! You are about to start a game of Monopoly Deal. To get started, enter the number of players, followed by their names. \027[0m";
   Unix.sleep 1;

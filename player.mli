@@ -24,10 +24,18 @@ val get_player_name: player -> string
    of [player] *)
 val play_card_to_personal_pile : int -> player -> unit
 
+(* [remove_card_from_personal_pile] removes card wth id [id] from player [player]
+   pile and returns it. *)
 val remove_card_from_personal_pile : int -> player -> card
 
+(* [remove_card_from hand] removes card with id [id] from player [player] hand
+   and returns it. *)
 val remove_card_from_hand : int -> player -> card
 
+(* [add_card_to_personal_pile] adds card with id [id] to the pile of player 
+   [player]. *)
 val add_card_to_personal_pile : card -> player -> unit
 
+(* [check_if_set_made] is true if the player [player] owns all the cards in the
+   set with color [color], false otherwise. *)
 val check_if_set_made: player -> color -> bool

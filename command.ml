@@ -10,6 +10,8 @@ type command =
 exception Malformed of string
 exception Empty
 
+(** [id_validator sl keyword] creates command [keyword] if [sl] is a list of
+    valid integers. Raises Malformed otherwise. *)
 let id_validator (sl: string list) (keyword: string) = 
   if List.length sl <> 1 then raise (Malformed ("please enter the " ^ keyword ^ " keyword followed by the id of the card you want to play."))
   else let el = List.nth sl 0 in
@@ -17,6 +19,8 @@ let id_validator (sl: string list) (keyword: string) =
     | None -> raise (Malformed "the id should be an integer.")
     | Some v ->  if keyword = "play" then Play v else Discard v
 
+(** [parse_helper strlist] parses [strlist] into a command h where h is the 
+    first element of [strlist]. *)
 let parse_helper strlist = 
   let spaceless = List.filter (fun s -> s <> "") strlist in
   match spaceless with

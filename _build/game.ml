@@ -82,7 +82,7 @@ let rec move_property board f name =
     | entry -> (match int_of_string_opt entry with
         | Some i -> (if i < 25 || i > 52 then (print_endline "this isn't a property card!"; loop ())
                      else transfer_helper i)
-        | None -> if entry = "back" then if f = sly_deal then sly_deal board else forced_deal board
+        | None -> if entry = "back" then (if f = sly_deal then sly_deal board else forced_deal board)
           else (print_endline "You need to either enter a valid id for the property card you want to take, or type 'back'."; 
                 loop ())) 
     | exception Failure _ -> false in

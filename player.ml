@@ -44,6 +44,9 @@ let play_card_to_personal_pile (id: int) (player: player) =
   ()
 
 
+(* [remove_card_helper] removes card with id [id] from player [player] pile if
+   [removal_from_pile] is true, and from player [player] hand if 
+   [removal_from_pile] is false. *)
 let remove_card_helper (id: int) (player: player) (removal_from_pile: bool) : card = 
   let pile_after_removal = 
     List.filter (fun x -> (get_id x) <> id) 
@@ -70,16 +73,15 @@ let add_card_to_personal_pile (card : card) (player: player) =
   player.played_personal_cards <- card :: player.played_personal_cards
 
 (* if the player has more than 7 cards in their hand, it discards cards such 
-   that there are only 7 cards*)
-let rec discard_until_seven player = 
-  if List.length player.cards_in_hand > 7 
-  then match player.cards_in_hand with
+   that there are only 7 cards
+   let rec discard_until_seven player = 
+   if List.length player.cards_in_hand > 7 
+   then match player.cards_in_hand with
     | [] -> failwith "impossible"
     | h::t -> player.cards_in_hand <- t; discard_until_seven player
-  else player
+   else player *)
 
-(* [check_if_set_made] is true if the player [player] owns all the cards in the
-   set with color [color], false otherwise. *)
+
 let check_if_set_made (player: player) (color: color): bool =
 
   (* get cards from pile *)
