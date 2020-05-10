@@ -87,22 +87,28 @@ let check_if_set_made (player: player) (color: color): bool =
   (* get cards from pile *)
   let l = get_played_personal_cards player in
 
-  (* Get all the property cards with the same color *)
+  (* Get all the property cards/wilcards with the same color as [color] *)
   let color_filter = List.filter (fun x -> match x with 
       |Property v -> get_property_color v = color
+      |Wildcard w -> 
+        List.mem color (get_wildcard_colors w) || get_wildcard_colors w = []
       | _ -> false ) l in
 
   (* If length of color_filter is 0, then this have no cards for that color set*)
-  if List.length color_filter = 0 then false
+  if color_filter = [] then false
 
   (* Only possess all colors in a set of the length of the list containing 
      all the cards of the same color = the length list of rents for any one property
      in the list of cards of the same color. *)
   else if 
-    (let h = List.hd color_filter in 
-     let rent_list = match h with 
-       | Property v -> get_property_rents v 
-       | _ -> failwith "invariant violated" in
-     Array.length rent_list <> List.length color_filter) then false
+    let rec extract_rents lst = 
+      let h = List.hd lst in 
+      match h with 
+      | Property v -> get_property_rents v
+      | Wildcard w ->  extract_rents (List.tl lst) (* There has to be one non-wildcard to
+                                                      make a valid set. *)
+      | _ -> failwith "invariant violated" in
+
+    Array.length (extract_rents color_filter) > List.length color_filter then false
   else true
 

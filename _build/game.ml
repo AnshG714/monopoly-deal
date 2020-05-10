@@ -165,6 +165,8 @@ let action_card_helper board id =
 (** [main_player board num] represents a pass of each command input. A player
     can only play 3 cards per turn. *)
 let rec main_helper (board: board) (num: int) = 
+  let currpl = List.nth (get_players board) (get_current_turn board) in
+  if (check_if_set_made currpl "yellow" || check_if_set_made currpl "red") then print_endline "Yellow/Red made!";
   print_endline ("It is now " ^ (get_current_player board) ^ "'s turn\n\n\n");
   let command = read_line () in
   match (command |> parse) with
