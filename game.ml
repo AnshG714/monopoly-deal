@@ -110,44 +110,46 @@ let rec forced_deal board =
   let currpl = List.nth (get_players board) (get_current_turn board) in
   print_endline "\027[38;5;190mYou have chosen to play a forced deal card.";
   print_current_player_pile board;
-  print_endline "Enter the id of the card you want to swap out";
+  print_endline "Enter the id of the card you want to swap out or enter 'cancel' to cancel";
+  let id = read_line () in
+  if id = "cancel" then false 
+  else
+    let rec swap_out p id = 
+      (match int_of_string_opt id with
+       | Some i -> (try remove_card_from_personal_pile i p with _ -> print_endline "please enter a valid id"; let id = get_player_name_input board in swap_out p id)
+       | None -> print_endline "please enter a valid id"; let id = get_player_name_input board in swap_out p id;) in
 
-  let rec swap_out p = 
-    (match read_int_opt () with
-     | Some i -> (try remove_card_from_personal_pile i p with _ -> print_endline "please enter a valid id"; swap_out p)
-     | None -> print_endline "please enter a valid id"; swap_out p;) in
+    let card_out = swap_out currpl id in 
 
-  let card_out = swap_out currpl in 
+    print_endline "Enter enter the name of the person you want to swap properties with. The players are: \027[0m";
+    let name = get_player_name_input board in
+    let player = List.find (fun x -> get_player_name x = name) (get_players board) in
+    print_endline ("Here is " ^ name ^ "'s pile:");
+    print_pile_of_player board name;
+    print_endline "Enter the id of the card you want to swap in";
 
-  print_endline "Enter enter the name of the person you want to swap properties with. The players are: \027[0m";
-  let name = get_player_name_input board in
-  let player = List.find (fun x -> get_player_name x = name) (get_players board) in
-  print_endline ("Here is " ^ name ^ "'s pile:");
-  print_pile_of_player board name;
-  print_endline "Enter the id of the card you want to swap in";
+    let rec transfer_helper i = 
+      match 
+        transfer_card i 
+          (List.find (fun x -> get_player_name x = name) 
+             (get_players board))
+          (List.nth (get_players board) 
+             (get_current_turn board)) 
+      with
+      | exception InvalidCard -> print_endline "wrong"; loop ()
+      | _ -> true
 
-  let rec transfer_helper i = 
-    match 
-      transfer_card i 
-        (List.find (fun x -> get_player_name x = name) 
-           (get_players board))
-        (List.nth (get_players board) 
-           (get_current_turn board)) 
-    with
-    | exception InvalidCard -> print_endline "wrong"; loop ()
-    | _ -> true
+    and loop () = 
+      match read_line () with
+      | entry -> (match int_of_string_opt entry with
+          | Some i -> (if i < 25 || i > 52 then (print_endline "this isn't a property card!"; loop ())
+                       else transfer_helper i)
+          | None -> if entry = "back" then forced_deal board
+            else (print_endline "You need to either enter a valid id for the property card you want to take, or type 'back'."; 
+                  loop ())) 
+      | exception Failure _ -> false in
 
-  and loop () = 
-    match read_line () with
-    | entry -> (match int_of_string_opt entry with
-        | Some i -> (if i < 25 || i > 52 then (print_endline "this isn't a property card!"; loop ())
-                     else transfer_helper i)
-        | None -> if entry = "back" then forced_deal board
-          else (print_endline "You need to either enter a valid id for the property card you want to take, or type 'back'."; 
-                loop ())) 
-    | exception Failure _ -> false in
-
-  if loop () then add_card_to_personal_pile card_out player; true
+    if loop () then add_card_to_personal_pile card_out player; true
 
 
 
