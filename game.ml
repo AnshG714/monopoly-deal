@@ -241,10 +241,11 @@ let action_card_helper board id =
 let rec main_helper (board: board) (num: int) = 
   (* let currpl = List.nth (get_players board) (get_current_turn board) in *)
   print_endline ("It is now " ^ (get_current_player board) ^ "'s turn\n\n\n");
+
   let command = read_line () in
   match (command |> parse) with
   | Pass -> increment_turn board; 
-    print_endline ("it is now turn " ^ (get_current_player board)); main_helper board 0
+    main_helper board 0
 
   | ViewPile -> print_current_player_pile board; main_helper board num
 
@@ -254,8 +255,10 @@ let rec main_helper (board: board) (num: int) =
                                  main_helper board num) 
     else (try
             if id >= 7 && id <= 16 then 
-              (if (action_card_helper board id) then discard_card_from_hand board id else ())
-            else add_card_to_pile board id; main_helper board (num+1)
+              (if (action_card_helper board id) then 
+                 (discard_card_from_hand board id; main_helper board (num + 1)) 
+               else main_helper board (num))
+            else (add_card_to_pile board id; main_helper board (num+1))
           with InvalidCard ->
             print_endline "Enter a valid card ID.";
             main_helper board (num));
