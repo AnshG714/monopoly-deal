@@ -24,6 +24,8 @@ val get_player_name: player -> string
    of ids.*)
 val get_sorted_properties_of_color: player -> color -> card list
 
+val get_rent_earnings: player -> color -> rent
+
 (* [play_card_]to_personal_pile] transfers the card with id [id] to to the hand
    of the player [player]. Throws Failure if [id] isn't an id of a card in the hand
    of [player] *)

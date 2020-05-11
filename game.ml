@@ -285,6 +285,7 @@ let rec main_helper (board: board) (num: int) =
               (if (action_card_helper board id) then 
                  (discard_card_from_hand board id; main_helper board (num + 1)) 
                else main_helper board (num))
+
             else (add_card_to_pile board id; main_helper board (num+1))
           with InvalidCard ->
             print_endline "Enter a valid card ID.";

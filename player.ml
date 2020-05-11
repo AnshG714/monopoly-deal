@@ -36,6 +36,23 @@ let get_sorted_properties_of_color player color =
 
   List.sort (fun card1 card2 -> (get_id card2) - (get_id card1)) l
 
+let get_rent_earnings (player: player) (color: color) = 
+  let player_props = get_sorted_properties_of_color player color in 
+  match player_props with
+  | [] -> failwith "this player has no properties of this color"
+  | h :: _ -> (match h with 
+      | Property p -> let rents = get_property_rents p in 
+        rents.(List.length player_props - 1)
+
+      | Wildcard w -> let rents = get_wildcard_rents w in
+        let colors = get_wildcard_colors w in
+        if colors = [] then failwith "can't demand from only universal"
+        else if (List.nth colors 0) = color then rents.(0).(List.length player_props - 1)
+        else rents.(1).(List.length player_props - 1)
+
+      | _ -> failwith "precondition violated"          
+    )
+
 (* moves from hand to personal pile *)
 let play_card_to_personal_pile (id: int) (player: player) =
 
@@ -110,14 +127,14 @@ let check_if_set_made (player: player) (color: color): bool =
      all the cards of the same color = the length list of rents for any one property
      in the list of cards of the same color. *)
   else if 
-    let rec extract_rents lst = 
-      let h = List.hd lst in 
-      match h with 
-      | Property v -> get_property_rents v
-      | Wildcard w ->  extract_rents (List.tl lst) (* There has to be one non-wildcard to
-                                                      make a valid set. *)
-      | _ -> failwith "invariant violated" in
+    (let rec extract_rents lst = 
+       let h = List.hd lst in 
+       match h with 
+       | Property v -> get_property_rents v
+       | Wildcard w ->  extract_rents (List.tl lst) (* There has to be one non-wildcard to
+                                                       make a valid set. *)
+       | _ -> failwith "invariant violated" in
 
-    Array.length (extract_rents color_filter) > List.length color_filter then false
+     Array.length (extract_rents color_filter) > List.length color_filter) then false
   else true
 

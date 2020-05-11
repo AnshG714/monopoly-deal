@@ -247,8 +247,9 @@ let rec deal_breaker board =
       | _ -> print_endline "You didn't enter a valid color!\n\n"; get_color () in
 
     let color = get_color () in
-
-    if (check_if_set_made player color) then true else false
+    let currpl = List.nth (get_players board) (get_current_turn board) in
+    if (check_if_set_made player color) then (transfer_set board color player currpl; true)
+    else (print_endline "This isn't a valid set!"; deal_breaker board)
 
 
 
