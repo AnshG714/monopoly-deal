@@ -44,7 +44,7 @@ let distribute_cards_to_players board =
   let rec helper players deck discard = 
     match players with
     | [] -> ()
-    | h :: t -> let n, r, d = remove_top_n_cards deck 53 discard in
+    | h :: t -> let n, r, d = remove_top_n_cards deck 5 discard in
       add_cards_to_hand n h; board.deck <- r; board.discarded <- d;
       helper t r d; in
 
@@ -178,49 +178,42 @@ let collect_cards card_list =
 
   helper card_list final
 
+(** [extract_color] is the color of the property card [card]. *)
+let extract_color (card: card) = 
+  match card with
+  | Property v -> get_property_color v 
+  | _ -> failwith "precondition violated" 
+
+(** [sorted] sorts [plist] in alphabetical order by colors. *)
+let sorted plist = List.sort (fun card1 card2 -> 
+    if (extract_color card1 > extract_color card2) then 1 
+    else if (extract_color card1 < extract_color card2) then -1
+    else 0) plist 
+
 (** [print_card_list card_list] prints the sorted [card_list]. *)
 let print_card_list card_list = 
   let map = collect_cards card_list in
   print_action_cards (List.map (fun card ->
       match card with
       | Action a -> a
-      | _ -> failwith "impossible"
-    ) (Mapping.find "action" map));
-
+      | _ -> failwith "impossible") (Mapping.find "action" map));
   print_money_cards (List.map (fun card ->
       match card with
       | Money m -> m
-      | _ -> failwith "impossible"
-    ) (Mapping.find "money" map));
-
-  let extract_color (card: card) = 
-    match card with
-    | Property v -> get_property_color v 
-    | _ -> failwith "precondition violated" in
-  let plist = Mapping.find "property" map in
-
-  let sorted = List.sort (fun card1 card2 -> 
-      if (extract_color card1 > extract_color card2) then 1 
-      else if (extract_color card1 < extract_color card2) then -1
-      else 0) plist in  
-
+      | _ -> failwith "impossible") (Mapping.find "money" map));
+  let plist = Mapping.find "property" map in 
   print_property_cards (List.map (fun card ->
       match card with
       | Property p -> p
-      | _ -> failwith "impossible"
-    ) sorted );
-
+      | _ -> failwith "impossible") (sorted plist));
   print_wildcards (List.map (fun card ->
       match card with
       | Wildcard w -> w
-      | _ -> failwith "impossible"
-    ) (Mapping.find "wildcard" map));
-
+      | _ -> failwith "impossible") (Mapping.find "wildcard" map));
   print_rent_cards (List.map (fun card ->
       match card with
       | Rent r -> r
-      | _ -> failwith "impossible"
-    ) (Mapping.find "rents" map))
+      | _ -> failwith "impossible") (Mapping.find "rents" map))
 
 
 let print_current_player_hand board = 

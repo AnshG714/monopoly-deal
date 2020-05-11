@@ -1,0 +1,78 @@
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:0:Money value getter.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:0:Money value getter is successful.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:0:Money value getter.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:3:prop value getter.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:3:prop value getter is successful.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:3:prop value getter.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:5:prop rents getter.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:5:prop rents getter is successful.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:5:prop rents getter.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:7:action desc getter.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:7:action desc getter is successful.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:7:action desc getter.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:9:action count getter.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:9:action count getter is successful.
+2020-05-11T02:21:22+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:9:action count getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:11:wildcard rents getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:11:wildcard rents getter is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:11:wildcard rents getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:12:wildcard value getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:12:wildcard value getter is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:12:wildcard value getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:14:rent color getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:14:rent color getter is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:14:rent color getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:16:rent count getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:16:rent count getter is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:16:rent count getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:18:Parse string into command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:18:Parse string into command is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:18:Parse string into command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:20:Parse string into command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:20:Parse string into command is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:20:Parse string into command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:22:Parse string into command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:22:Parse string into command is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:22:Parse string into command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:24:Parse string into command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:24:Parse string into command is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:24:Parse string into command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:26:Check for malformed command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:26:Check for malformed command is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:26:Check for malformed command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:28:Check for malformed command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:28:Check for malformed command is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:28:Check for malformed command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:30:Check for malformed command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:30:Check for malformed command is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:30:Check for malformed command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:32:Check for malformed command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:32:Check for malformed command is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:32:Check for malformed command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:34:Check for empty command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:34:Check for empty command is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:34:Check for empty command.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:36:remove_top_card 2.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:36:remove_top_card 2 is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:36:remove_top_card 2.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:38:remove_top_card 4.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:38:remove_top_card 4 is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:38:remove_top_card 4.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:40:remove_top_n_cards 2.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:40:remove_top_n_cards 2 is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:40:remove_top_n_cards 2.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:42:player hand getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:42:player hand getter is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:42:player hand getter.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:44:player hand getter 3.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:44:player hand getter 3 is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:44:player hand getter 3.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:46:player pile getter 2.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:46:player pile getter 2 is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:46:player pile getter 2.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:48:check if set made false.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:48:check if set made false is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:48:check if set made false.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Start test test suite for A2:50:remove card from hand.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: Test test suite for A2:50:remove card from hand is successful.
+2020-05-11T02:21:23+00:00 Poojas-MacBook-Air.local#01 I: End test test suite for A2:50:remove card from hand.

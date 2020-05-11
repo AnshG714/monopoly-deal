@@ -258,6 +258,8 @@ let action_card_helper board id =
   else if id = 10 then forced_deal board
   else false
 
+(** [play_helper] performs the card actions when the player uses the 'play'
+    command. *)
 let rec play_helper board id num  = 
   (try
      if id >= 7 && id <= 16 then 

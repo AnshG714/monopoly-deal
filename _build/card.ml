@@ -78,7 +78,6 @@ let list_to_array lst=
   ;
   temp_arr 
 
-
 (** [assign id ()] is the next id number to assign to a card, one higher than 
     the previous id number. *)
 let assign_id (): int = 
@@ -315,12 +314,12 @@ let print_action_cards_helper (cards: action_card list) =
   let sidebar_list = make_recurring_list "|                  |" l in
   let action_type_list = List.map (fun card -> 
       let action_name = get_action_name card in
-      let name_length = String.length action_name in
-      let space = 18 - name_length in
+      let name_length = String.length action_name in let space = 18 - name_length in
       let padding_left = if (space mod 2 = 0) then space / 2 
         else ((space - 1) / 2) in
       let padding_right = space - padding_left in
-      "|" ^ (String.make (padding_left) ' ') ^ action_name ^ (String.make (padding_right) ' ') ^ "|"
+      "|" ^ (String.make (padding_left) ' ') ^ action_name ^ 
+      (String.make (padding_right) ' ') ^ "|"
     ) cards in
   print_contents underline_list green;
   print_contents (make_action_header cards []) green;
@@ -399,6 +398,7 @@ let print_property_cards_helper (cards: property_card list) =
 let print_property_cards cards = 
   batch_and_print 4 cards print_property_cards_helper
 
+(* Wildcard printing *)
 (** [wildcard_helper] is a string list of the formatted rents of wildcards. *)
 let rec wildcard_helper cards acc rent_number ultra_card_list = 
   match cards with
@@ -430,7 +430,6 @@ let wildcard_id_list cards = List.map (fun (card: wildcard) ->
     else "\027[38;5;140m|         id:"  ^ string_of_int (card.id) ^   "         |"
   ) cards 
 
-(* Wildcard printing *)
 (** [print_wildcard_helper cards] formats how to print out all the wildcards
     in [cards].  *)
 let print_wildcard_helper (cards: wildcard list) = 

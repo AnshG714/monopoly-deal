@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Card.html">
+<link rel="next" href="Player.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Json_formation_util" rel="Chapter" href="Json_formation_util.html">
+<link title="Card" rel="Chapter" href="Card.html">
+<link title="Deck" rel="Chapter" href="Deck.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="Board" rel="Chapter" href="Board.html">
+<link title="Game" rel="Chapter" href="Game.html"><title>Deck</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Card.html" title="Card">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Player.html" title="Player">Next</a>
+</div>
+<h1>Module <a href="type_Deck.html">Deck</a></h1>
+
+<pre><span id="MODULEDeck"><span class="keyword">module</span> Deck</span>: <code class="code">sig</code> <a href="Deck.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><span id="TYPEdeck"><span class="keyword">type</span> <code class="type"></code>deck</span> = <code class="type"><a href="Card.html#TYPEcard">Card.card</a> list</code> </pre>
+
+
+<pre><span id="VALinitialize_deck"><span class="keyword">val</span> initialize_deck</span> : <code class="type">unit -> <a href="Deck.html#TYPEdeck">deck</a></code></pre>
+<pre><span id="VALremove_top_card"><span class="keyword">val</span> remove_top_card</span> : <code class="type"><a href="Deck.html#TYPEdeck">deck</a> -> <a href="Card.html#TYPEcard">Card.card</a> list -> <a href="Card.html#TYPEcard">Card.card</a> * <a href="Deck.html#TYPEdeck">deck</a> * <a href="Card.html#TYPEcard">Card.card</a> list</code></pre>
+<pre><span id="VALremove_top_n_cards"><span class="keyword">val</span> remove_top_n_cards</span> : <code class="type"><a href="Deck.html#TYPEdeck">deck</a> -><br>       int -> <a href="Card.html#TYPEcard">Card.card</a> list -> <a href="Card.html#TYPEcard">Card.card</a> list * <a href="Deck.html#TYPEdeck">deck</a> * <a href="Card.html#TYPEcard">Card.card</a> list</code></pre></body></html>

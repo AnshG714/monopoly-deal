@@ -4,10 +4,10 @@ open Util
 type deck = card list
 
 let id = ref 1
+
 (* [get_dup_cards] is a list of the correct count of the card [card_instance]. 
    This function produces a list of [m] instances of [card_instance] as a list, 
    where [m] is the count stored in the [count] field of [card_instance]. *)
-
 let get_dup_cards card_instance = 
   let count = match card_instance with
     | Property _ -> 1

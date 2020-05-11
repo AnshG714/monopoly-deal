@@ -1,4 +1,8 @@
 ### Starting build.
+# Target: game.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:game.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules game.mli > game.mli.depends # cached
+# Target: game.cmi, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:mli, file:game.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o game.cmi game.mli # cached
 # Target: game.ml.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:ml, file:game.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules game.ml > game.ml.depends # cached
 # Target: board.mli.depends, tags: { package(ANSITerminal), package(oUnit), package(yojson), extension:mli, file:board.mli, ocaml, ocamldep, quiet, traverse }
@@ -52,5 +56,5 @@ ocamlfind ocamldep -package oUnit -package yojson -package ANSITerminal -modules
 # Target: util.cmo, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, compile, extension:cmo, extension:ml, file:util.cmo, file:util.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package oUnit -package yojson -package ANSITerminal -o util.cmo util.ml # cached
 # Target: game.byte, tags: { package(ANSITerminal), package(oUnit), package(yojson), byte, dont_link_with, extension:byte, file:game.byte, link, ocaml, program, quiet, traverse }
-ocamlfind ocamlc -linkpkg -package oUnit -package yojson -package ANSITerminal util.cmo card.cmo deck.cmo player.cmo board.cmo command.cmo game.cmo -o game.byte
+ocamlfind ocamlc -linkpkg -package oUnit -package yojson -package ANSITerminal util.cmo card.cmo deck.cmo player.cmo board.cmo command.cmo game.cmo -o game.byte # cached
 # Compilation successful.

@@ -1,0 +1,42 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Json_formation_util" rel="Chapter" href="Json_formation_util.html">
+<link title="Card" rel="Chapter" href="Card.html">
+<link title="Deck" rel="Chapter" href="Deck.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="Board" rel="Chapter" href="Board.html">
+<link title="Game" rel="Chapter" href="Game.html"><title>Board</title>
+</head>
+<body>
+<code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">InvalidCard</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;board<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;init_mult_players&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;initialize_board&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Board</span>.board<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_players&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_current_player&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_player_names&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_player_from_name&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;increment_turn&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;distribute_cards_to_players&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;draw_new_cards&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_current_player_hand&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_current_player_pile&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_pile_of_player&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_card_to_pile&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;discard_card_from_hand&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_current_turn&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_card_value&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Card</span>.card&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;transfer_card&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;transfer_set&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Card</span>.color&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;check_win&nbsp;:&nbsp;<span class="constructor">Board</span>.board&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+<span class="keyword">end</span></code></body></html>

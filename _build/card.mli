@@ -5,9 +5,9 @@ type venue_name = string
 type card_value = int
 type color = string
 type rent = int
+type action_name = string
 
 (* card types *)
-type action_name
 type property_card
 type money_card
 type rent_card
