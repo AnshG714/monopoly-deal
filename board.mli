@@ -84,4 +84,5 @@ val transfer_set: board -> color -> player -> player -> unit
     sets and has won the game, and is false otherwise. *)
 val check_win : board -> bool
 
+(** [add_to_discard] is [card] added to the discard pile of [board] *)
 val add_to_discard : board -> card -> unit

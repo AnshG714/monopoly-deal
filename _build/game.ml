@@ -106,20 +106,20 @@ let rec ask_for_money board current_player from_player total_value acc_value =
     else "n" in
 
   if input = "n" then
-
-    (print_endline "Please enter a valid card id to play";
-     match read_int_opt () with
-     | None -> print_endline "Please enter a valid card id to play";
-       ask_for_money board current_player from_player total_value acc_value
-     | Some id -> (match get_card_value id (get_played_personal_cards from_player) with
-         | i -> transfer_card id from_player current_player; 
-           if (acc_value + i) < total_value 
-           then ask_for_money board current_player from_player total_value (acc_value + i) 
-         | exception InvalidCard -> print_endline "You do not possess this card. \
-                                                   Please enter the id of a card \
-                                                   that you have.";
-           ask_for_money board current_player from_player total_value acc_value
-       ))
+    ( print_endline ("You need to pay " ^ (string_of_int (total_value - acc_value)));
+      print_endline "Please enter a valid card id to play";
+      match read_int_opt () with
+      | None -> print_endline "Please enter a valid card id to play";
+        ask_for_money board current_player from_player total_value acc_value
+      | Some id -> (match get_card_value id (get_played_personal_cards from_player) with
+          | i -> transfer_card id from_player current_player; 
+            if (acc_value + i) < total_value && (List.length (get_played_personal_cards from_player) > 0)
+            then ask_for_money board current_player from_player total_value (acc_value + i)) 
+      | exception InvalidCard -> print_endline "You do not possess this card. \
+                                                Please enter the id of a card \
+                                                that you have.";
+        ask_for_money board current_player from_player total_value acc_value
+    )
 
   else 
     let card = remove_card_from_hand 14 from_player in
@@ -234,7 +234,8 @@ and  forced_deal board =
   let currpl = List.nth (get_players board) (get_current_turn board) in
   print_endline "\027[38;5;190mYou have chosen to play a forced deal card.";
   print_current_player_pile board;
-  print_endline "Enter the id of the card you want to swap out or enter \'cancel' to cancel";
+  print_endline "Enter the id of the card you want to swap out or enter \
+                 'cancel' to cancel";
   let id = read_line () in if id = "cancel" then false 
 
   else 
@@ -309,19 +310,7 @@ let rec deal_breaker board =
       let card = remove_card_from_hand 14 player in
       add_to_discard board card; true
 
-
-(** [action_card_helper] performs the corresponding functionality of the action
-    card with id [id]. *)
-let action_card_helper board id =
-  if id = 7 then deal_breaker board
-  else if id = 8 then debt_collector board
-  else if id = 13 then its_my_bday board
-  else if id = 15 then pass_go board
-  else if id = 16 then sly_deal board
-  else if id = 10 then forced_deal board
-  else false
-
-let rec rent_helper board id = 
+let rent_helper board id double = 
   print_endline "You have decided to play the rent card. If you don't want to
   play this card anymore, type 'cancel'";
   let currpl = List.nth (get_players board) (get_current_turn board) in
@@ -347,7 +336,9 @@ let rec rent_helper board id =
   let input_color = ask_for_color () in
   if input_color = "cancel" then false
   else
-    let money_value = get_rent_earnings currpl input_color in
+    let money_value = 
+      if double then (get_rent_earnings currpl input_color) * 2
+      else get_rent_earnings currpl input_color in
 
     let player_list = get_players board in
     let others = List.filter
@@ -365,6 +356,35 @@ let rec rent_helper board id =
     helper money_value others;
     true
 
+let rec double_the_rent board : bool =
+  print_endline "\027[38;5;190mYou have chosen to play the double the rent card.\
+                 To cancel, type 'cancel'. Otherwise, enter the id of the rent card you want to \
+                 play.";
+
+  let rec get_id () = 
+    (match read_line () with
+     | s when String.length s > 0 -> s
+     | _ -> print_endline "Enter something valid u dumb ass"; get_id ()) in 
+
+  let id = get_id () in 
+  if id = "cancel" then false 
+  else match int_of_string_opt id with
+    | Some i -> rent_helper board i true
+    | None -> double_the_rent board
+
+(** [action_card_helper] performs the corresponding functionality of the action
+    card with id [id]. *)
+let action_card_helper board id =
+  if id = 7 then deal_breaker board
+  else if id = 8 then debt_collector board
+  else if id = 9 then double_the_rent board
+  else if id = 10 then forced_deal board
+  else if id = 13 then its_my_bday board
+  else if id = 15 then pass_go board
+  else if id = 16 then sly_deal board
+  else false
+
+
 (** [play_helper] performs the card actions when the player uses the 'play'
     command. *)
 let rec play_helper board id num  = 
@@ -375,7 +395,7 @@ let rec play_helper board id num  =
         else main_helper board (num))
 
      else if id >= 1 && id <= 6 then
-       (if (rent_helper board id) then 
+       (if (rent_helper board id false) then 
           (discard_card_from_hand board id;) 
         else main_helper board (num))
 
