@@ -3,11 +3,9 @@ open Util
 
 type deck = card list
 
-let id = ref 1
 (* [get_dup_cards] is a list of the correct count of the card [card_instance]. 
    This function produces a list of [m] instances of [card_instance] as a list, 
    where [m] is the count stored in the [count] field of [card_instance]. *)
-
 let get_dup_cards card_instance = 
   let count = match card_instance with
     | Property _ -> 1
@@ -64,7 +62,8 @@ let remove_top_card (deck: deck) (discard : card list): card * deck * card list 
   | [] -> let d = shuffle(discard) in (List.hd d, List.tl d, [])
   | h :: t -> (h, t, discard)
 
-let remove_top_n_cards (deck: deck) (n: int) (discard: card list): (card list * deck * card list) = 
+let remove_top_n_cards (deck: deck) (n: int) (discard: card list): 
+  (card list * deck * card list) = 
   if (List.length deck) < n then failwith "not enough cards" 
   else
     let rec helper deck n acc discard = 

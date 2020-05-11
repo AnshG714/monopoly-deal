@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Deck.html">
+<link rel="next" href="Command.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Json_formation_util" rel="Chapter" href="Json_formation_util.html">
+<link title="Card" rel="Chapter" href="Card.html">
+<link title="Deck" rel="Chapter" href="Deck.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="Board" rel="Chapter" href="Board.html">
+<link title="Game" rel="Chapter" href="Game.html"><title>Player</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Deck.html" title="Deck">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Command.html" title="Command">Next</a>
+</div>
+<h1>Module <a href="type_Player.html">Player</a></h1>
+
+<pre><span id="MODULEPlayer"><span class="keyword">module</span> Player</span>: <code class="code">sig</code> <a href="Player.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><code><span id="TYPEplayer"><span class="keyword">type</span> <code class="type"></code>player</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTplayer.name">name</span>&nbsp;: <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTplayer.cards_in_hand">cards_in_hand</span>&nbsp;: <code class="type"><a href="Card.html#TYPEcard">Card.card</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTplayer.played_personal_cards">played_personal_cards</span>&nbsp;: <code class="type"><a href="Card.html#TYPEcard">Card.card</a> list</code>;</code></td>
+
+</tr></table>
+}
+
+
+
+<pre><span id="VALinitialize_player"><span class="keyword">val</span> initialize_player</span> : <code class="type">string -> <a href="Player.html#TYPEplayer">player</a></code></pre>
+<pre><span id="VALadd_cards_to_hand"><span class="keyword">val</span> add_cards_to_hand</span> : <code class="type"><a href="Card.html#TYPEcard">Card.card</a> list -> <a href="Player.html#TYPEplayer">player</a> -> unit</code></pre>
+<pre><span id="VALget_cards_in_hand"><span class="keyword">val</span> get_cards_in_hand</span> : <code class="type"><a href="Player.html#TYPEplayer">player</a> -> <a href="Card.html#TYPEcard">Card.card</a> list</code></pre>
+<pre><span id="VALget_played_personal_cards"><span class="keyword">val</span> get_played_personal_cards</span> : <code class="type"><a href="Player.html#TYPEplayer">player</a> -> <a href="Card.html#TYPEcard">Card.card</a> list</code></pre>
+<pre><span id="VALget_player_name"><span class="keyword">val</span> get_player_name</span> : <code class="type"><a href="Player.html#TYPEplayer">player</a> -> string</code></pre>
+<pre><span id="VALget_sorted_properties_of_color"><span class="keyword">val</span> get_sorted_properties_of_color</span> : <code class="type"><a href="Player.html#TYPEplayer">player</a> -> <a href="Card.html#TYPEcolor">Card.color</a> -> <a href="Card.html#TYPEcard">Card.card</a> list</code></pre>
+<pre><span id="VALplay_card_to_personal_pile"><span class="keyword">val</span> play_card_to_personal_pile</span> : <code class="type">int -> <a href="Player.html#TYPEplayer">player</a> -> unit</code></pre>
+<pre><span id="VALremove_card_helper"><span class="keyword">val</span> remove_card_helper</span> : <code class="type">int -> <a href="Player.html#TYPEplayer">player</a> -> bool -> <a href="Card.html#TYPEcard">Card.card</a></code></pre>
+<pre><span id="VALremove_card_from_personal_pile"><span class="keyword">val</span> remove_card_from_personal_pile</span> : <code class="type">int -> <a href="Player.html#TYPEplayer">player</a> -> <a href="Card.html#TYPEcard">Card.card</a></code></pre>
+<pre><span id="VALremove_card_from_hand"><span class="keyword">val</span> remove_card_from_hand</span> : <code class="type">int -> <a href="Player.html#TYPEplayer">player</a> -> <a href="Card.html#TYPEcard">Card.card</a></code></pre>
+<pre><span id="VALremove_cards_from_personal_pile"><span class="keyword">val</span> remove_cards_from_personal_pile</span> : <code class="type"><a href="Card.html#TYPEcard">Card.card</a> list -> <a href="Player.html#TYPEplayer">player</a> -> unit</code></pre>
+<pre><span id="VALadd_card_to_personal_pile"><span class="keyword">val</span> add_card_to_personal_pile</span> : <code class="type"><a href="Card.html#TYPEcard">Card.card</a> -> <a href="Player.html#TYPEplayer">player</a> -> unit</code></pre>
+<pre><span id="VALadd_cards_to_personal_pile"><span class="keyword">val</span> add_cards_to_personal_pile</span> : <code class="type"><a href="Card.html#TYPEcard">Card.card</a> list -> <a href="Player.html#TYPEplayer">player</a> -> unit</code></pre>
+<pre><span id="VALcheck_if_set_made"><span class="keyword">val</span> check_if_set_made</span> : <code class="type"><a href="Player.html#TYPEplayer">player</a> -> <a href="Card.html#TYPEcolor">Card.color</a> -> bool</code></pre></body></html>

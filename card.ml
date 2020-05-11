@@ -10,10 +10,11 @@ type action_name = string
 
 (* list of printing colors *)
 let color_map = 
-  [("brown", "\027[38;5;94m"); ("blue", "\027[38;5;4m"); ("green", "\027[38;5;28m");
-   ("light blue", "\027[38;5;45m"); ("orange", "\027[38;5;208m"); ("pink", "\027[38;5;200m");
-   ("black", "\027[38;5;15m"); ("red", "\027[38;5;9m"); ("light green", "\027[38;5;194m");
-   ("yellow", "\027[38;5;226m")]
+  [("brown", "\027[38;5;94m"); ("blue", "\027[38;5;4m"); 
+   ("green", "\027[38;5;28m"); ("light blue", "\027[38;5;45m"); 
+   ("orange", "\027[38;5;208m"); ("pink", "\027[38;5;200m");
+   ("black", "\027[38;5;15m"); ("red", "\027[38;5;9m"); (
+     "light green", "\027[38;5;194m"); ("yellow", "\027[38;5;226m")]
 
 (* keeps track of which id number has just been assigned *)
 let id_count = ref 0
@@ -77,7 +78,6 @@ let list_to_array lst=
   ;
   temp_arr 
 
-
 (** [assign id ()] is the next id number to assign to a card, one higher than 
     the previous id number. *)
 let assign_id (): int = 
@@ -100,7 +100,8 @@ let property_from_json j: property_card = {
   venue = j |> member "venue" |> to_string;
   value = j |> member "value" |> to_int;
   color = j |> member "color" |> to_string;
-  rents = j |> member "rents" |> to_list |> json_list_to_alpha_list to_int |> Array.of_list
+  rents = j |> member "rents" |> to_list |> json_list_to_alpha_list to_int 
+          |> Array.of_list
 }
 
 (** [action_from_json j] creates an action card with an id and parses the json
@@ -230,7 +231,8 @@ let get_id (card: card) =
 let rec print_contents (sl: string list) (color: ANSITerminal.style) = 
   match sl with
   | [] -> print_string [] "\n"
-  | h :: t -> print_string [color] h; print_string [] "    "; print_contents t color
+  | h :: t -> print_string [color] h; print_string [] "    "; 
+    print_contents t color
 
 (** [splice_first_n_list lst n] is a tuple of the first [n] elements of [lst]
     followed by the remaining elements of [lst].*)
@@ -238,7 +240,8 @@ let splice_first_n_list lst n =
   let rec helper lst n acc count = 
     match lst with
     | [] -> (acc, [])
-    | h :: t -> if count = n then (acc, h :: t) else helper t n (acc @ [h]) (count + 1) in
+    | h :: t -> if count = n then (acc, h :: t) else helper t n (acc @ [h]) 
+          (count + 1) in
   helper lst n [] 0
 
 (** [batch_and_print batch_size card_list print_fun] prints the elements in 
@@ -251,6 +254,15 @@ let rec batch_and_print (batch_size: int) (card_list) (print_fun) =
     print_fun b; batch_and_print batch_size rem print_fun
 
 (* money card printing *)
+(** [money_val_list] is a string list of the formatted values of money cards. *)
+let money_val_list cards = List.map (fun card -> 
+    (let money_value = get_money_value card in 
+     if money_value = 10 then 
+       "|    $"  ^ string_of_int money_value ^   "    |"
+     else 
+       "|    $"  ^ string_of_int money_value ^   "     |")
+  ) cards 
+
 (** [print_money_cards_helper cards] formats how to print out all the money cards
     in [cards].  *)
 let print_money_cards_helper (cards: money_card list) =
@@ -263,20 +275,13 @@ let print_money_cards_helper (cards: money_card list) =
         "|   id:"  ^ string_of_int (card.id) ^   "   |"
       else "|    id:"  ^ string_of_int (card.id) ^   "    |"
     ) cards in
-  let money_val_list = List.map (fun card -> 
-      (let money_value = get_money_value card in 
-       if money_value = 10 then 
-         "|    $"  ^ string_of_int money_value ^   "    |"
-       else 
-         "|    $"  ^ string_of_int money_value ^   "     |")
-    ) cards in
 
   print_contents underline_list magenta;
   print_contents money_header_list magenta;
   print_contents underline_list magenta;
   print_contents sidebar_list magenta;
   print_contents (List.rev money_id_list) magenta;
-  print_contents money_val_list magenta;
+  print_contents (List.rev (money_val_list cards)) magenta;
   print_contents sidebar_list magenta;
   print_contents underline_list magenta
 
@@ -285,6 +290,21 @@ let print_money_cards (cards: money_card list) =
 
 
 (* Action card printing*)
+(** [action_val_list] is a string list of the formatted values of action cards. *)
+let action_val_list cards = List.map (fun (card: action_card) -> 
+    if card.id >= 10 then
+      "|      id:"  ^ string_of_int (card.id) ^   "       |"
+    else "|       id:"  ^ string_of_int (card.id) ^   "       |"
+  ) cards 
+
+(** [make_action_header] is a string list of the headers of action cards. *)
+let rec make_action_header (cards: action_card list) acc = 
+  match cards with
+  | [] -> acc
+  | h :: t -> let s = "|  $" ^ (string_of_int (get_action_value h)) 
+                      ^ "M      Action |" in
+    make_action_header t (s :: acc) 
+
 (** [print_action_cards_helper cards] formats how to print out all the action 
     cards in [cards].  *)
 let print_action_cards_helper (cards: action_card list) = 
@@ -292,32 +312,20 @@ let print_action_cards_helper (cards: action_card list) =
   let underline_list = make_recurring_list "--------------------" l in 
   (* let action_header_list = make_recurring_list "\027[|      Action      |" l in *)
   let sidebar_list = make_recurring_list "|                  |" l in
-  let action_val_list = List.map (fun (card: action_card) -> 
-      if card.id >= 10 then
-        "|      id:"  ^ string_of_int (card.id) ^   "       |"
-      else "|       id:"  ^ string_of_int (card.id) ^   "       |"
-    ) cards in
-
-  let rec make_action_header (cards: action_card list) acc = 
-    match cards with
-    | [] -> acc
-    | h :: t -> let s = "|  $" ^ (string_of_int (get_action_value h)) ^ "M      Action |" in
-      make_action_header t (s :: acc) in
-
   let action_type_list = List.map (fun card -> 
       let action_name = get_action_name card in
-      let name_length = String.length action_name in
-      let space = 18 - name_length in
-      let padding_left = if (space mod 2 = 0) then space / 2 else ((space - 1) / 2) in
+      let name_length = String.length action_name in let space = 18 - name_length in
+      let padding_left = if (space mod 2 = 0) then space / 2 
+        else ((space - 1) / 2) in
       let padding_right = space - padding_left in
-      "|" ^ (String.make (padding_left) ' ') ^ action_name ^ (String.make (padding_right) ' ') ^ "|"
+      "|" ^ (String.make (padding_left) ' ') ^ action_name ^ 
+      (String.make (padding_right) ' ') ^ "|"
     ) cards in
-
   print_contents underline_list green;
   print_contents (make_action_header cards []) green;
   print_contents underline_list green;
   print_contents sidebar_list green;
-  print_contents (List.rev action_val_list) green;
+  print_contents (List.rev (action_val_list cards)) green;
   print_contents (List.rev action_type_list) green;
   print_contents underline_list green
 
@@ -326,6 +334,45 @@ let print_action_cards (cards: action_card list) =
 
 
 (* Property card printing *)
+(** [property_id_list] is a string list of the formatted ids of property cards. *)
+let property_id_list cards = List.map (fun (card: property_card) -> 
+    let color = List.assoc card.color color_map in
+    if card.id >= 10 then
+      color ^ "|        id:"  ^ string_of_int (card.id) ^   "         |"
+    else color ^ "|         id:"  ^ string_of_int (card.id) ^   "         |"
+  ) cards 
+
+(** [make_property_name_helper] is a string list of the formatted property names. *)
+let rec make_property_name_helper (cards: property_card list) acc = 
+  match cards with
+  | [] -> acc
+  | h :: t -> let p_name = h.venue in
+    let p_size = String.length p_name in 
+    let space = 22 - p_size in
+    let padding_left = if (space mod 2 = 0) then space / 2 
+      else ((space - 1)/ 2) in
+    let padding_right = space - padding_left in
+    let s = "|" ^ (String.make padding_left ' ') ^ p_name 
+            ^ (String.make padding_right ' ') ^ "|" in
+    make_property_name_helper t (((List.assoc h.color color_map) ^ s) :: acc) 
+
+(** [make_rent_info_helper] is a string list of the formatted rents of property
+    cards. *)
+let rec make_rent_info_helper (cards: property_card list) rent_number acc = 
+  match cards with
+  | [] -> acc
+  | h :: t -> let rents = h.rents in
+
+    let num_in_set = Array.length rents in
+    let s = 
+      if rent_number >= num_in_set then "|                      |"
+      else let rent_info = (string_of_int rent_number) ^ "---$" ^ 
+                           string_of_int(rents.(rent_number)) ^ "M" in
+
+        "|       " ^ rent_info ^ "        |" in
+    make_rent_info_helper t rent_number 
+      (((List.assoc h.color color_map ^ s) :: acc)) 
+
 (** [print_property_cards_helper cards] formats how to print out all the 
     property cards in [cards].  *)
 let print_property_cards_helper (cards: property_card list) = 
@@ -336,44 +383,12 @@ let print_property_cards_helper (cards: property_card list) =
       make_dataless_helper t 
         ((color ^ st) :: acc) st in
 
-  let property_id_list = List.map (fun (card: property_card) -> 
-      let color = List.assoc card.color color_map in
-      if card.id >= 10 then
-        color ^ "|        id:"  ^ string_of_int (card.id) ^   "         |"
-      else color ^ "|         id:"  ^ string_of_int (card.id) ^   "         |"
-    ) cards in
-
-
-  let rec make_property_name_helper (cards: property_card list) acc = 
-    match cards with
-    | [] -> acc
-    | h :: t -> let p_name = h.venue in
-      let p_size = String.length p_name in 
-      let space = 22 - p_size in
-      let padding_left = if (space mod 2 = 0) then space / 2 else ((space - 1)/ 2) in
-      let padding_right = space - padding_left in
-      let s = "|" ^ (String.make padding_left ' ') ^ p_name ^ (String.make padding_right ' ') ^ "|" in
-      make_property_name_helper t (((List.assoc h.color color_map) ^ s) :: acc) in
-
-  let rec make_rent_info_helper (cards: property_card list) rent_number acc = 
-    match cards with
-    | [] -> acc
-    | h :: t -> let rents = h.rents in
-
-      let num_in_set = Array.length rents in
-      let s = 
-        if rent_number >= num_in_set then "|                      |"
-        else let rent_info = (string_of_int rent_number) ^ "---$" ^ 
-                             string_of_int(rents.(rent_number)) ^ "M" in
-
-          "|       " ^ rent_info ^ "        |" in
-      make_rent_info_helper t rent_number (((List.assoc h.color color_map ^ s) :: acc)) in
-
   print_contents (make_dataless_helper cards [] (String.make 24 '-')) white;
   print_contents (make_property_name_helper cards []) white;
   print_contents (make_dataless_helper cards [] (String.make 24 '-')) white;
-  print_contents (make_dataless_helper cards [] ("|" ^ (String.make 22 ' ') ^ "|")) white;
-  print_contents (List.rev property_id_list) white;
+  print_contents (make_dataless_helper cards [] 
+                    ("|" ^ (String.make 22 ' ') ^ "|")) white;
+  print_contents (List.rev (property_id_list cards)) white;
   for i = 0 to 3 do
     print_contents (make_rent_info_helper cards i []) white;
   done;
@@ -383,8 +398,38 @@ let print_property_cards_helper (cards: property_card list) =
 let print_property_cards cards = 
   batch_and_print 4 cards print_property_cards_helper
 
-
 (* Wildcard printing *)
+(** [wildcard_helper] is a string list of the formatted rents of wildcards. *)
+let rec wildcard_helper cards acc rent_number ultra_card_list = 
+  match cards with
+  | [] -> acc
+  | h :: t -> let rents = h.rents in
+    if Array.length rents = 0 then 
+      wildcard_helper t 
+        ((List.nth ultra_card_list rent_number) :: acc) rent_number ultra_card_list
+    else let l1 = Array.length rents.(0) in
+      let l2 = Array.length rents.(1) in
+      let s1 = 
+        if rent_number >= l1 then "     " 
+        else (List.assoc (List.hd (h.colors)) color_map) 
+             ^ string_of_int(rent_number) ^ "--$" 
+             ^ string_of_int(rents.(0).(rent_number)) in
+      let s2 = 
+        if rent_number >= l2 then "     "
+        else (List.assoc (h.colors |> List.tl |> List.hd) color_map) 
+             ^ string_of_int(rent_number) ^ "--$" ^ string_of_int(rents.(1).(rent_number)) in
+
+      let finalst = "\027[38;5;140m|    " ^ s1 ^ "    " ^ s2 ^ "    " ^ "\027[38;5;140m|" in
+      wildcard_helper t (finalst :: acc) rent_number ultra_card_list
+
+(** [wildcard_id_list] is a string list of the ids of the formatted ids of 
+    the wildcards. *)
+let wildcard_id_list cards = List.map (fun (card: wildcard) -> 
+    if card.id >= 10 then
+      "\027[38;5;140m|        id:"  ^ string_of_int (card.id) ^   "         |"
+    else "\027[38;5;140m|         id:"  ^ string_of_int (card.id) ^   "         |"
+  ) cards 
+
 (** [print_wildcard_helper cards] formats how to print out all the wildcards
     in [cards].  *)
 let print_wildcard_helper (cards: wildcard list) = 
@@ -396,41 +441,15 @@ let print_wildcard_helper (cards: wildcard list) =
   let universal_orange = "\027[38;5;208m|      Universal       |" in
   let universal_yellow = "\027[38;5;226m|      Universal       |" in
   let universal_red = "\027[38;5;9m|      Universal       |" in
-  let ultra_card_list = [universal_pink;universal_orange;universal_yellow;universal_red] in
-
-  let rec wildcard_helper cards acc rent_number = 
-    match cards with
-    | [] -> acc
-    | h :: t -> let rents = h.rents in
-      if Array.length rents = 0 then 
-        wildcard_helper t ((List.nth ultra_card_list rent_number) :: acc) rent_number
-      else let l1 = Array.length rents.(0) in
-        let l2 = Array.length rents.(1) in
-        let s1 = 
-          if rent_number >= l1 then "     " 
-          else (List.assoc (List.hd (h.colors)) color_map) 
-               ^ string_of_int(rent_number) ^ "--$" ^ string_of_int(rents.(0).(rent_number)) in
-
-        let s2 = 
-          if rent_number >= l2 then "     "
-          else (List.assoc (h.colors |> List.tl |> List.hd) color_map) 
-               ^ string_of_int(rent_number) ^ "--$" ^ string_of_int(rents.(1).(rent_number)) in
-
-        let finalst = "\027[38;5;140m|    " ^ s1 ^ "    " ^ s2 ^ "    " ^ "\027[38;5;140m|" in
-        wildcard_helper t (finalst :: acc) rent_number in
-  let wildcard_id_list = List.map (fun (card: wildcard) -> 
-      if card.id >= 10 then
-        "\027[38;5;140m|        id:"  ^ string_of_int (card.id) ^   "         |"
-      else "\027[38;5;140m|         id:"  ^ string_of_int (card.id) ^   "         |"
-    ) cards in
-
+  let ultra_card_list = 
+    [universal_pink;universal_orange;universal_yellow;universal_red] in
 
   print_contents underline white;
   print_contents header white;
   print_contents underline white;
-  print_contents (List.rev wildcard_id_list) white;
+  print_contents (List.rev (wildcard_id_list cards)) white;
   for i = 0 to 3 do
-    print_contents (wildcard_helper cards [] i) white;
+    print_contents (wildcard_helper cards [] i ultra_card_list) white;
   done;
   print_contents underline white;
   ()
@@ -439,56 +458,63 @@ let print_wildcards (cards: wildcard list) =
   batch_and_print 4 cards print_wildcard_helper
 
 (* Rent card printing*)
+(** [rent_id_list] is a string list of the formatted ids of the rent cards. *)
+let rent_id_list cards = List.map (fun (card: rent_card) -> 
+    if card.id >= 10 then
+      "\027[38;5;360m|        id:"  ^ string_of_int (card.id) ^   "         |"
+    else "\027[38;5;360m|       id:"  ^ string_of_int (card.id) ^   "       |"
+  ) cards 
+
+(** [make_rent_header] is a string list of the formatted headers of rent cards. *)
+let rec make_rent_header cards acc = 
+  match cards with
+  | [] -> acc
+  | h :: t -> 
+    let s = 
+      "\027[38;5;360m" ^ "|  $" ^ (string_of_int h.value) ^ "M        Rent |" in
+    make_rent_header t (s::acc)
+
+(** [make_color_info] is a string list of the color info of rent cards. *)
+let rec make_color_info cards color_number acc ultra_card_list sidebar = 
+  match cards with
+  | [] -> acc
+  | h :: t -> let colors = h.colors in
+    if List.length colors = 0 
+    then (make_color_info t color_number 
+            ((List.nth ultra_card_list color_number) :: acc)) 
+        ultra_card_list sidebar else 
+      let s = if color_number >= (List.length colors) then sidebar else
+          let required_color = List.nth colors color_number in
+          let len = String.length required_color in
+          let space = 18 - len in
+          let padding_left = 
+            if (space mod 2 = 0) then space / 2 else ((space - 1)/ 2) in
+          let padding_right = space - padding_left in
+          ((List.assoc required_color color_map) ^ "|" ^ 
+           (String.make padding_left ' ') ^ required_color ^ 
+           (String.make padding_right ' ') ^ "|") in
+
+      make_color_info t color_number 
+        (s :: acc)  ultra_card_list sidebar
+
 (** [print_rent_cards_helper cards] formats how to print out all the rent cards
     in [cards].  *)
 let print_rent_cards_helper (cards: rent_card list) =
   let l = List.length cards in 
   let underline_list = make_recurring_list "\027[38;5;360m--------------------" l in 
   let sidebar = "\027[38;5;360m|                  |" in
-
   let universal_pink = "\027[38;5;200m|    Universal     |" in
   let universal_orange = "\027[38;5;208m|    Universal     |" in
   let universal_yellow = "\027[38;5;226m|    Universal     |" in
   let ultra_card_list = [universal_pink;universal_orange;universal_yellow;] in
 
-  let rent_id_list = List.map (fun (card: rent_card) -> 
-      if card.id >= 10 then
-        "\027[38;5;360m|        id:"  ^ string_of_int (card.id) ^   "         |"
-      else "\027[38;5;360m|       id:"  ^ string_of_int (card.id) ^   "       |"
-    ) cards in
-
-  let rec make_rent_header cards acc = 
-    match cards with
-    | [] -> acc
-    | h :: t -> let s = "\027[38;5;360m" ^ "|  $" ^ (string_of_int h.value) ^ "M        Rent |" in
-      make_rent_header t (s::acc) in
-
-  let rec make_color_info cards color_number acc = 
-    match cards with
-    | [] -> acc
-    | h :: t -> let colors = h.colors in
-      if List.length colors = 0 
-      then (make_color_info t color_number ((List.nth ultra_card_list color_number) :: acc)) else 
-        let s = if color_number >= (List.length colors) then sidebar else
-            let required_color = List.nth colors color_number in
-            let len = String.length required_color in
-            let space = 18 - len in
-            let padding_left = if (space mod 2 = 0) then space / 2 else ((space - 1)/ 2) in
-            let padding_right = space - padding_left in
-            ((List.assoc required_color color_map) ^ "|" ^ 
-             (String.make padding_left ' ') ^ required_color ^ 
-             (String.make padding_right ' ') ^ "|") in
-
-        make_color_info t color_number 
-          (s :: acc) in
-
   print_contents underline_list white;
   print_contents (make_rent_header cards []) white;
-  print_contents underline_list white;
-  print_contents (List.rev rent_id_list) white;
+  print_contents underline_list white; 
+  print_contents (List.rev (rent_id_list cards)) white;
 
   for i = 0 to 2 do
-    print_contents (make_color_info cards i []) white;
+    print_contents (make_color_info cards i [] ultra_card_list sidebar) white;
   done;
   print_contents underline_list white
 

@@ -1,0 +1,385 @@
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Json_formation_util" rel="Chapter" href="Json_formation_util.html">
+<link title="Card" rel="Chapter" href="Card.html">
+<link title="Deck" rel="Chapter" href="Deck.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="Board" rel="Chapter" href="Board.html">
+<link title="Game" rel="Chapter" href="Game.html"><title>Index of values</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of values</h1>
+<table>
+<tr><td align="left"><div>A</div></td></tr>
+<tr><td><a href="Player.html#VALadd_card_to_personal_pile">add_card_to_personal_pile</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Board.html#VALadd_card_to_pile">add_card_to_pile</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">add_card_to_pile board id</code> adds the card with id <code class="code">id</code> from the current
+    player's hand to their pile, and raises InvalidCard if that card is not in 
+    their hand.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALadd_cards_to_hand">add_cards_to_hand</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Player.html#VALadd_cards_to_personal_pile">add_cards_to_personal_pile</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td align="left"><div>C</div></td></tr>
+<tr><td><a href="Player.html#VALcheck_if_set_made">check_if_set_made</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Board.html#VALcheck_win">check_win</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">check_win board</code> is true if the current player has at least 3 complete
+    sets and has won the game, and is false otherwise.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>D</div></td></tr>
+<tr><td><a href="Board.html#VALdiscard_card_from_hand">discard_card_from_hand</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">discard_card_from_hand board id</code> adds the card with id <code class="code">id</code> from the current
+    player's hand to the discarded list, and raises InvalidCard if that card is
+    not in their hand.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALdistribute_cards_to_players">distribute_cards_to_players</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">distribute_cards_to_players board</code> distributes 5 cards to all the players
+    and an additional 2 cards to the first player in <code class="code">board</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALdraw_new_cards">draw_new_cards</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_new_cards board mode</code> adds up to 2 cards to the current player's hand
+    such that they have no more than 7 cards, and adds 5 cards to the current 
+    player's hand if they have 0 cards and <code class="code">mode</code> is true.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>G</div></td></tr>
+<tr><td><a href="Card.html#VALget_action_count">get_action_count</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_action_count card</code> is the number of cards in the deck of the type
+    of action card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_action_description">get_action_description</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_action_description card</code> is the description of what the player can do 
+    by playing action card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_action_name">get_action_name</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_action_name card</code> is the name of the action card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_action_value">get_action_value</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_action_value card</code> is the value of the action card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_actions">get_actions</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_actions ()</code> returns a list of all the action cards from the deck.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALget_card_value">get_card_value</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">get_card_value id card_list</code> is the value of the card with id <code class="code">id</code> in
+    <code class="code">card_list</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALget_cards_in_hand">get_cards_in_hand</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Board.html#VALget_current_player">get_current_player</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">get_current_player board</code> is the name of the player whose turn it is.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALget_current_turn">get_current_turn</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">get_current_turn board</code> returns the current turn of <code class="code">board</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_id">get_id</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_id card</code> returns the unique id of the kind of card of <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_money">get_money</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_money ()</code> returns a list of all the money cards from the deck.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_money_count">get_money_count</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_money_count card</code> is the number of cards in the deck with the type of 
+    money card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_money_value">get_money_value</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_money_value card</code> is the value of the money card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALget_played_personal_cards">get_played_personal_cards</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Board.html#VALget_player_from_name">get_player_from_name</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">get_player_from_name</code> is the player corresponding to the name <code class="code">name</code> for 
+    board <code class="code">board</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALget_player_name">get_player_name</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Board.html#VALget_player_names">get_player_names</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">get_player_names board</code> is a list of all the names of the players in <code class="code">board</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALget_players">get_players</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">get_players board</code> is a list of all the players in <code class="code">board</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_properties">get_properties</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_properties ()</code> returns a list of all the property cards from the deck.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_property_color">get_property_color</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_property_color card</code> is the color of the property card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_property_name">get_property_name</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_property_name card</code> is the name of the property of the property
+    card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_property_rents">get_property_rents</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_property_rents card</code> is a list of the rents such that having one card 
+    of the color of property card <code class="code">card</code> corresponds to the first element of the 
+    list, having two cards of that color corresponds to the second element of 
+    the list, and so on.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_property_value">get_property_value</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_property_value card</code> is the value of the property card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_rent_colors">get_rent_colors</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_rent_colors card</code> is a list of colors that the rent card <code class="code">card</code> can 
+    request rent for.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_rent_count">get_rent_count</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_rent_count card</code> is the number of cards in the deck of the type
+    of rent card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_rent_value">get_rent_value</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_rent_value card</code> is the value of the rent card <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_rents">get_rents</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_rents ()</code> returns a list of all the rent cards from the deck.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALget_sorted_properties_of_color">get_sorted_properties_of_color</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Card.html#VALget_wildcard_colors">get_wildcard_colors</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_wildcard_colors card</code> is a list of property colors that the wildcard 
+    <code class="code">card</code> can be played as.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_wildcard_count">get_wildcard_count</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_wildcard_count card</code> is the number of cards in the deck of the type
+    of wildcard <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_wildcard_rents">get_wildcard_rents</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_wildcard_rents card</code> is a list of list of rents of <code class="code">card</code> such that the 
+    first element corresponds to a list of rents for the first color, where the 
+    first element of this inner list corresponds to the rent of having one 
+    property of that color, and so on.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_wildcard_value">get_wildcard_value</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_wildcard_value card</code> is the value of the wildcard <code class="code">card</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_wildcards">get_wildcards</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_wildcards ()</code> returns a list of all the wildcards from the deck.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>I</div></td></tr>
+<tr><td><a href="Board.html#VALincrement_turn">increment_turn</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">increment_turn board</code> switches the turn to the next person in <code class="code">board</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALinit_mult_players">init_mult_players</a> [<a href="Board.html">Board</a>]</td>
+<td></td></tr>
+<tr><td><a href="Board.html#VALinitialize_board">initialize_board</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">initialize_board n player_names</code> creates a board of <code class="code">n</code> players with 
+    names <code class="code">names</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Deck.html#VALinitialize_deck">initialize_deck</a> [<a href="Deck.html">Deck</a>]</td>
+<td></td></tr>
+<tr><td><a href="Player.html#VALinitialize_player">initialize_player</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td align="left"><div>P</div></td></tr>
+<tr><td><a href="Command.html#VALparse">parse</a> [<a href="Command.html">Command</a>]</td>
+<td><div class="info">
+<p><code class="code">parse str</code> parses <code class="code">str</code> into a command if possible.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALplay_card_to_personal_pile">play_card_to_personal_pile</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Card.html#VALprint_action_cards">print_action_cards</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_action_cards cards</code> prints out the elements of a list of action cards
+    <code class="code">cards</code> with its names, values, and ids.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALprint_current_player_hand">print_current_player_hand</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">print_current_player_hand board</code> prints out the cards in the current 
+    player's hand in <code class="code">board</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALprint_current_player_pile">print_current_player_pile</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">print_current_player_pile board</code> prints out the cards in the current 
+    player's pile in <code class="code">board</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_money_cards">print_money_cards</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_money_cards cards</code> prints out the elements of a list of money cards
+    <code class="code">cards</code> with its values and ids.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALprint_pile_of_player">print_pile_of_player</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">print_pile_of_player board player_name</code> prints out the pile of the player
+    whose name is <code class="code">player_name</code> in <code class="code">board</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_property_cards">print_property_cards</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_property_cards cards</code> prints out the elements of a list of property
+    cards <code class="code">cards</code> with its names, rent values, and ids.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_rent_cards">print_rent_cards</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_rent_cards cards</code> prints out the elements of a lis of rent cards 
+    <code class="code">cards</code> with its colors, value, and id.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_wildcards">print_wildcards</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_wildcards cards</code> prints out the elements of a list of wildcards 
+    <code class="code">cards</code> with its colors, rents, and ids</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>R</div></td></tr>
+<tr><td><a href="Player.html#VALremove_card_from_hand">remove_card_from_hand</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Player.html#VALremove_card_from_personal_pile">remove_card_from_personal_pile</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Player.html#VALremove_cards_from_personal_pile">remove_cards_from_personal_pile</a> [<a href="Player.html">Player</a>]</td>
+<td></td></tr>
+<tr><td><a href="Deck.html#VALremove_top_card">remove_top_card</a> [<a href="Deck.html">Deck</a>]</td>
+<td></td></tr>
+<tr><td><a href="Deck.html#VALremove_top_n_cards">remove_top_n_cards</a> [<a href="Deck.html">Deck</a>]</td>
+<td></td></tr>
+<tr><td align="left"><div>T</div></td></tr>
+<tr><td><a href="Board.html#VALtransfer_card">transfer_card</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">transfer_card</code> transfers card with id <code class="code">id</code> 
+    from <code class="code">player1</code> pile to <code class="code">player2</code> pile.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Board.html#VALtransfer_set">transfer_set</a> [<a href="Board.html">Board</a>]</td>
+<td><div class="info">
+<p><code class="code">transfer_set</code> transfers the set of <code class="code">color</code> from <code class="code">from_player</code> and puts it
+    in the pile of <code class="code">to_player</code>, for the <code class="code">board</code> in this game.</p>
+
+</div>
+</td></tr>
+</table>
+</body>
+</html>
