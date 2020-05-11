@@ -112,6 +112,9 @@ let discard_card_from_hand (board : board) (id : int): unit =
   let card = remove_card_from_hand id p in
   board.discarded <- card :: board.discarded
 
+let add_to_discard (board : board) (card : card): unit = 
+  board.discarded <- card :: board.discarded
+
 let transfer_card id player1 player2 = 
   try
     let c = remove_card_from_personal_pile id player1 in

@@ -24,6 +24,8 @@ val get_player_name: player -> string
    of ids.*)
 val get_sorted_properties_of_color: player -> color -> card list
 
+(* [get_rent_earnings] is the amount that would be earned if [player] were to 
+   charge rent on a property with color [color]*)
 val get_rent_earnings: player -> color -> rent
 
 (* [play_card_]to_personal_pile] transfers the card with id [id] to to the hand

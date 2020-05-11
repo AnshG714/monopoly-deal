@@ -93,19 +93,37 @@ let rec get_player_name_input board =
     are out of cards, and transfers it from their piles. *)
 let rec ask_for_money board current_player from_player total_value acc_value =
 
-  print_endline "Please enter a valid card id to play";
-  match read_int_opt () with
-  | None -> print_endline "Please enter a valid card id to play";
-    ask_for_money board current_player from_player total_value acc_value
-  | Some id -> (match get_card_value id (get_played_personal_cards from_player) with
-      | i -> transfer_card id from_player current_player; 
-        if (acc_value + i) < total_value 
-        then ask_for_money board current_player from_player total_value (acc_value + i) 
-      | exception InvalidCard -> print_endline "You do not possess this card. \
-                                                Please enter the id of a card \
-                                                that you have.";
-        ask_for_money board current_player from_player total_value acc_value
-    )
+  let from_player_has_jsn =
+    (let fph = get_cards_in_hand from_player in
+     let ids = List.map (fun card -> get_id card) fph in
+     List.mem 14 ids) in
+
+  let input = if from_player_has_jsn then
+      (print_endline "You have a Just Say No card! Would you like to use it? y/n";
+       match read_line () with
+       | s when s = "Y" || s = "y" -> "y"
+       | _ -> "n") 
+    else "n" in
+
+  if input = "n" then
+
+    (print_endline "Please enter a valid card id to play";
+     match read_int_opt () with
+     | None -> print_endline "Please enter a valid card id to play";
+       ask_for_money board current_player from_player total_value acc_value
+     | Some id -> (match get_card_value id (get_played_personal_cards from_player) with
+         | i -> transfer_card id from_player current_player; 
+           if (acc_value + i) < total_value 
+           then ask_for_money board current_player from_player total_value (acc_value + i) 
+         | exception InvalidCard -> print_endline "You do not possess this card. \
+                                                   Please enter the id of a card \
+                                                   that you have.";
+           ask_for_money board current_player from_player total_value acc_value
+       ))
+
+  else 
+    let card = remove_card_from_hand 14 from_player in
+    add_to_discard board card; ()
 
 (** [pass_go board] distributes up to 2 cards to the current player. *)
 let pass_go (board: board) = 
@@ -149,28 +167,48 @@ let rec swap_out p id =
 (** [move_property] moves a property from player with name [name] to the current
     player's pile. *)
 let rec move_property board is_sly name = 
+
   let pl = get_player_from_name board name in
-  let rec transfer_helper i pl = 
-    match 
-      transfer_card i pl (List.nth (get_players board) (get_current_turn board)) 
-    with
-    | exception InvalidCard -> print_endline "wrong"; loop ()
-    | _ -> true
-  and loop () = 
-    match read_line () with
-    | entry -> (match int_of_string_opt entry with
-        | Some i -> (if i < 17 || i > 52
-                     then (print_endline "this isn't a property card!"; loop ())
-                     else if (check_if_set_made pl (get_color_from_id i))
-                     then (print_endline "this property is a part of a set. \
-                                          Can't take this!"; loop ())
-                     else transfer_helper i pl)
-        | None -> if entry = "back" then (if is_sly then sly_deal board 
-                                          else forced_deal board)
-          else (print_endline "You need to either enter a valid id for the \
-                               property card you want to take, or type 'back'."; 
-                loop ())) 
-    | exception Failure _ -> false in loop ()
+
+  let from_player_has_jsn =
+    (let fph = get_cards_in_hand pl in
+     let ids = List.map (fun card -> get_id card) fph in
+     List.mem 14 ids) in
+
+  let input = if from_player_has_jsn then
+      (print_endline "You have a Just Say No card! Would you like to use it? y/n";
+       match read_line () with
+       | s when s = "Y" || s = "y" -> "y"
+       | _ -> "n") 
+    else "n" in
+
+  if input = "n" then
+
+    let rec transfer_helper i pl = 
+      match 
+        transfer_card i pl (List.nth (get_players board) (get_current_turn board)) 
+      with
+      | exception InvalidCard -> print_endline "wrong"; loop ()
+      | _ -> true
+    and loop () = 
+      match read_line () with
+      | entry -> (match int_of_string_opt entry with
+          | Some i -> (if i < 17 || i > 52
+                       then (print_endline "this isn't a property card!"; loop ())
+                       else if (check_if_set_made pl (get_color_from_id i))
+                       then (print_endline "this property is a part of a set. \
+                                            Can't take this!"; loop ())
+                       else transfer_helper i pl)
+          | None -> if entry = "back" then (if is_sly then sly_deal board 
+                                            else forced_deal board)
+            else (print_endline "You need to either enter a valid id for the \
+                                 property card you want to take, or type 'back'."; 
+                  loop ())) 
+      | exception Failure _ -> false in loop ()
+
+  else 
+    let card = remove_card_from_hand 14 pl in
+    add_to_discard board card; true
 
 
 (** [sly_deal board] allows the current player to steal any property of their 
@@ -227,9 +265,10 @@ let debt_collector board =
      true)
 
 let rec deal_breaker board = 
-  print_endline "\027[38;5;190You have chosen to play the deal breaker card. To\
-                 use this card, enter the name of the person whose set you want to take. The \
-                 players are: \027[0m";
+  print_endline "\027[38;5;190mYou have chosen to play the deal breaker card. To \
+                 use this card, enter the name of the person whose set you want to take. \ 
+                 To cancel, type 'cancel'. The players are: \027[0m";
+
   let name = get_player_name_input board in
   if name = "cancel" then false 
   else
@@ -238,7 +277,9 @@ let rec deal_breaker board =
       ("\027[38;5;190mHere is " ^ name ^ "'s pile. Select the color of the set \
                                           you want to steal. The set of colors is:");
     print_endline 
-      "brown\tpink\nblue\tblack\ngreen\tred\nlight blue\tlight green\norange\tyellow";
+      "brown\npink\nblue\nblack\ngreen\nred\nlight blue\nlight green\norange\nyellow\027[0m";
+
+    print_pile_of_player board name;
 
     let rec get_color () = 
       match read_line () with
@@ -247,15 +288,33 @@ let rec deal_breaker board =
 
     let color = get_color () in
     let currpl = List.nth (get_players board) (get_current_turn board) in
-    if (check_if_set_made player color) then (transfer_set board color player currpl; true)
-    else (print_endline "This isn't a valid set!"; deal_breaker board)
+    let from_player_has_jsn =
+      (let fph = get_cards_in_hand player in
+       let ids = List.map (fun card -> get_id card) fph in
+       List.mem 14 ids) in
 
+    let input = if from_player_has_jsn then
+        (print_endline "You have a Just Say No card! Would you like to use it? y/n";
+         match read_line () with
+         | s when s = "Y" || s = "y" -> "y"
+         | _ -> "n") 
+      else "n" in
+
+    if input = "n" then
+
+      if (check_if_set_made player color) then (transfer_set board color player currpl; true)
+      else (print_endline "This isn't a valid set!"; deal_breaker board)
+
+    else 
+      let card = remove_card_from_hand 14 player in
+      add_to_discard board card; true
 
 
 (** [action_card_helper] performs the corresponding functionality of the action
     card with id [id]. *)
 let action_card_helper board id =
-  if id = 8 then debt_collector board
+  if id = 7 then deal_breaker board
+  else if id = 8 then debt_collector board
   else if id = 13 then its_my_bday board
   else if id = 15 then pass_go board
   else if id = 16 then sly_deal board
