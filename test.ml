@@ -3,6 +3,26 @@ open Command
 open Card
 open Deck
 
+(** TEST PLAN:- 
+
+    Since our system involves users being able to play a game, most of the tests
+    we have defined deal with the getter functions for our cards, parsing commands
+    and checking initial setup configurations for our board and players. Our main
+    file, game.ml, is primarily focused on combining all the different models in 
+    the system together and generating the terminal text interface, hence we 
+    do not need to test it with OUnit (it can be tested by playing the game). 
+    We primarily employed glass-box testing to walk through the possible execution
+    trace of our code and achieve as much coverage as possible - due to there being
+    a large variety of different cards, we deemed it impractical to test all of 
+    the cards we had created and instead focus on the functionality of the getter
+    functions. We believe that the OUnit test suite adequately checks the system for 
+    potential bugs - in combination with our rigorous manual testing on the terminal
+    we were able to identify and resolve small bugs that prevented the correct
+    execution of our code.
+
+*)
+
+
 let first_money_card = List.hd(get_money())
 
 let first_action_card = List.hd(get_actions())
@@ -15,11 +35,20 @@ let first_property_card = List.hd(get_properties())
 
 let deck_v1 = initialize_deck()
 
+let extract_card (a, b, c) = get_id a
+
 (* Test suite for getters and setters implemented in card.ml*)
-(** [parse_test name input expected_output] constructs an OUnit test named 
-    [name] that asserts the quality of [expected_output] with [parse input]*) 
+(** [card_test name expected_output input_card input_function] constructs an OUnit 
+    test named [name] that asserts the quality of [expected_output] with 
+    [input_function input_card]*) 
 let card_test name expected_output input_card input_function = 
   name >:: (fun _ -> assert_equal expected_output (input_function input_card))
+
+(* Test suite for card removal in deck.ml*)
+(** [remove_top_test name expected_output] constructs an OUnit test named 
+    [name] that asserts the quality of [expected_output] with [remove_top_card]*) 
+let remove_top_test name expected_output = 
+  name >:: (fun _ -> assert_equal expected_output (extract_card(remove_top_card deck_v1 [])))
 
 (* Test suite for functions implemented in command.ml*)
 (** [parse_test name input expected_output] constructs an OUnit test named 
@@ -98,10 +127,13 @@ let command_tests =
   ]
 
 let deck_tests = [
-
+  remove_top_test "Remove top card" 1; (* Needs fixing!*)
 ]
 
-let player_tests = []
+let player_tests = [
+  (* Try spawning dummy players with names and other getters, if not enough test
+     cases, fill in more for command and card to bring to 50*)
+]
 
 let suite =
   "test suite for A2"  >::: List.flatten [
