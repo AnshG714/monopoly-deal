@@ -106,7 +106,7 @@ let rec ask_for_money board current_player from_player total_value acc_value =
     else "n" in
 
   if input = "n" then
-    ( print_endline ("You need to pay " ^ (string_of_int (total_value - acc_value)));
+    ( print_endline ("You need to pay $" ^ (string_of_int (total_value - acc_value)));
       print_endline "Please enter a valid card id to play";
       match read_int_opt () with
       | None -> print_endline "Please enter a valid card id to play";
